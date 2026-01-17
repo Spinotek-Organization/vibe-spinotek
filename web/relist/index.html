@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>RELIST - iphonejogjatermurah | Katalog iPhone Jogja</title>
+    <meta
+      name="description"
+      content="Pusat discovery iPhone, iPad, dan MacBook original di Yogyakarta. Cek ketersediaan unit READY secara real-time dengan harga kompetitif."
+    />
+    <link rel="canonical" href="https://iphonejogjatermurah.com/catalog" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      body {
+        background-color: #020617;
+      }
+    </style>
+  </head>
+  <body class="antialiased text-slate-200">
+    <div
+      x-data="{
+        selectedCategory: 'All',
+        searchQuery: '',
+        openModal: false,
+        activeProduct: null,
+
+        // DATA PRODUK (Pindah dari PHP ke JS)
+        products: [
+            { id: 1, category: 'iPhone', name: 'iPhone 15 Pro Max', price: 18999000, status: 'READY', images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600', 'https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=600', 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600'], variants: [{ name: '256GB Natural Titanium', price: 'Rp 18.999.000', status: 'READY' }, { name: '512GB Blue Titanium', price: 'Rp 21.499.000', status: 'READY' }, { name: '1TB Black Titanium', price: 'Rp 24.999.000', status: 'SOLD' }] },
+            { id: 2, category: 'iPhone', name: 'iPhone 15', price: 13499000, status: 'READY', images: ['https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=600'], variants: [{ name: '128GB Pink', price: 'Rp 13.499.000', status: 'READY' }, { name: '256GB Blue', price: 'Rp 15.499.000', status: 'READY' }] },
+            { id: 3, category: 'iPhone', name: 'iPhone 14 Plus', price: 12499000, status: 'SOLD', images: ['https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=600'], variants: [{ name: '128GB Midnight', price: 'Rp 12.499.000', status: 'SOLD' }, { name: '256GB Starlight', price: 'Rp 14.499.000', status: 'SOLD' }] },
+            { id: 4, category: 'iPhone', name: 'iPhone 13', price: 9999000, status: 'READY', images: ['https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=600'], variants: [{ name: '128GB Blue', price: 'Rp 9.999.000', status: 'READY' }, { name: '256GB Pink', price: 'Rp 11.499.000', status: 'READY' }] },
+            { id: 5, category: 'MacBook', name: 'MacBook Air M3 13&quot;', price: 17499000, status: 'READY', images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600'], variants: [{ name: '8/256GB Midnight', price: 'Rp 17.499.000', status: 'READY' }, { name: '16/512GB Space Gray', price: 'Rp 20.999.000', status: 'READY' }] },
+            { id: 6, category: 'MacBook', name: 'MacBook Pro M3 14&quot;', price: 25999000, status: 'READY', images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600'], variants: [{ name: '8/512GB Silver', price: 'Rp 25.999.000', status: 'READY' }, { name: '16/1TB Space Black', price: 'Rp 31.999.000', status: 'READY' }] },
+            { id: 7, category: 'MacBook', name: 'MacBook Air M2 13&quot;', price: 15299000, status: 'READY', images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600'], variants: [{ name: '8/256GB Starlight', price: 'Rp 15.299.000', status: 'READY' }, { name: '16/512GB Midnight', price: 'Rp 18.999.000', status: 'READY' }] },
+            { id: 8, category: 'MacBook', name: 'MacBook Pro M2 13&quot;', price: 18499000, status: 'SOLD', images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600'], variants: [{ name: '8/256GB Space Gray', price: 'Rp 18.499.000', status: 'SOLD' }, { name: '16/512GB Space Gray', price: 'Rp 21.499.000', status: 'SOLD' }] },
+            { id: 9, category: 'iPad', name: 'iPad Pro M2 11&quot;', price: 12499000, status: 'READY', images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600'], variants: [{ name: '128GB WiFi Space Gray', price: 'Rp 12.499.000', status: 'READY' }, { name: '256GB WiFi Silver', price: 'Rp 14.299.000', status: 'READY' }] },
+            { id: 10, category: 'iPad', name: 'iPad Air 5', price: 9499000, status: 'READY', images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600'], variants: [{ name: '64GB WiFi Blue', price: 'Rp 9.499.000', status: 'READY' }, { name: '256GB WiFi Space Gray', price: 'Rp 12.199.000', status: 'READY' }] },
+            { id: 11, category: 'iPad', name: 'iPad 10th Gen', price: 5999000, status: 'READY', images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600'], variants: [{ name: '64GB WiFi Silver', price: 'Rp 5.999.000', status: 'READY' }, { name: '256GB WiFi Yellow', price: 'Rp 8.499.000', status: 'READY' }] },
+            { id: 12, category: 'iPad', name: 'iPad Mini 6', price: 7899000, status: 'SOLD', images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600'], variants: [{ name: '64GB WiFi Purple', price: 'Rp 7.899.000', status: 'SOLD' }, { name: '256GB WiFi Starlight', price: 'Rp 10.299.000', status: 'SOLD' }] },
+        ],
+    
+        showDetail(product) {
+            this.activeProduct = product;
+            this.openModal = true;
+            document.body.style.overflow = 'hidden';
+        },
+    
+        closeModal() {
+            this.openModal = false;
+            document.body.style.overflow = 'auto';
+        },
+
+        // Helper untuk format rupiah
+        formatIDR(price) {
+            return 'Rp ' + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+    }"
+      class="min-h-screen bg-slate-50 text-slate-900 font-['Plus_Jakarta_Sans'] antialiased"
+    >
+      <nav
+        class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200"
+      >
+        <div
+          class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between"
+        >
+          <div class="flex flex-col leading-none">
+            <div class="flex items-baseline gap-1.5">
+              <div class="flex items-center">
+                <span
+                  class="text-xl font-black tracking-tighter uppercase bg-gradient-to-r from-emerald-700 to-lime-500 bg-clip-text text-transparent"
+                  >RELIST</span
+                >
+              </div>
+              <span
+                class="text-[10px] font-extrabold italic bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
+                >by Spinotek</span
+              >
+            </div>
+            <span
+              class="text-[9px] text-slate-400 font-bold tracking-[0.2em] uppercase mt-0.5"
+              >iphonejogjatermurah</span
+            >
+          </div>
+
+          <div class="hidden md:flex flex-1 max-w-sm mx-10 relative">
+            <i
+              class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
+            ></i>
+            <input
+              type="text"
+              x-model="searchQuery"
+              placeholder="Cari gadget impian..."
+              class="w-full bg-slate-100 border-none rounded-full py-2 pl-9 pr-4 text-sm focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all placeholder:text-slate-400"
+            />
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a
+              href="#"
+              class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
+            >
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <div class="h-4 w-[1px] bg-slate-200"></div>
+            <div class="flex items-center gap-2">
+              <div
+                class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"
+              ></div>
+              <span
+                class="text-[10px] font-bold uppercase tracking-wider text-slate-500 hidden sm:block"
+                >Online</span
+              >
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main class="max-w-7xl mx-auto px-4 py-6">
+        <div class="mb-8">
+          <div
+            class="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 py-2"
+          >
+            <template x-for="cat in ['All', 'iPhone', 'iPad', 'MacBook']">
+              <button
+                @click="selectedCategory = cat"
+                :class="selectedCategory === cat ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' : 'bg-white text-slate-600 border border-slate-200 hover:border-emerald-500'"
+                class="px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap"
+                x-text="cat"
+              ></button>
+            </template>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+          <template x-for="product in products" :key="product.id">
+            <div
+              x-show="(selectedCategory === 'All' || product.category === selectedCategory) && (product.name.toLowerCase().includes(searchQuery.toLowerCase()))"
+              @click="showDetail(product)"
+              class="group bg-white border border-slate-100 rounded-2xl overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 active:scale-[0.98]"
+            >
+              <div class="aspect-square bg-slate-50 overflow-hidden">
+                <img
+                  :src="product.images[0]"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+
+              <div class="p-4">
+                <div class="flex items-center justify-between mb-2">
+                  <span
+                    class="text-[9px] font-bold text-emerald-600 uppercase tracking-widest"
+                    x-text="product.category"
+                  ></span>
+                  <span
+                    x-text="product.status"
+                    :class="product.status === 'READY' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'"
+                    class="px-2 py-0.5 text-[8px] font-black rounded uppercase tracking-tighter"
+                  >
+                  </span>
+                </div>
+
+                <h3
+                  class="text-sm font-bold text-slate-900 mb-3 line-clamp-1 uppercase tracking-tight"
+                  x-text="product.name"
+                ></h3>
+
+                <div class="flex flex-col border-t border-slate-50 pt-3">
+                  <span
+                    class="text-[8px] text-slate-400 font-bold uppercase tracking-tight"
+                    >Mulai Dari</span
+                  >
+                  <span
+                    class="text-slate-900 font-extrabold text-sm italic"
+                    x-text="formatIDR(product.price)"
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </main>
+
+      <div
+        x-show="openModal"
+        class="fixed inset-0 z-[100] flex justify-end"
+        x-cloak
+      >
+        <div
+          x-show="openModal"
+          x-transition.opacity
+          @click="closeModal()"
+          class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+        ></div>
+
+        <div
+          x-show="openModal"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="translate-y-full md:translate-y-0 md:translate-x-full"
+          x-transition:enter-end="translate-y-0 md:translate-x-0"
+          class="relative w-full md:w-[450px] bg-white flex flex-col h-[90vh] md:h-full mt-auto md:mt-0 rounded-t-3xl md:rounded-none shadow-2xl"
+        >
+          <button
+            @click="closeModal()"
+            class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <div class="overflow-y-auto flex-1 no-scrollbar p-6">
+            <div class="flex gap-3 overflow-x-auto snap-x no-scrollbar mb-6">
+              <template x-for="img in activeProduct?.images" :key="img">
+                <div
+                  class="min-w-[85%] aspect-square bg-slate-50 rounded-2xl overflow-hidden snap-center border border-slate-100"
+                >
+                  <img :src="img" class="w-full h-full object-cover" />
+                </div>
+              </template>
+            </div>
+
+            <div class="mb-6">
+              <span
+                x-text="activeProduct?.category"
+                class="text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full"
+              ></span>
+              <h2
+                x-text="activeProduct?.name"
+                class="text-2xl font-black text-slate-900 mt-4 tracking-tight uppercase"
+              ></h2>
+            </div>
+
+            <div class="space-y-2 mb-10">
+              <h4
+                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-3"
+              >
+                Pilihan Unit & Harga
+              </h4>
+              <template x-for="v in activeProduct?.variants">
+                <div
+                  class="flex items-center justify-between py-3 px-4 bg-slate-50 rounded-2xl border border-slate-100"
+                >
+                  <div class="flex flex-col">
+                    <span
+                      x-text="v.name"
+                      class="text-[13px] font-bold text-slate-800"
+                    ></span>
+                    <span
+                      x-text="v.status"
+                      class="text-[9px] text-emerald-600 font-bold uppercase tracking-tight"
+                    ></span>
+                  </div>
+                  <div class="text-right">
+                    <span
+                      class="text-slate-900 font-black text-sm italic"
+                      x-text="v.price"
+                    ></span>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <div
+            class="p-4 bg-white/80 backdrop-blur-md border-t border-slate-100 pb-8 md:pb-4"
+          >
+            <div class="grid grid-cols-2 gap-3">
+              <a
+                :href="'https://wa.me/628123456789?text=Halo Admin 1, saya tertarik dengan ' + activeProduct?.name"
+                target="_blank"
+                class="flex items-center justify-center gap-2 bg-[#25D366] text-white py-3.5 rounded-xl transition-all active:scale-95 shadow-sm"
+              >
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span class="text-[11px] font-black uppercase tracking-wider"
+                  >Admin 1</span
+                >
+              </a>
+              <a
+                :href="'https://wa.me/628987654321?text=Halo Admin 2, saya tertarik dengan ' + activeProduct?.name"
+                target="_blank"
+                class="flex items-center justify-center gap-2 bg-slate-900 text-white py-3.5 rounded-xl transition-all active:scale-95 shadow-sm"
+              >
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span class="text-[11px] font-black uppercase tracking-wider"
+                  >Admin 2</span
+                >
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
