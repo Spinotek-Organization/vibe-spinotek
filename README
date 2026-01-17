@@ -1,6 +1,6 @@
 # 🌊 THE STREAM - Spinotek Creative Lab
 
-Platform koleksi karya kreatif (Vibecoding) dari tim Spinotek dan komunitas mahasiswa.  
+Platform koleksi karya kreatif (Vibecoding) dari tim Spinotek dan komunitas.  
 Live at: [vibe.spinotek.com](https://vibe.spinotek.com)
 
 ## 🚀 Cara "Drop Your Work"
@@ -23,6 +23,6 @@ Sederhanakan URL karya Anda (menjadi `vibe.spinotek.com/nama-karya`) dengan meng
 ├── index.html (Halaman THE STREAM)
 ├── agramas/
 │   └── index.html
-└── karya-mahasiswa/
+└── karya-kamu/
     ├── index.html
     └── style.css
