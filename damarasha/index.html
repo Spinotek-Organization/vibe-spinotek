@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darmarasha Coffee | Your Local Artisan Space</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; color: #1A1A1A; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+        
+        /* Kontras Warna Ditingkatkan */
+        .bg-espresso { background-color: #1F1412; }
+        .text-espresso { color: #1F1412; }
+        .bg-cream { background-color: #F2EBE3; } /* Lebih solid dari sebelumnya */
+        .bg-soft-white { background-color: #FFFFFF; } /* Putih bersih untuk teks yang tajam */
+        .text-gold { color: #8C6239; }
+    </style>
+</head>
+<body class="bg-soft-white" x-data="{ mobileMenu: false, activeTab: 'all' }">
+
+    <nav class="flex justify-between items-center px-6 md:px-12 py-6 sticky top-0 bg-white/95 backdrop-blur-md z-50 border-b border-gray-200">
+        <div class="text-2xl font-bold tracking-tighter text-espresso uppercase">DARMARASHA.</div>
+        
+        <div class="hidden md:flex space-x-8 font-bold text-xs uppercase tracking-widest text-gray-800">
+            <a href="#home" class="hover:text-gold transition">Home</a>
+            <a href="#menu" class="hover:text-gold transition">Menu</a>
+            <a href="#about" class="hover:text-gold transition">Story</a>
+            <a href="#events" class="hover:text-gold transition">Events</a>
+            <a href="#contact" class="hover:text-gold transition">Contact</a>
+        </div>
+
+        <div class="hidden md:block">
+            <a href="#contact" class="bg-espresso text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black transition">Visit Us</a>
+        </div>
+
+        <button @click="mobileMenu = !mobileMenu" class="md:hidden text-espresso text-2xl">☰</button>
+    </nav>
+
+    <div x-show="mobileMenu" class="fixed inset-0 bg-espresso text-white z-[60] flex flex-col items-center justify-center space-y-8 text-2xl font-serif" x-transition>
+        <button @click="mobileMenu = false" class="absolute top-8 right-8 text-4xl">&times;</button>
+        <a @click="mobileMenu = false" href="#home">Home</a>
+        <a @click="mobileMenu = false" href="#menu">Menu</a>
+        <a @click="mobileMenu = false" href="#about">Story</a>
+        <a @click="mobileMenu = false" href="#contact">Contact</a>
+    </div>
+
+    <section id="home" class="relative h-[85vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80&w=2070" 
+                 class="w-full h-full object-cover brightness-[0.5]" alt="Coffee shop interior">
+        </div>
+        <div class="relative z-10 text-center text-white px-4">
+            <span class="uppercase tracking-[0.5em] text-xs font-bold mb-4 block text-gray-200">Est. 2024 • Artisan Roastery</span>
+            <h1 class="text-5xl md:text-8xl mb-8 leading-tight">Your Local Artisan<br><span class="italic font-serif">Coffee Space</span></h1>
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <a href="#menu" class="bg-white text-espresso px-10 py-4 rounded-full font-bold hover:bg-gray-100 transition">SEE MENU</a>
+                <a href="#contact" class="border-2 border-white text-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-espresso transition">FIND US</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="bg-cream py-24 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl text-espresso mb-4">Our Curated Menu</h2>
+                <div class="h-1 w-20 bg-gold mx-auto mb-6"></div>
+                <p class="text-gray-700 font-medium">Biji kopi pilihan yang dipanggang dengan presisi.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-3 mb-16">
+                <template x-for="tab in ['all', 'espresso', 'manual', 'non-coffee', 'pastry']">
+                    <button @click="activeTab = tab" 
+                        :class="activeTab === tab ? 'bg-espresso text-white' : 'bg-white text-espresso border border-gray-300'" 
+                        class="px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition shadow-sm capitalize"
+                        x-text="tab.replace('-', ' ')">
+                    </button>
+                </template>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                
+                <div x-show="activeTab === 'all' || activeTab === 'espresso'" class="group bg-white p-6 rounded-3xl shadow-md border border-gray-100 transition hover:shadow-xl">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 h-64 bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1541167760496-162955ed8a9f?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <span class="absolute top-4 left-4 bg-espresso text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest">Best Seller</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xl text-espresso">Darmarasha Signature</h4>
+                        <span class="font-bold text-gold text-lg">38k</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed italic">Double shot espresso, salted caramel, and secret creamy milk base.</p>
+                </div>
+
+                <div x-show="activeTab === 'all' || activeTab === 'espresso'" class="group bg-white p-6 rounded-3xl shadow-md border border-gray-100">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 h-64 bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xl text-espresso">Oatmilk Latte</h4>
+                        <span class="font-bold text-gold text-lg">42k</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed italic">Premium espresso blended with creamy sustainable oat milk.</p>
+                </div>
+
+                <div x-show="activeTab === 'all' || activeTab === 'manual'" class="group bg-white p-6 rounded-3xl shadow-md border border-gray-100">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 h-64 bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xl text-espresso">V60 Single Origin</h4>
+                        <span class="font-bold text-gold text-lg">35k</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed italic">Hand-poured coffee featuring our seasonal beans from local farmers.</p>
+                </div>
+
+                <div x-show="activeTab === 'all' || activeTab === 'non-coffee'" class="group bg-white p-6 rounded-3xl shadow-md border border-gray-100">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 h-64 bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xl text-espresso">Ceremonial Matcha</h4>
+                        <span class="font-bold text-gold text-lg">40k</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed italic">Authentic Uji Matcha whisked to perfection with fresh milk.</p>
+                </div>
+
+                <div x-show="activeTab === 'all' || activeTab === 'non-coffee'" class="group bg-white p-6 rounded-3xl shadow-md border border-gray-100">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 h-64 bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xl text-espresso">Artisan Chocolate</h4>
+                        <span class="font-bold text-gold text-lg">38k</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed italic">70% Dark cocoa from Bali with a hint of sea salt.</p>
+                </div>
+
+                <div x-show="activeTab === 'all' || activeTab === 'pastry'" class="group bg-white p-6 rounded-3xl shadow-md border border-gray-100">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 h-64 bg-gray-100">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=500" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xl text-espresso">Butter Croissant</h4>
+                        <span class="font-bold text-gold text-lg">28k</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed italic">Flaky, buttery layers, baked fresh every single morning.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="bg-espresso text-white py-24 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20">
+            <div>
+                <h2 class="text-5xl md:text-7xl font-serif italic mb-8">Let's connect.</h2>
+                <div class="space-y-8">
+                    <div class="border-l-2 border-gold pl-6">
+                        <h4 class="font-bold uppercase tracking-widest text-xs text-gold mb-2">Location</h4>
+                        <p class="text-xl">Jl. Senopati No. 45, Jakarta Selatan</p>
+                    </div>
+                    <div class="border-l-2 border-gold pl-6">
+                        <h4 class="font-bold uppercase tracking-widest text-xs text-gold mb-2">Hours</h4>
+                        <p class="text-xl">Daily: 08:00 AM — 10:00 PM</p>
+                    </div>
+                    <div class="flex gap-8 pt-6">
+                        <a href="#" class="font-bold hover:text-gold border-b-2 border-gold pb-1 transition">INSTAGRAM</a>
+                        <a href="#" class="font-bold hover:text-gold border-b-2 border-gold pb-1 transition">WHATSAPP</a>
+                    </div>
+                </div>
+            </div>
+            <div class="relative rounded-[2rem] overflow-hidden h-[400px] border border-white/20 shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover opacity-60">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <button class="bg-white text-espresso px-8 py-4 rounded-full font-bold shadow-xl">OPEN IN GOOGLE MAPS</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-20 pt-10 border-t border-white/10 text-center text-[10px] tracking-[0.5em] text-gray-500 uppercase">
+            &copy; 2026 Darmarasha Coffee. Artisan Excellence.
+        </div>
+    </section>
+
+</body>
+</html>
