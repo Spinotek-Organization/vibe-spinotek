@@ -67,16 +67,26 @@
       </div>
     </nav>
 
-    <header class="max-w-7xl mx-auto px-6 pt-24 pb-16">
-      <div class="border-l-4 border-blue-600 pl-8">
+    <header class="max-w-7xl mx-auto px-6 pt-24 pb-16 relative">
+      <div
+        class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none animate-pulse"
+      ></div>
+
+      <div class="border-l-[6px] border-blue-600 pl-8 relative z-10">
         <h1
-          class="text-6xl md:text-8xl font-bold tracking-tighter mb-4 uppercase"
+          class="text-7xl md:text-[120px] font-black tracking-[ -0.05em] leading-[0.85] mb-8"
         >
-          THE <span class="text-blue-600 italic">STREAM.</span>
+          <span class="block text-white">SPINOTEK</span>
+          <span
+            class="block bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-400 drop-shadow-[0_0_30px_rgba(37,99,235,0.3)]"
+          >
+            LABS.
+          </span>
         </h1>
+
         <div
           id="typewriter"
-          class="text-gray-400 text-xl md:text-2xl font-light min-h-[3em] md:min-h-[1.5em]"
+          class="text-blue-100/60 text-xl md:text-2xl font-medium min-h-[3em] md:min-h-[1.5em] tracking-wide mt-4"
         ></div>
       </div>
     </header>
@@ -99,7 +109,7 @@
         </div>
         <div class="w-full lg:w-auto">
           <a
-            href="https://github.com/spinotek/demo-spinotek"
+            href="https://github.com/Spinotek-Organization/vibe-spinotek"
             target="_blank"
             class="inline-block w-full text-center px-8 py-4 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-all font-bold text-sm tracking-widest uppercase"
           >
@@ -143,12 +153,12 @@
       </div>
       <div class="flex gap-8">
         <a
-          href="#"
+          href="https://github.com/Spinotek-Organization/vibe-spinotek"
           class="text-gray-600 hover:text-blue-500 text-[10px] uppercase tracking-widest transition font-bold"
-          >Term of Use</a
+          >Drop Your Work</a
         >
         <a
-          href="#"
+          href="https://spinotek.com"
           class="text-gray-600 hover:text-blue-500 text-[10px] uppercase tracking-widest transition font-bold"
           >Spinotek Site</a
         >
@@ -175,7 +185,7 @@
         .pauseFor(1500)
         .deleteChars(42)
         .typeString(
-          'Platform <span class="text-white font-medium">Creative Lab & Prototype Center</span>.',
+          'Platform <span class="text-white font-medium">Creative Lab dan Prototype Center</span>.',
         )
         .pauseFor(1500)
         .start();
