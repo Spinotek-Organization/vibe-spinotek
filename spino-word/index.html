@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="id" x-data="wordleGame()" x-init="init()">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spinotek Digital Challenge - Tebak Kata</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Alpine.js CDN -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Howler.js CDN untuk Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* ============================================
+           ANIMASI FLIP 3D - Efek kartu berputar
+           ============================================ */
+      .flip-card {
+        perspective: 1000px;
+      }
+
+      .flip-card-inner {
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+      }
+
+      .flip-card-inner.flipped {
+        transform: rotateX(180deg);
+      }
+
+      .flip-card-front,
+      .flip-card-back {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .flip-card-back {
+        transform: rotateX(180deg);
+      }
+
+      /* ============================================
+           ANIMASI SHAKE - Kotak bergetar saat error
+           ============================================ */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-8px);
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(8px);
+        }
+      }
+
+      .shake {
+        animation: shake 0.5s ease-in-out;
+      }
+
+      /* ============================================
+           ANIMASI BOUNCE - Huruf meloncat saat menang
+           ============================================ */
+      @keyframes bounce-win {
+        0%,
+        100% {
+          transform: translateY(0) rotateX(180deg);
+        }
+        30% {
+          transform: translateY(-25px) rotateX(180deg);
+        }
+        50% {
+          transform: translateY(-15px) rotateX(180deg);
+        }
+        70% {
+          transform: translateY(-10px) rotateX(180deg);
+        }
+      }
+
+      .bounce-win {
+        animation: bounce-win 0.8s ease-in-out;
+      }
+
+      /* ============================================
+           ANIMASI POP - Efek saat mengetik huruf
+           ============================================ */
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .pop {
+        animation: pop 0.1s ease-in-out;
+      }
+
+      /* ============================================
+           GLOW EFFECT - Efek premium pada elemen
+           ============================================ */
+      .glow-cyan {
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+      }
+
+      .glow-emerald {
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      }
+
+      /* ============================================
+           GRADIENT BORDER - Border gradient premium
+           ============================================ */
+      .gradient-border {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+      }
+
+      .gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, #06b6d4, #10b981);
+        z-index: -1;
+      }
+
+      /* ============================================
+           KEYBOARD STYLES - Tombol keyboard virtual
+           ============================================ */
+      .key-btn {
+        transition: all 0.15s ease;
+      }
+
+      .key-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .key-btn:active {
+        transform: translateY(1px);
+      }
+
+      /* ============================================
+           MODAL ANIMATION - Animasi popup
+           ============================================ */
+      @keyframes modal-appear {
+        0% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .modal-appear {
+        animation: modal-appear 0.4s ease-out;
+      }
+
+      /* ============================================
+           SPARKLE EFFECT - Efek kilau saat menang
+           ============================================ */
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1) rotate(180deg);
+        }
+      }
+
+      .sparkle {
+        animation: sparkle 1.5s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white"
+  >
+    <!-- ============================================
+         HEADER - Branding Spinotek
+         ============================================ -->
+    <header class="py-6 px-4 text-center border-b border-slate-700/50">
+      <div class="max-w-2xl mx-auto">
+        <!-- Logo Spinotek -->
+        <div class="flex items-center justify-center gap-3 mb-2">
+          <div
+            class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center glow-cyan"
+          >
+            <svg
+              class="w-6 h-6 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+              />
+            </svg>
+          </div>
+          <h1 class="text-2xl md:text-3xl font-extrabold">
+            <span
+              class="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent"
+            >
+              Spinotek
+            </span>
+            <span class="text-slate-300"> Digital Challenge</span>
+          </h1>
+        </div>
+        <p class="text-slate-400 text-sm">
+          Tebak kata rahasia dalam 6 percobaan!
+        </p>
+      </div>
+    </header>
+
+    <!-- ============================================
+         WELCOME SCREEN - Layar Awal dengan Tombol Play
+         ============================================ -->
+    <div
+      x-show="!gameStarted"
+      x-transition:enter="transition ease-out duration-500"
+      x-transition:enter-start="opacity-0 transform scale-95"
+      x-transition:enter-end="opacity-100 transform scale-100"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      class="max-w-lg mx-auto px-4 py-12 text-center"
+    >
+      <!-- Welcome Icon -->
+      <div class="mb-8">
+        <div
+          class="w-24 h-24 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center glow-cyan animate-pulse"
+        >
+          <svg
+            class="w-12 h-12 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Welcome Title -->
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-4">
+        <span
+          class="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent"
+        >
+          Tebak Kata Digital
+        </span>
+      </h2>
+      <p class="text-slate-400 mb-8 max-w-sm mx-auto">
+        Uji kemampuan deduktifmu! Tebak kata rahasia 5 huruf dalam 6 percobaan.
+      </p>
+
+      <!-- Game Rules Preview -->
+      <div
+        class="bg-slate-800/50 rounded-2xl p-6 mb-8 border border-slate-700 text-left"
+      >
+        <h3
+          class="text-lg font-semibold text-white mb-4 flex items-center gap-2"
+        >
+          <svg
+            class="w-5 h-5 text-cyan-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          Cara Bermain:
+        </h3>
+        <ul class="space-y-3 text-sm text-slate-300">
+          <li class="flex items-start gap-3">
+            <span
+              class="w-6 h-6 rounded bg-emerald-600 flex-shrink-0 flex items-center justify-center text-xs font-bold"
+              >A</span
+            >
+            <span
+              ><span class="text-emerald-400 font-semibold">Hijau</span> = Huruf
+              benar & posisi benar</span
+            >
+          </li>
+          <li class="flex items-start gap-3">
+            <span
+              class="w-6 h-6 rounded bg-yellow-600 flex-shrink-0 flex items-center justify-center text-xs font-bold"
+              >B</span
+            >
+            <span
+              ><span class="text-yellow-400 font-semibold">Kuning</span> = Huruf
+              benar & posisi salah</span
+            >
+          </li>
+          <li class="flex items-start gap-3">
+            <span
+              class="w-6 h-6 rounded bg-slate-600 flex-shrink-0 flex items-center justify-center text-xs font-bold"
+              >C</span
+            >
+            <span
+              ><span class="text-slate-400 font-semibold">Abu-abu</span> = Huruf
+              tidak ada dalam kata</span
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Play Button -->
+      <button
+        @click="startGame()"
+        class="group relative px-12 py-4 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 glow-cyan"
+      >
+        <span class="flex items-center gap-3">
+          <svg
+            class="w-6 h-6 group-hover:animate-bounce"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          MULAI BERMAIN
+        </span>
+      </button>
+
+      <!-- Footer hint -->
+      <p class="mt-8 text-xs text-slate-500">
+        Dibuat dengan ❤️ oleh <span class="text-cyan-400">Spinotek</span>
+      </p>
+    </div>
+
+    <!-- ============================================
+         MAIN GAME AREA - Hanya tampil setelah klik Play
+         ============================================ -->
+    <main
+      x-show="gameStarted"
+      x-transition:enter="transition ease-out duration-500"
+      x-transition:enter-start="opacity-0 transform translate-y-4"
+      x-transition:enter-end="opacity-100 transform translate-y-0"
+      class="max-w-lg mx-auto px-4 py-6"
+    >
+      <!-- Hint Box - Petunjuk Kata -->
+      <div
+        class="mb-6 bg-gradient-to-r from-cyan-900/30 to-emerald-900/30 rounded-xl p-4 border border-cyan-700/30"
+      >
+        <div class="flex items-center gap-2 mb-2">
+          <svg
+            class="w-5 h-5 text-cyan-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+            />
+          </svg>
+          <span class="text-cyan-400 font-semibold text-sm">💡 Petunjuk:</span>
+        </div>
+        <p class="text-slate-300 text-sm" x-text="currentHint"></p>
+      </div>
+      <!-- Status Bar - Menampilkan percobaan tersisa -->
+      <div class="flex justify-between items-center mb-6 px-2">
+        <div class="flex items-center gap-2">
+          <span class="text-slate-400 text-sm">Percobaan:</span>
+          <div class="flex gap-1">
+            <template x-for="i in 6" :key="i">
+              <div
+                class="w-3 h-3 rounded-full transition-all duration-300"
+                :class="i <= (6 - currentRow) ? 'bg-cyan-500' : 'bg-slate-600'"
+              ></div>
+            </template>
+          </div>
+        </div>
+        <button
+          @click="resetGame()"
+          class="text-sm text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-1"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Reset
+        </button>
+      </div>
+
+      <!-- ============================================
+             GRID TEBAKAN - 6 baris x 5 kolom
+             ============================================ -->
+      <div
+        class="grid gap-2 mb-8 transition-all duration-300"
+        :class="{ 'shake': isShaking }"
+      >
+        <template x-for="(row, rowIndex) in board" :key="rowIndex">
+          <div class="flex justify-center gap-2">
+            <template x-for="(cell, colIndex) in row" :key="colIndex">
+              <div class="flip-card w-14 h-14 md:w-16 md:h-16">
+                <div
+                  class="flip-card-inner w-full h-full relative"
+                  :class="{ 
+                                    'flipped': cell.revealed,
+                                    'bounce-win': cell.bouncing
+                                }"
+                >
+                  <!-- Front - Sebelum reveal -->
+                  <div
+                    class="flip-card-front absolute inset-0 flex items-center justify-center text-2xl md:text-3xl font-bold uppercase rounded-lg border-2 transition-all duration-150"
+                    :class="cell.letter ? 'border-slate-500 bg-slate-800 pop' : 'border-slate-600 bg-slate-800/50'"
+                    x-text="cell.letter"
+                  ></div>
+
+                  <!-- Back - Setelah reveal dengan warna status -->
+                  <div
+                    class="flip-card-back absolute inset-0 flex items-center justify-center text-2xl md:text-3xl font-bold uppercase rounded-lg"
+                    :class="{
+                                        'bg-emerald-600 border-2 border-emerald-500': cell.status === 'correct',
+                                        'bg-yellow-600 border-2 border-yellow-500': cell.status === 'present',
+                                        'bg-slate-600 border-2 border-slate-500': cell.status === 'absent'
+                                    }"
+                    x-text="cell.letter"
+                  ></div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+
+      <!-- Pesan Error/Info -->
+      <div
+        x-show="message"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform -translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="text-center mb-6"
+      >
+        <span
+          class="inline-block px-4 py-2 rounded-lg text-sm font-medium"
+          :class="{
+                    'bg-red-600/20 text-red-400 border border-red-600/30': messageType === 'error',
+                    'bg-cyan-600/20 text-cyan-400 border border-cyan-600/30': messageType === 'info'
+                }"
+          x-text="message"
+        ></span>
+      </div>
+
+      <!-- ============================================
+             KEYBOARD VIRTUAL
+             ============================================ -->
+      <div class="space-y-2">
+        <!-- Baris 1: Q-P -->
+        <div class="flex justify-center gap-1.5">
+          <template x-for="key in 'QWERTYUIOP'.split('')" :key="key">
+            <button
+              @click="addLetter(key)"
+              class="key-btn w-8 h-12 md:w-10 md:h-14 rounded-lg font-semibold text-sm md:text-base flex items-center justify-center"
+              :class="getKeyClass(key)"
+            >
+              <span x-text="key"></span>
+            </button>
+          </template>
+        </div>
+
+        <!-- Baris 2: A-L -->
+        <div class="flex justify-center gap-1.5">
+          <template x-for="key in 'ASDFGHJKL'.split('')" :key="key">
+            <button
+              @click="addLetter(key)"
+              class="key-btn w-8 h-12 md:w-10 md:h-14 rounded-lg font-semibold text-sm md:text-base flex items-center justify-center"
+              :class="getKeyClass(key)"
+            >
+              <span x-text="key"></span>
+            </button>
+          </template>
+        </div>
+
+        <!-- Baris 3: ENTER, Z-M, BACKSPACE -->
+        <div class="flex justify-center gap-1.5">
+          <!-- Tombol Enter -->
+          <button
+            @click="submitGuess()"
+            class="key-btn w-14 h-12 md:w-16 md:h-14 bg-cyan-600 hover:bg-cyan-500 rounded-lg font-semibold text-xs md:text-sm flex items-center justify-center transition-colors"
+          >
+            ENTER
+          </button>
+
+          <template x-for="key in 'ZXCVBNM'.split('')" :key="key">
+            <button
+              @click="addLetter(key)"
+              class="key-btn w-8 h-12 md:w-10 md:h-14 rounded-lg font-semibold text-sm md:text-base flex items-center justify-center"
+              :class="getKeyClass(key)"
+            >
+              <span x-text="key"></span>
+            </button>
+          </template>
+
+          <!-- Tombol Backspace -->
+          <button
+            @click="removeLetter()"
+            class="key-btn w-14 h-12 md:w-16 md:h-14 bg-slate-600 hover:bg-slate-500 rounded-lg font-semibold text-sm flex items-center justify-center transition-colors"
+          >
+            <svg
+              class="w-5 h-5 md:w-6 md:h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Petunjuk -->
+      <div class="mt-8 text-center text-xs text-slate-500">
+        <p>Gunakan keyboard fisik atau klik tombol di atas</p>
+      </div>
+    </main>
+
+    <!-- ============================================
+         MODAL MENANG - Victory Popup
+         ============================================ -->
+    <div
+      x-show="showWinModal"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      @click.self="showWinModal = false"
+    >
+      <div
+        class="modal-appear bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 max-w-md w-full border border-slate-700 relative overflow-hidden"
+      >
+        <!-- Sparkle decorations -->
+        <div
+          class="absolute top-4 left-4 text-yellow-400 sparkle"
+          style="animation-delay: 0s"
+        >
+          ✨
+        </div>
+        <div
+          class="absolute top-8 right-8 text-cyan-400 sparkle"
+          style="animation-delay: 0.3s"
+        >
+          ✨
+        </div>
+        <div
+          class="absolute bottom-12 left-8 text-emerald-400 sparkle"
+          style="animation-delay: 0.6s"
+        >
+          ✨
+        </div>
+        <div
+          class="absolute bottom-4 right-4 text-yellow-400 sparkle"
+          style="animation-delay: 0.9s"
+        >
+          ✨
+        </div>
+
+        <!-- Content -->
+        <div class="text-center relative z-10">
+          <!-- Trophy Icon -->
+          <div
+            class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center glow-cyan"
+          >
+            <svg
+              class="w-10 h-10 text-white"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-1.17a3 3 0 01-2.83 2v1a2 2 0 01-2 2H10a2 2 0 01-2-2v-1a3 3 0 01-2.83-2H4a2 2 0 110-4h1.17A3 3 0 015 5zm5-1a1 1 0 100 2 1 1 0 000-2z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+
+          <h2 class="text-2xl font-bold mb-2">
+            <span
+              class="bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent"
+            >
+              🎉 Selamat! 🎉
+            </span>
+          </h2>
+
+          <p class="text-slate-300 mb-4">
+            Kata rahasia:
+            <span class="font-bold text-emerald-400" x-text="secretWord"></span>
+          </p>
+
+          <p class="text-slate-400 text-sm mb-2">
+            Anda berhasil menebak dalam
+            <span
+              class="text-cyan-400 font-semibold"
+              x-text="currentRow"
+            ></span>
+            percobaan!
+          </p>
+
+          <div
+            class="bg-slate-700/50 rounded-xl p-4 my-6 border border-slate-600"
+          >
+            <p class="text-slate-300 text-sm leading-relaxed">
+              "Strategi Anda tepat. Sama seperti membangun sistem,
+              <span class="text-cyan-400 font-semibold"
+                >ketepatan adalah segalanya</span
+              >. Konsultasikan kebutuhan IT Anda di
+              <span class="text-emerald-400 font-bold">Spinotek</span>."
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              @click="resetGame(); showWinModal = false"
+              class="px-6 py-3 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+            >
+              Main Lagi
+            </button>
+            <a
+              href="https://spinotek.com"
+              target="_blank"
+              class="px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+            >
+              Kunjungi Spinotek
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================
+         MODAL KALAH - Game Over Popup
+         ============================================ -->
+    <div
+      x-show="showLoseModal"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      @click.self="showLoseModal = false"
+    >
+      <div
+        class="modal-appear bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-8 max-w-md w-full border border-slate-700"
+      >
+        <div class="text-center">
+          <!-- Sad Icon -->
+          <div
+            class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center"
+          >
+            <span class="text-4xl">😔</span>
+          </div>
+
+          <h2 class="text-2xl font-bold text-slate-300 mb-2">
+            Belum Beruntung!
+          </h2>
+
+          <p class="text-slate-400 mb-4">
+            Kata rahasia adalah:
+            <span class="font-bold text-cyan-400" x-text="secretWord"></span>
+          </p>
+
+          <div
+            class="bg-slate-700/50 rounded-xl p-4 my-6 border border-slate-600"
+          >
+            <p class="text-slate-300 text-sm leading-relaxed">
+              "Kegagalan adalah langkah menuju kesuksesan. Sama seperti dalam
+              bisnis,
+              <span class="text-cyan-400 font-semibold">Spinotek</span> siap
+              membantu Anda menemukan solusi IT yang tepat!"
+            </p>
+          </div>
+
+          <button
+            @click="resetGame(); showLoseModal = false"
+            class="px-6 py-3 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            Coba Lagi
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================
+         ALPINE.JS GAME LOGIC
+         ============================================ -->
+    <script>
+      function wordleGame() {
+        return {
+          // ============================================
+          // DAFTAR KATA - Kata-kata terkait bisnis/teknologi
+          // ============================================
+          wordList: [
+            "CLOUD",
+            "KODE",
+            "DATA",
+            "SANDI",
+            "VIRUS",
+            "LOGIN",
+            "ADMIN",
+            "PROXY",
+            "DRIVE",
+            "LINUX",
+            "JAVA",
+            "REACT",
+            "SWIFT",
+            "BOTOL",
+            "EXCEL",
+            "MEDIA",
+            "CYBER",
+            "PIXEL",
+            "MOUSE",
+            "LAYAR",
+            "USAHA",
+            "BISNIS",
+            "MODAL",
+            "PROFIT",
+            "STARTUP",
+          ],
+
+          // ============================================
+          // STATE GAME
+          // ============================================
+          gameStarted: false, // Apakah game sudah dimulai (tombol play diklik)
+          secretWord: "", // Kata rahasia yang harus ditebak
+          currentHint: "", // Petunjuk untuk kata saat ini
+          board: [], // Grid permainan 6x5
+          currentRow: 0, // Baris aktif saat ini
+          currentCol: 0, // Kolom aktif saat ini
+          keyboardStatus: {}, // Status warna keyboard virtual
+          gameOver: false, // Apakah game sudah selesai
+          isShaking: false, // Animasi shake aktif
+          message: "", // Pesan untuk pemain
+          messageType: "info", // Tipe pesan (error/info)
+          showWinModal: false, // Tampilkan modal menang
+          showLoseModal: false, // Tampilkan modal kalah
+
+          // ============================================
+          // DAFTAR HINTS - Petunjuk untuk setiap kata
+          // ============================================
+          wordHints: {
+            CLOUD:
+              "Layanan penyimpanan data di internet, sering digunakan oleh perusahaan IT",
+            KODE: "Instruksi yang ditulis programmer untuk membuat aplikasi",
+            DATA: "Informasi digital yang diproses oleh komputer",
+            SANDI: "Kunci rahasia untuk mengakses akun (password)",
+            VIRUS: "Program jahat yang dapat merusak sistem komputer",
+            LOGIN: "Proses masuk ke dalam sistem atau aplikasi",
+            ADMIN: "Pengelola sistem dengan akses penuh",
+            PROXY: "Server perantara untuk mengakses internet",
+            DRIVE: "Tempat penyimpanan file di komputer atau cloud",
+            LINUX: "Sistem operasi open-source populer untuk server",
+            REACT: "Library JavaScript populer untuk membangun UI",
+            SWIFT: "Bahasa pemrograman buatan Apple untuk iOS",
+            EXCEL: "Aplikasi spreadsheet untuk mengolah data",
+            MEDIA: "Konten digital seperti gambar, video, atau audio",
+            CYBER: "Berkaitan dengan dunia digital dan internet",
+            PIXEL: "Titik terkecil pada layar yang membentuk gambar",
+            MOUSE: "Perangkat input untuk menggerakkan kursor",
+            LAYAR: "Tampilan visual pada perangkat elektronik",
+            USAHA: "Aktivitas bisnis atau kegiatan komersial",
+            MODAL: "Dana awal untuk memulai bisnis atau investasi",
+          },
+
+          // ============================================
+          // SOUND EFFECTS - Menggunakan Howler.js
+          // ============================================
+          sounds: {},
+
+          // Flag untuk mencegah listener keyboard terduplikat
+          keyboardListenerAdded: false,
+
+          // ============================================
+          // INISIALISASI GAME
+          // ============================================
+          init() {
+            // Inisialisasi sound effects
+            this.initSounds();
+
+            // Listen keyboard fisik
+            this.setupKeyboardListener();
+          },
+
+          // ============================================
+          // START GAME - Dipanggil saat tombol Play diklik
+          // ============================================
+          startGame() {
+            // Pilih kata rahasia secara acak
+            this.selectRandomWord();
+
+            // Buat board kosong 6x5
+            this.createBoard();
+
+            // Set game started
+            this.gameStarted = true;
+
+            // Play sound
+            this.sounds.type.play();
+          },
+
+          // ============================================
+          // INISIALISASI AUDIO DENGAN HOWLER.JS
+          // ============================================
+          initSounds() {
+            // Sound effect untuk klik/ketik
+            this.sounds.type = new Howl({
+              src: [
+                "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3",
+              ],
+              volume: 0.3,
+            });
+
+            // Sound effect untuk flip kartu
+            this.sounds.flip = new Howl({
+              src: [
+                "https://assets.mixkit.co/active_storage/sfx/2073/2073-preview.mp3",
+              ],
+              volume: 0.4,
+            });
+
+            // Sound effect untuk error/shake
+            this.sounds.error = new Howl({
+              src: [
+                "https://assets.mixkit.co/active_storage/sfx/2955/2955-preview.mp3",
+              ],
+              volume: 0.3,
+            });
+
+            // Sound effect untuk menang
+            this.sounds.win = new Howl({
+              src: [
+                "https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3",
+              ],
+              volume: 0.5,
+            });
+
+            // Sound effect untuk kalah
+            this.sounds.lose = new Howl({
+              src: [
+                "https://assets.mixkit.co/active_storage/sfx/2658/2658-preview.mp3",
+              ],
+              volume: 0.4,
+            });
+          },
+
+          // ============================================
+          // PILIH KATA RAHASIA SECARA ACAK
+          // ============================================
+          selectRandomWord() {
+            // Filter kata yang tepat 5 huruf
+            const fiveLetterWords = this.wordList.filter((w) => w.length === 5);
+            const randomIndex = Math.floor(
+              Math.random() * fiveLetterWords.length,
+            );
+            this.secretWord = fiveLetterWords[randomIndex].toUpperCase();
+
+            // Set hint untuk kata yang dipilih
+            this.currentHint =
+              this.wordHints[this.secretWord] ||
+              "Kata terkait dengan dunia teknologi dan bisnis";
+
+            console.log("Kata rahasia:", this.secretWord); // Debug only
+          },
+
+          // ============================================
+          // BUAT BOARD KOSONG 6x5
+          // ============================================
+          createBoard() {
+            this.board = [];
+            for (let i = 0; i < 6; i++) {
+              const row = [];
+              for (let j = 0; j < 5; j++) {
+                row.push({
+                  letter: "",
+                  status: "", // correct, present, absent
+                  revealed: false,
+                  bouncing: false,
+                });
+              }
+              this.board.push(row);
+            }
+          },
+
+          // ============================================
+          // SETUP KEYBOARD LISTENER
+          // ============================================
+          setupKeyboardListener() {
+            // Cegah registrasi listener lebih dari sekali
+            if (this.keyboardListenerAdded) return;
+            this.keyboardListenerAdded = true;
+
+            // Simpan reference ke this untuk digunakan di dalam handler
+            const self = this;
+
+            document.addEventListener("keydown", function (e) {
+              // Jangan proses input jika game belum dimulai atau sudah selesai
+              if (!self.gameStarted || self.gameOver) return;
+
+              // Cegah key repeat saat tombol ditahan
+              if (e.repeat) return;
+
+              const key = e.key.toUpperCase();
+
+              if (key === "ENTER") {
+                e.preventDefault();
+                self.submitGuess();
+              } else if (key === "BACKSPACE") {
+                e.preventDefault();
+                self.removeLetter();
+              } else if (/^[A-Z]$/.test(key)) {
+                e.preventDefault();
+                self.addLetter(key);
+              }
+            });
+          },
+
+          // ============================================
+          // TAMBAH HURUF KE BOARD
+          // ============================================
+          addLetter(letter) {
+            // Jangan proses jika game belum dimulai atau sudah selesai
+            if (!this.gameStarted || this.gameOver) return;
+            if (this.currentCol >= 5) return; // Baris sudah penuh
+
+            // Play typing sound
+            this.sounds.type.play();
+
+            // Tambah huruf ke cell aktif
+            this.board[this.currentRow][this.currentCol].letter = letter;
+            this.currentCol++;
+
+            // Clear message
+            this.message = "";
+          },
+
+          // ============================================
+          // HAPUS HURUF TERAKHIR
+          // ============================================
+          removeLetter() {
+            if (this.gameOver) return;
+            if (this.currentCol <= 0) return; // Tidak ada huruf untuk dihapus
+
+            this.currentCol--;
+            this.board[this.currentRow][this.currentCol].letter = "";
+
+            // Clear message
+            this.message = "";
+          },
+
+          // ============================================
+          // SUBMIT TEBAKAN
+          // ============================================
+          async submitGuess() {
+            if (this.gameOver) return;
+
+            // Validasi: harus 5 huruf
+            if (this.currentCol < 5) {
+              this.showError("Kata harus 5 huruf!");
+              return;
+            }
+
+            // Ambil kata yang ditebak
+            const guess = this.board[this.currentRow]
+              .map((cell) => cell.letter)
+              .join("");
+
+            // Play flip sound
+            this.sounds.flip.play();
+
+            // Evaluasi tebakan dan animate
+            await this.evaluateGuess(guess);
+
+            // Cek menang
+            if (guess === this.secretWord) {
+              this.handleWin();
+              return;
+            }
+
+            // Pindah ke baris berikutnya
+            this.currentRow++;
+            this.currentCol = 0;
+
+            // Cek kalah (sudah 6 percobaan)
+            if (this.currentRow >= 6) {
+              this.handleLose();
+            }
+          },
+
+          // ============================================
+          // EVALUASI TEBAKAN & REVEAL DENGAN ANIMASI
+          // ============================================
+          async evaluateGuess(guess) {
+            const secretArr = this.secretWord.split("");
+            const guessArr = guess.split("");
+            const result = new Array(5).fill("absent");
+            const secretCopy = [...secretArr];
+
+            // Pass 1: Cari huruf yang benar posisinya (hijau)
+            for (let i = 0; i < 5; i++) {
+              if (guessArr[i] === secretArr[i]) {
+                result[i] = "correct";
+                secretCopy[i] = null; // Mark as used
+              }
+            }
+
+            // Pass 2: Cari huruf yang ada tapi salah posisi (kuning)
+            for (let i = 0; i < 5; i++) {
+              if (result[i] === "correct") continue;
+
+              const foundIndex = secretCopy.indexOf(guessArr[i]);
+              if (foundIndex !== -1) {
+                result[i] = "present";
+                secretCopy[foundIndex] = null; // Mark as used
+              }
+            }
+
+            // Reveal setiap cell dengan delay untuk animasi
+            for (let i = 0; i < 5; i++) {
+              await this.delay(200 * i);
+
+              this.board[this.currentRow][i].status = result[i];
+              this.board[this.currentRow][i].revealed = true;
+
+              // Update keyboard status
+              this.updateKeyboardStatus(guessArr[i], result[i]);
+            }
+          },
+
+          // ============================================
+          // UPDATE STATUS KEYBOARD VIRTUAL
+          // ============================================
+          updateKeyboardStatus(letter, status) {
+            const currentStatus = this.keyboardStatus[letter];
+
+            // Prioritas: correct > present > absent
+            if (currentStatus === "correct") return;
+            if (currentStatus === "present" && status === "absent") return;
+
+            this.keyboardStatus[letter] = status;
+          },
+
+          // ============================================
+          // DAPATKAN CLASS CSS UNTUK TOMBOL KEYBOARD
+          // ============================================
+          getKeyClass(key) {
+            const status = this.keyboardStatus[key];
+
+            switch (status) {
+              case "correct":
+                return "bg-emerald-600 text-white border border-emerald-500";
+              case "present":
+                return "bg-yellow-600 text-white border border-yellow-500";
+              case "absent":
+                return "bg-slate-700 text-slate-400 border border-slate-600";
+              default:
+                return "bg-slate-600 hover:bg-slate-500 text-white border border-slate-500";
+            }
+          },
+
+          // ============================================
+          // HANDLE MENANG
+          // ============================================
+          async handleWin() {
+            this.gameOver = true;
+
+            // Animasi bounce untuk baris terakhir
+            for (let i = 0; i < 5; i++) {
+              await this.delay(100 * i);
+              this.board[this.currentRow][i].bouncing = true;
+            }
+
+            // Play win sound
+            await this.delay(500);
+            this.sounds.win.play();
+
+            // Tampilkan modal menang
+            await this.delay(800);
+            this.showWinModal = true;
+          },
+
+          // ============================================
+          // HANDLE KALAH
+          // ============================================
+          handleLose() {
+            this.gameOver = true;
+
+            // Play lose sound
+            setTimeout(() => {
+              this.sounds.lose.play();
+            }, 500);
+
+            // Tampilkan modal kalah
+            setTimeout(() => {
+              this.showLoseModal = true;
+            }, 1000);
+          },
+
+          // ============================================
+          // TAMPILKAN PESAN ERROR DENGAN SHAKE
+          // ============================================
+          showError(msg) {
+            this.message = msg;
+            this.messageType = "error";
+
+            // Play error sound
+            this.sounds.error.play();
+
+            // Trigger shake animation
+            this.isShaking = true;
+            setTimeout(() => {
+              this.isShaking = false;
+            }, 500);
+
+            // Auto-hide message
+            setTimeout(() => {
+              if (this.message === msg) {
+                this.message = "";
+              }
+            }, 3000);
+          },
+
+          // ============================================
+          // RESET GAME
+          // ============================================
+          resetGame() {
+            this.gameOver = false;
+            this.currentRow = 0;
+            this.currentCol = 0;
+            this.keyboardStatus = {};
+            this.message = "";
+            this.showWinModal = false;
+            this.showLoseModal = false;
+
+            // Pilih kata baru
+            this.selectRandomWord();
+
+            // Reset board
+            this.createBoard();
+          },
+
+          // ============================================
+          // UTILITY: DELAY FUNCTION
+          // ============================================
+          delay(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+          },
+        };
+      }
+    </script>
+  </body>
+</html>
