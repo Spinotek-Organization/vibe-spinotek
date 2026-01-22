@@ -1,0 +1,1298 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EzTopUp - Top Up Game Termurah</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* --- CSS VARIABLES & RESET --- */
+      :root {
+        --bg-main: #020617; /* slate-950 */
+        --bg-card: #0f172a; /* slate-900 */
+        --primary-grad-start: #4f46e5; /* indigo-600 */
+        --primary-grad-end: #9333ea; /* purple-600 */
+        --accent-cyan: #22d3ee; /* cyan-400 */
+        --text-white: #ffffff;
+        --text-slate-300: #cbd5e1;
+        --text-slate-400: #94a3b8;
+        --text-slate-500: #64748b;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --font-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        background-color: var(--bg-main);
+        color: var(--text-slate-300);
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: 0.3s;
+      }
+      ul {
+        list-style: none;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      /* --- UTILITIES --- */
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1.5rem; /* Sedikit menambah padding horizontal */
+      }
+
+      .text-gradient {
+        background: linear-gradient(
+          to right,
+          var(--accent-cyan),
+          #a855f7,
+          #ec4899
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hidden {
+        display: none;
+      }
+      .flex {
+        display: flex;
+      }
+      .grid {
+        display: grid;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .justify-between {
+        justify-content: space-between;
+      }
+      .justify-center {
+        justify-content: center;
+      }
+      .gap-2 {
+        gap: 0.5rem;
+      }
+      .gap-4 {
+        gap: 1rem;
+      }
+
+      /* --- BUTTONS --- */
+      .btn {
+        padding: 0.625rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border: none;
+        font-size: 1rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          to right,
+          var(--primary-grad-start),
+          var(--primary-grad-end)
+        );
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+      }
+
+      .btn-outline {
+        background: rgba(15, 23, 42, 0.5);
+        border: 1px solid var(--text-slate-500);
+        color: var(--text-slate-300);
+        backdrop-filter: blur(4px);
+      }
+
+      .btn-outline:hover {
+        background: rgba(30, 41, 59, 1);
+        color: white;
+        border-color: white;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--text-slate-400);
+      }
+      .btn-ghost:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* --- NAVBAR RESPONSIVE --- */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 50;
+        background: rgba(2, 6, 23, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
+        height: 80px;
+      }
+
+      nav .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logo-box {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(
+          to bottom right,
+          var(--accent-cyan),
+          var(--primary-grad-start)
+        );
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+        flex-shrink: 0; /* Mencegah logo gepeng */
+      }
+
+      .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(to right, white, var(--text-slate-400));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+
+      /* Desktop Links */
+      .nav-links {
+        display: none; /* Hidden by default (Mobile First) */
+        gap: 1.5rem;
+        margin-left: 2.5rem;
+      }
+
+      .nav-links a {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--text-slate-300);
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      .nav-links a:hover {
+        color: white;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent-cyan);
+        transition: width 0.3s ease;
+      }
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Right Section (Search & Button) */
+      .nav-right {
+        display: none; /* Hidden by default (Mobile First) */
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .search-container {
+        position: relative;
+      }
+
+      .search-container input {
+        background: var(--bg-card);
+        border: 1px solid #1e293b;
+        border-radius: 9999px;
+        padding: 0.6rem 1rem 0.6rem 2.5rem;
+        color: white;
+        outline: none;
+        width: 180px; /* Lebar default tablet */
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+      }
+
+      .search-container input:focus {
+        width: 240px;
+        border-color: #a855f7;
+        background: rgba(15, 23, 42, 0.8);
+        box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-slate-500);
+        pointer-events: none;
+      }
+
+      /* Mobile Toggle */
+      .mobile-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+
+      /* --- MOBILE MENU --- */
+      #mobile-menu {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: rgba(2, 6, 23, 0.95);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.5rem;
+        transform: translateY(-150%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 49;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      }
+
+      #mobile-menu.active {
+        transform: translateY(0);
+      }
+
+      #mobile-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: var(--text-slate-300);
+        font-weight: 500;
+        border-radius: 0.5rem;
+        transition: 0.2s;
+      }
+      #mobile-menu a:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        padding-left: 1.5rem;
+      }
+
+      /* Mobile Search Styling */
+      .mobile-search {
+        position: relative;
+        margin-bottom: 0.5rem;
+      }
+      .mobile-search input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        padding: 0.75rem 1rem 0.75rem 2.8rem;
+        border-radius: 0.5rem;
+        color: white;
+        outline: none;
+      }
+      .mobile-search input:focus {
+        border-color: var(--accent-cyan);
+      }
+
+      /* --- MEDIA QUERIES (BREAKPOINTS) --- */
+      @media (min-width: 900px) {
+        .nav-links,
+        .nav-right {
+          display: flex;
+        }
+        .mobile-toggle {
+          display: none;
+        }
+        .search-container input {
+          width: 220px;
+        }
+        .search-container input:focus {
+          width: 280px;
+        }
+      }
+
+      /* Special case for Tablet (between 768 and 900px) */
+      /* Disini kita bisa memilih: tampilkan menu atau tetap hamburger?
+         Untuk keamanan layout, di bawah 900px kita tetap pakai hamburger menu
+         agar tidak berdesakan. */
+
+      /* --- HERO SECTION --- */
+      .hero {
+        position: relative;
+        padding-top: 10rem;
+        padding-bottom: 5rem;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      /* Blobs background */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        z-index: -1;
+        opacity: 0.2;
+      }
+      .blob-1 {
+        width: 300px;
+        height: 300px;
+        bg: #9333ea;
+        top: 10%;
+        left: 10%;
+        background: #9333ea;
+        animation: pulse 4s infinite;
+      }
+      .blob-2 {
+        width: 400px;
+        height: 400px;
+        bottom: 10%;
+        right: 10%;
+        background: #2563eb;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.2;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.3;
+          transform: scale(1.1);
+        }
+      }
+
+      .badge-flash {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 9999px;
+        color: var(--accent-cyan);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+      }
+
+      .ping-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent-cyan);
+        border-radius: 50%;
+        display: inline-block;
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .hero h1 {
+        font-size: 2.5rem; /* Responsive Font */
+        font-weight: 800;
+        color: white;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        color: var(--text-slate-400);
+        max-width: 600px;
+        margin: 0 auto 2.5rem;
+        padding: 0 1rem;
+      }
+
+      .stats-grid {
+        margin-top: 4rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(4px);
+        padding: 1rem;
+        border-radius: 1rem;
+      }
+
+      .stat-val {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+      }
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-slate-500);
+      }
+
+      /* --- GAMES SECTION --- */
+      .games-section {
+        padding: 5rem 0;
+        background: var(--bg-main);
+      }
+
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .game-card {
+        position: relative;
+        background: var(--bg-card);
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid #1e293b;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .game-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--text-slate-500);
+      }
+
+      .game-img-wrapper {
+        position: relative;
+        aspect-ratio: 4/5;
+        overflow: hidden;
+      }
+
+      .game-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s;
+      }
+
+      .game-card:hover img {
+        transform: scale(1.1);
+      }
+
+      /* Overlay gradient */
+      .game-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(2, 6, 23, 1),
+          rgba(2, 6, 23, 0.4),
+          transparent
+        );
+        z-index: 10;
+      }
+
+      /* Color Overlay on Hover */
+      .game-hover-color {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          var(--hover-color-start, blue),
+          var(--hover-color-end, cyan)
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 5;
+        mix-blend-mode: overlay;
+      }
+      .game-card:hover .game-hover-color {
+        opacity: 0.3;
+      }
+
+      .game-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 1rem;
+        z-index: 20;
+        width: 100%;
+      }
+
+      .publisher {
+        font-size: 0.75rem;
+        color: var(--text-slate-400);
+        margin-bottom: 0.25rem;
+      }
+      .game-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0;
+        transition: color 0.3s;
+      }
+      .game-card:hover .game-name {
+        color: var(--accent-cyan);
+      }
+
+      .action-text {
+        height: 0;
+        overflow: hidden;
+        color: var(--accent-cyan);
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+      .game-card:hover .action-text {
+        height: 2rem;
+        margin-top: 0.5rem;
+      }
+
+      /* --- SERVICES SECTION --- */
+      .services-section {
+        padding: 5rem 0;
+        background: rgba(15, 23, 42, 0.5);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .services-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .service-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--bg-main);
+        border: 1px solid #1e293b;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .service-item:hover {
+        border-color: rgba(168, 85, 247, 0.5);
+      }
+
+      .service-icon {
+        width: 3rem;
+        height: 3rem;
+        background: var(--bg-card);
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #c084fc;
+        font-size: 1.25rem;
+        transition: 0.3s;
+        flex-shrink: 0;
+      }
+
+      .service-item:hover .service-icon {
+        background: #9333ea;
+        color: white;
+      }
+
+      /* Visual Illustration (Card Animation) */
+      .visual-area {
+        position: relative;
+        height: 400px;
+        background: linear-gradient(
+          to bottom right,
+          rgba(49, 46, 129, 0.4),
+          rgba(15, 23, 42, 0.4)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .visual-card {
+        background: rgba(2, 6, 23, 0.8);
+        backdrop-filter: blur(12px);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 85%;
+        max-width: 300px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      }
+
+      .loading-bar {
+        height: 8px;
+        background: #1e293b;
+        border-radius: 99px;
+        overflow: hidden;
+        margin: 1rem 0;
+      }
+      .loading-progress {
+        height: 100%;
+        width: 70%;
+        background: linear-gradient(to right, #a855f7, #22d3ee);
+      }
+
+      /* --- FOOTER --- */
+      footer {
+        background: var(--bg-main);
+        padding: 5rem 0 2rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        margin-bottom: 3.5rem;
+      }
+
+      .footer-heading {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.5rem;
+      }
+      .footer-links a {
+        font-size: 0.875rem;
+        color: var(--text-slate-400);
+      }
+      .footer-links a:hover {
+        color: var(--accent-cyan);
+      }
+
+      .payment-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .payment-tag {
+        padding: 0.25rem 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        color: var(--text-slate-300);
+      }
+
+      /* --- MEDIA QUERIES (GLOBAL) --- */
+      @media (min-width: 768px) {
+        .hero h1 {
+          font-size: 4rem;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .games-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .services-layout {
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+        }
+        .footer-grid {
+          grid-template-columns: 2fr 1fr 1fr 1fr;
+        }
+
+        /* Show 'Lihat Semua' button on tablet+ */
+        .hidden.sm\:flex {
+          display: flex;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .games-grid {
+          grid-template-columns: repeat(6, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="nav-left">
+          <div class="flex items-center gap-2" style="cursor: pointer">
+            <div class="logo-box">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <span class="logo-text">EzTopUp</span>
+          </div>
+
+          <div class="nav-links">
+            <a href="#">Beranda</a>
+            <a href="#games">Games</a>
+            <a href="#">Pulsa & Data</a>
+            <a href="#">Cek Transaksi</a>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Cari game..." />
+          </div>
+          <button class="btn btn-primary" style="padding: 0.6rem 1.5rem">
+            Masuk
+          </button>
+        </div>
+
+        <button class="mobile-toggle" onclick="toggleMenu()" aria-label="Menu">
+          <i class="fa-solid fa-bars" id="menu-icon"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div id="mobile-menu">
+      <div class="mobile-search">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" placeholder="Cari game atau voucher..." />
+      </div>
+
+      <a href="#"
+        ><i
+          class="fa-solid fa-house"
+          style="margin-right: 8px; width: 20px"
+        ></i>
+        Beranda</a
+      >
+      <a href="#games"
+        ><i
+          class="fa-solid fa-gamepad"
+          style="margin-right: 8px; width: 20px"
+        ></i>
+        Games</a
+      >
+      <a href="#"
+        ><i
+          class="fa-solid fa-mobile-screen"
+          style="margin-right: 8px; width: 20px"
+        ></i>
+        Pulsa & Data</a
+      >
+      <a href="#"
+        ><i
+          class="fa-solid fa-receipt"
+          style="margin-right: 8px; width: 20px"
+        ></i>
+        Cek Transaksi</a
+      >
+
+      <div
+        style="
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          margin-top: 0.5rem;
+          padding-top: 1rem;
+        "
+      >
+        <button class="btn btn-primary" style="width: 100%">
+          Masuk / Daftar
+        </button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+
+      <div class="container relative z-10">
+        <div class="badge-flash">
+          <span class="ping-dot"></span>
+          Flash Sale Sedang Berlangsung
+        </div>
+
+        <h1>
+          Level Up Pengalaman <br />
+          <span class="text-gradient">Gaming Tanpa Batas</span>
+        </h1>
+
+        <p>
+          Platform top-up game termurah, tercepat, dan terpercaya di Indonesia.
+          Proses otomatis 24 jam dengan metode pembayaran terlengkap.
+        </p>
+
+        <div class="flex justify-center gap-4" style="flex-wrap: wrap">
+          <button class="btn btn-primary">
+            Top Up Sekarang <i class="fa-solid fa-chevron-right"></i>
+          </button>
+          <button class="btn btn-outline">Cek Daftar Harga</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-val">1M+</div>
+            <div class="stat-label">Transaksi Sukses</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">50+</div>
+            <div class="stat-label">Game Tersedia</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">1 Detik</div>
+            <div class="stat-label">Waktu Proses</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">24/7</div>
+            <div class="stat-label">Support</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="games-section" id="games">
+      <div class="container">
+        <div
+          class="flex justify-between items-center"
+          style="margin-bottom: 2.5rem; align-items: flex-end"
+        >
+          <div>
+            <h2
+              style="
+                font-size: 1.875rem;
+                font-weight: 700;
+                color: white;
+                margin-bottom: 0.5rem;
+              "
+            >
+              Game Populer 🔥
+            </h2>
+            <p style="color: var(--text-slate-400)">
+              Paling banyak dimainkan minggu ini
+            </p>
+          </div>
+          <button class="btn btn-ghost hidden sm:flex">Lihat Semua</button>
+        </div>
+
+        <div class="games-grid">
+          <div
+            class="game-card"
+            style="--hover-color-start: #2563eb; --hover-color-end: #22d3ee"
+          >
+            <div class="game-img-wrapper">
+              <div class="game-hover-color"></div>
+              <img
+                src="https://d1tgyzt3mf06m9.cloudfront.net/v3-staging/2022/11/skin-mobile-legends-yang-segera-rilis-pada-bulan-november8f11cda7-baf8-4ad5-99b6-f9e2b345ea13.jpg"
+                alt="MLBB"
+              />
+              <div class="game-overlay"></div>
+            </div>
+            <div class="game-content">
+              <p class="publisher">Moonton</p>
+              <h3 class="game-name">Mobile Legends</h3>
+              <div class="action-text">
+                Top Up
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="font-size: 10px"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="game-card"
+            style="--hover-color-start: #ea580c; --hover-color-end: #facc15"
+          >
+            <div class="game-img-wrapper">
+              <div class="game-hover-color"></div>
+              <img
+                src="https://thumb.viva.id/vivadigital/665x374/2025/05/21/682d1cbe5df36-free-fire_digital.jpg"
+                alt="FF"
+              />
+              <div class="game-overlay"></div>
+            </div>
+            <div class="game-content">
+              <p class="publisher">Garena</p>
+              <h3 class="game-name">Free Fire</h3>
+              <div class="action-text">
+                Top Up
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="font-size: 10px"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="game-card"
+            style="--hover-color-start: #9333ea; --hover-color-end: #f472b6"
+          >
+            <div class="game-img-wrapper">
+              <div class="game-hover-color"></div>
+              <img
+                src="https://image.api.playstation.com/vulcan/ap/rnd/202508/2602/30935168a0f21b6710dc2bd7bb37c23ed937fb9fa747d84c.png"
+                alt="Genshin"
+              />
+              <div class="game-overlay"></div>
+            </div>
+            <div class="game-content">
+              <p class="publisher">HoYoverse</p>
+              <h3 class="game-name">Genshin Impact</h3>
+              <div class="action-text">
+                Top Up
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="font-size: 10px"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="game-card"
+            style="--hover-color-start: #ca8a04; --hover-color-end: #fb923c"
+          >
+            <div class="game-img-wrapper">
+              <div class="game-hover-color"></div>
+              <img
+                src="https://cdn0-production-images-kly.akamaized.net/by0YmeYpzTgCowEGBrexs0G2rko=/800x450/smart/filters:quality(75):strip_icc()/kly-media-production/medias/2535148/original/021249600_1544778391-PUBG_Mobile.jpg"
+                alt="PUBG"
+              />
+              <div class="game-overlay"></div>
+            </div>
+            <div class="game-content">
+              <p class="publisher">Tencent</p>
+              <h3 class="game-name">PUBG Mobile</h3>
+              <div class="action-text">
+                Top Up
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="font-size: 10px"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="game-card"
+            style="--hover-color-start: #dc2626; --hover-color-end: #fb7185"
+          >
+            <div class="game-img-wrapper">
+              <div class="game-hover-color"></div>
+              <img
+                src="https://hasagi.gg/wp-content/uploads/2024/09/4ebcb533-e184-42f3-833b-9aa47a81f39e.jpg"
+                alt="Valorant"
+              />
+              <div class="game-overlay"></div>
+            </div>
+            <div class="game-content">
+              <p class="publisher">Riot Games</p>
+              <h3 class="game-name">Valorant</h3>
+              <div class="action-text">
+                Top Up
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="font-size: 10px"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="game-card"
+            style="--hover-color-start: #4b5563; --hover-color-end: #94a3b8"
+          >
+            <div class="game-img-wrapper">
+              <div class="game-hover-color"></div>
+              <img
+                src="https://www.itemku.com/en/blog/wp-content/uploads/2024/12/roblox-characters.png"
+                alt="Roblox"
+              />
+              <div class="game-overlay"></div>
+            </div>
+            <div class="game-content">
+              <p class="publisher">Roblox Corp</p>
+              <h3 class="game-name">Roblox</h3>
+              <div class="action-text">
+                Top Up
+                <i
+                  class="fa-solid fa-chevron-right"
+                  style="font-size: 10px"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services-section">
+      <div class="container services-layout">
+        <div>
+          <h2
+            style="
+              font-size: 1.875rem;
+              font-weight: 700;
+              color: white;
+              margin-bottom: 1.5rem;
+            "
+          >
+            Bukan Sekedar <br />
+            <span style="color: #a855f7">Top Up Game</span>
+          </h2>
+          <p
+            style="
+              color: var(--text-slate-400);
+              margin-bottom: 2rem;
+              line-height: 1.6;
+            "
+          >
+            Kami juga menyediakan kebutuhan digital harianmu. Mulai dari isi
+            ulang pulsa, paket data internet super ngebut, hingga pembayaran
+            tagihan PPOB. Satu akun untuk semua kebutuhan.
+          </p>
+
+          <div class="grid gap-4">
+            <div class="service-item">
+              <div class="service-icon">
+                <i class="fa-solid fa-mobile-screen"></i>
+              </div>
+              <div style="flex: 1">
+                <h4 style="color: white; font-weight: 600">Pulsa Reguler</h4>
+                <p style="font-size: 0.875rem; color: var(--text-slate-500)">
+                  Telkomsel, Indosat, XL, dll
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right"
+                style="color: var(--text-slate-500)"
+              ></i>
+            </div>
+            <div class="service-item">
+              <div class="service-icon"><i class="fa-solid fa-bolt"></i></div>
+              <div style="flex: 1">
+                <h4 style="color: white; font-weight: 600">Paket Data</h4>
+                <p style="font-size: 0.875rem; color: var(--text-slate-500)">
+                  Internet harian hingga bulanan
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right"
+                style="color: var(--text-slate-500)"
+              ></i>
+            </div>
+            <div class="service-item">
+              <div class="service-icon">
+                <i class="fa-solid fa-gamepad"></i>
+              </div>
+              <div style="flex: 1">
+                <h4 style="color: white; font-weight: 600">Voucher Game</h4>
+                <p style="font-size: 0.875rem; color: var(--text-slate-500)">
+                  Steam, Google Play, PSN
+                </p>
+              </div>
+              <i
+                class="fa-solid fa-chevron-right"
+                style="color: var(--text-slate-500)"
+              ></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-area">
+          <div
+            class="blob"
+            style="
+              width: 200px;
+              height: 200px;
+              background: rgba(34, 211, 238, 0.2);
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+            "
+          ></div>
+          <div class="visual-card relative z-10">
+            <div
+              class="flex justify-between items-center"
+              style="
+                margin-bottom: 1.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 1rem;
+              "
+            >
+              <span style="font-size: 0.875rem; color: var(--text-slate-400)"
+                >Total Pembayaran</span
+              >
+              <span style="font-size: 1.25rem; font-weight: 700; color: white"
+                >Rp 120.000</span
+              >
+            </div>
+            <div style="margin-bottom: 1.5rem">
+              <div class="loading-bar">
+                <div class="loading-progress"></div>
+              </div>
+              <p
+                style="
+                  font-size: 0.75rem;
+                  text-align: center;
+                  color: var(--text-slate-400);
+                "
+              >
+                Memproses transaksi...
+              </p>
+            </div>
+            <div
+              class="flex justify-center gap-2"
+              style="font-size: 0.75rem; color: var(--text-slate-500)"
+            >
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>Enkripsi SSL 256-bit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="flex items-center gap-2" style="margin-bottom: 1rem">
+              <div
+                class="logo-box"
+                style="width: 32px; height: 32px; font-size: 1rem"
+              >
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <span style="font-size: 1.25rem; font-weight: 700; color: white"
+                >EzTopUp</span
+              >
+            </div>
+            <p
+              style="
+                font-size: 0.875rem;
+                color: var(--text-slate-400);
+                line-height: 1.6;
+              "
+            >
+              Penuhi kebutuhan gaming dan digitalmu dengan harga terbaik dan
+              proses instan.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="footer-heading">Peta Situs</h4>
+            <ul class="footer-links">
+              <li><a href="#">Beranda</a></li>
+              <li><a href="#">Semua Game</a></li>
+              <li><a href="#">Cek Pesanan</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-heading">Dukungan</h4>
+            <ul class="footer-links">
+              <li><a href="#">WhatsApp Admin</a></li>
+              <li><a href="#">Email Support</a></li>
+              <li><a href="#">Syarat & Ketentuan</a></li>
+              <li><a href="#">Kebijakan Privasi</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-heading">Metode Pembayaran</h4>
+            <div class="payment-tags">
+              <div class="payment-tag">BCA</div>
+              <div class="payment-tag">Mandiri</div>
+              <div class="payment-tag">QRIS</div>
+              <div class="payment-tag">Gopay</div>
+              <div class="payment-tag">OVO</div>
+              <div class="payment-tag">Dana</div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-slate-500);
+          "
+        >
+          &copy; 2024 EzTopUp Indonesia. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("mobile-menu");
+        const icon = document.getElementById("menu-icon");
+
+        menu.classList.toggle("active");
+
+        if (menu.classList.contains("active")) {
+          icon.classList.remove("fa-bars");
+          icon.classList.add("fa-xmark");
+        } else {
+          icon.classList.remove("fa-xmark");
+          icon.classList.add("fa-bars");
+        }
+      }
+    </script>
+  </body>
+</html>
