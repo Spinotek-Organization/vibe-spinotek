@@ -1,0 +1,1521 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kasir Sederhana - POS System</title>
+    <meta
+      name="description"
+      content="Aplikasi kasir (Point of Sale) sederhana untuk UMKM"
+    />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Alpine.js CDN -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- jQuery (required for Select2) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Select2 CSS & JS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- html2pdf.js removed -->
+
+    <!-- Custom Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                200: "#c7d2fe",
+                300: "#a5b4fc",
+                400: "#818cf8",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+                800: "#3730a3",
+                900: "#312e81",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Smooth transitions for rows */
+      .transaction-row {
+        transition: all 0.3s ease;
+      }
+      .transaction-row:hover {
+        transform: translateX(2px);
+      }
+
+      /* Input focus animation */
+      input:focus,
+      select:focus {
+        transform: scale(1.01);
+      }
+
+      /* Print styles - optimized for 58mm Thermal Paper */
+      @media print {
+        /* Reset everything */
+        html,
+        body {
+          width: 58mm !important;
+          height: auto !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          background: white !important;
+        }
+
+        /* 1. Hide everything by default */
+        body * {
+          visibility: hidden;
+        }
+
+        /* 2. Ensure the Modal Backdrop (parent) is visible so we can see inside it */
+        .modal-backdrop {
+          visibility: visible !important;
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 58mm !important;
+          height: auto !important;
+          background: none !important;
+          display: block !important;
+          z-index: 9999 !important;
+        }
+
+        /* 3. But hide all immediate children of the modal to start fresh */
+        .modal-backdrop * {
+          visibility: hidden;
+        }
+
+        /* 4. Show ONLY the invoice content and its descendants */
+        #invoice-preview-content,
+        #invoice-preview-content * {
+          visibility: visible !important;
+        }
+
+        /* 5. Position the invoice for thermal paper */
+        #invoice-preview-content {
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 58mm !important;
+          max-width: 58mm !important;
+          margin: 0 !important;
+          padding: 2mm !important;
+          background: white !important;
+          color: black !important;
+          font-size: 10px !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Avoid page breaks inside content */
+        #invoice-preview-content * {
+          page-break-inside: avoid;
+        }
+      }
+
+      @page {
+        size: 58mm auto;
+        margin: 0;
+      }
+
+      /* Select2 Custom Styles */
+      .select2-container--default .select2-selection--single {
+        height: 44px;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        background-color: #f8fafc;
+        padding: 6px 12px;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__rendered {
+        line-height: 30px;
+        color: #334155;
+        padding-left: 0;
+      }
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__arrow {
+        height: 42px;
+        right: 8px;
+      }
+      .select2-container--default.select2-container--focus
+        .select2-selection--single {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+      .select2-dropdown {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .select2-container--default
+        .select2-search--dropdown
+        .select2-search__field {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 8px 12px;
+      }
+      .select2-container--default
+        .select2-results__option--highlighted[aria-selected] {
+        background-color: #6366f1;
+      }
+      .select2-container--default .select2-results__option {
+        padding: 10px 12px;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
+    <!-- Main Application Container -->
+    <div x-data="posApp()" x-init="init()" class="min-h-screen">
+      <!-- Header -->
+      <header
+        class="bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200 sticky top-0 z-50"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <!-- Logo Icon -->
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <h1 class="text-xl font-bold text-slate-800">
+                  Kasir Sederhana
+                </h1>
+                <p class="text-xs text-slate-500">Point of Sale System</p>
+              </div>
+            </div>
+
+            <!-- Current Date Time -->
+            <div class="text-right">
+              <p
+                class="text-sm font-medium text-slate-700"
+                x-text="currentDate"
+              ></p>
+              <p class="text-xs text-slate-500" x-text="currentTime"></p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content Grid -->
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- ============================================ -->
+          <!-- AREA 1: Manajemen Inventori (Sidebar Kiri)    -->
+          <!-- ============================================ -->
+          <aside class="lg:col-span-4 xl:col-span-3">
+            <div
+              class="bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200 overflow-hidden"
+            >
+              <!-- Section Header -->
+              <div
+                class="bg-gradient-to-r from-primary-600 to-primary-700 px-5 py-4"
+              >
+                <h2
+                  class="text-lg font-semibold text-white flex items-center gap-2"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    ></path>
+                  </svg>
+                  Master Barang
+                </h2>
+                <p class="text-primary-100 text-xs mt-1">
+                  Kelola daftar barang Anda
+                </p>
+              </div>
+
+              <!-- Form Tambah Barang -->
+              <div class="p-5 border-b border-slate-100">
+                <form @submit.prevent="addItem()" class="space-y-4">
+                  <!-- Nama Barang -->
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-slate-700 mb-1.5"
+                      >Nama Barang</label
+                    >
+                    <input
+                      type="text"
+                      x-model="newItemName"
+                      placeholder="Contoh: Kopi Susu"
+                      class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
+                      required
+                    />
+                  </div>
+
+                  <!-- Harga Satuan -->
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-slate-700 mb-1.5"
+                      >Harga Satuan (Rp)</label
+                    >
+                    <input
+                      type="number"
+                      x-model.number="newItemPrice"
+                      placeholder="15000"
+                      min="0"
+                      class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
+                      required
+                    />
+                  </div>
+
+                  <!-- Tombol Simpan -->
+                  <button
+                    type="submit"
+                    class="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium py-2.5 px-4 rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-200 flex items-center justify-center gap-2"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      ></path>
+                    </svg>
+                    Simpan Barang
+                  </button>
+                </form>
+              </div>
+
+              <!-- Daftar Barang -->
+              <div class="p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="text-sm font-semibold text-slate-600">
+                    Daftar Barang
+                  </h3>
+                  <span
+                    class="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full"
+                    x-text="items.length + ' item'"
+                  ></span>
+                </div>
+
+                <!-- Empty State -->
+                <template x-if="items.length === 0">
+                  <div class="text-center py-8">
+                    <div
+                      class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3"
+                    >
+                      <svg
+                        class="w-8 h-8 text-slate-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                        ></path>
+                      </svg>
+                    </div>
+                    <p class="text-sm text-slate-500">Belum ada barang</p>
+                    <p class="text-xs text-slate-400 mt-1">
+                      Tambahkan barang pertama Anda
+                    </p>
+                  </div>
+                </template>
+
+                <!-- Items List -->
+                <div class="space-y-2 max-h-[400px] overflow-y-auto">
+                  <template x-for="(item, index) in items" :key="item.id">
+                    <div
+                      class="flex items-center justify-between bg-slate-50 hover:bg-slate-100 rounded-xl px-4 py-3 group transition-all duration-200"
+                    >
+                      <div class="min-w-0 flex-1">
+                        <p
+                          class="text-sm font-medium text-slate-700 truncate"
+                          x-text="item.name"
+                        ></p>
+                        <p
+                          class="text-xs text-primary-600 font-semibold"
+                          x-text="formatCurrency(item.price)"
+                        ></p>
+                      </div>
+                      <button
+                        @click="deleteItem(item.id)"
+                        class="ml-2 p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200"
+                        title="Hapus barang"
+                      >
+                        <svg
+                          class="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          ></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- ============================================ -->
+          <!-- AREA 2 & 3: Kasir + Pembayaran (Panel Kanan) -->
+          <!-- ============================================ -->
+          <section class="lg:col-span-8 xl:col-span-9 space-y-6">
+            <!-- Area Kasir Interaktif -->
+            <div
+              class="bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200 overflow-hidden"
+            >
+              <!-- Section Header -->
+              <div
+                class="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h2
+                      class="text-lg font-semibold text-white flex items-center gap-2"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                        ></path>
+                      </svg>
+                      Area Kasir
+                    </h2>
+                    <p class="text-emerald-100 text-xs mt-1">
+                      Tambahkan item transaksi
+                    </p>
+                  </div>
+                  <button
+                    @click="addTransactionRow()"
+                    class="bg-white/20 hover:bg-white/30 text-white font-medium py-2 px-4 rounded-xl transition-all duration-200 flex items-center gap-2 text-sm"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      ></path>
+                    </svg>
+                    Tambah Baris
+                  </button>
+                </div>
+              </div>
+
+              <!-- Transaction Table Header -->
+              <div
+                class="hidden sm:grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider"
+              >
+                <div class="col-span-5">Nama Barang</div>
+                <div class="col-span-2 text-right">Harga</div>
+                <div class="col-span-2 text-center">Qty</div>
+                <div class="col-span-2 text-right">Subtotal</div>
+                <div class="col-span-1"></div>
+              </div>
+
+              <!-- Transaction Rows -->
+              <div class="divide-y divide-slate-100">
+                <!-- Empty State -->
+                <template x-if="transactions.length === 0">
+                  <div class="text-center py-12">
+                    <div
+                      class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                    >
+                      <svg
+                        class="w-10 h-10 text-slate-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <p class="text-slate-500 font-medium">Keranjang kosong</p>
+                    <p class="text-sm text-slate-400 mt-1">
+                      Klik "Tambah Baris" untuk memulai transaksi
+                    </p>
+                  </div>
+                </template>
+
+                <!-- Transaction Row Template -->
+                <template x-for="(row, index) in transactions" :key="row.id">
+                  <div
+                    class="transaction-row px-6 py-4 hover:bg-slate-50/50"
+                    :class="{'relative z-50': row.isOpen}"
+                  >
+                    <div
+                      class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center"
+                    >
+                      <!-- Nama Barang dengan Select2 -->
+                      <div class="sm:col-span-5">
+                        <label
+                          class="block sm:hidden text-xs font-medium text-slate-500 mb-1"
+                          >Nama Barang</label
+                        >
+                        <select
+                          :id="'item-select-' + row.id"
+                          x-init="$nextTick(() => { 
+                            $('#item-select-' + row.id).select2({ 
+                              placeholder: '-- Pilih Barang --',
+                              allowClear: true,
+                              width: '100%'
+                            }).on('select2:select', (e) => { onSelectItem(row, e.params.data.id); })
+                              .on('select2:clear', () => { onSelectItem(row, ''); });
+                          })"
+                          class="item-select w-full"
+                        >
+                          <option value="">-- Pilih Barang --</option>
+                          <template x-for="item in items" :key="item.id">
+                            <option
+                              :value="item.id"
+                              :selected="row.name === item.name"
+                              x-text="item.name + ' - ' + formatCurrency(item.price)"
+                            ></option>
+                          </template>
+                        </select>
+                      </div>
+
+                      <!-- Harga -->
+                      <div class="sm:col-span-2">
+                        <label
+                          class="block sm:hidden text-xs font-medium text-slate-500 mb-1"
+                          >Harga</label
+                        >
+                        <input
+                          type="number"
+                          x-model.number="row.price"
+                          :disabled="row.priceFromMaster"
+                          placeholder="0"
+                          min="0"
+                          class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-right focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 disabled:bg-slate-100 disabled:text-slate-500"
+                        />
+                      </div>
+
+                      <!-- Qty -->
+                      <div class="sm:col-span-2">
+                        <label
+                          class="block sm:hidden text-xs font-medium text-slate-500 mb-1"
+                          >Jumlah</label
+                        >
+                        <div class="flex items-center justify-center gap-2">
+                          <button
+                            @click="row.qty = Math.max(1, row.qty - 1)"
+                            class="w-8 h-8 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                          >
+                            <svg
+                              class="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20 12H4"
+                              ></path>
+                            </svg>
+                          </button>
+                          <input
+                            type="number"
+                            x-model.number="row.qty"
+                            min="1"
+                            class="w-16 px-2 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-center focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
+                          />
+                          <button
+                            @click="row.qty++"
+                            class="w-8 h-8 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                          >
+                            <svg
+                              class="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                              ></path>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Subtotal -->
+                      <div class="sm:col-span-2 text-right">
+                        <label
+                          class="block sm:hidden text-xs font-medium text-slate-500 mb-1"
+                          >Subtotal</label
+                        >
+                        <span
+                          class="text-lg font-bold text-emerald-600"
+                          x-text="formatCurrency(row.price * row.qty)"
+                        ></span>
+                      </div>
+
+                      <!-- Delete Button -->
+                      <div class="sm:col-span-1 text-right">
+                        <button
+                          @click="deleteTransactionRow(row.id)"
+                          class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200"
+                          title="Hapus baris"
+                        >
+                          <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- AREA 3: Ringkasan & Pembayaran               -->
+            <!-- ============================================ -->
+            <div
+              class="bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200 overflow-hidden"
+            >
+              <div class="p-6">
+                <h3
+                  class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2"
+                >
+                  <svg
+                    class="w-5 h-5 text-primary-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  Ringkasan Pembayaran
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <!-- Left: Discount Input -->
+                  <div class="space-y-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-slate-700 mb-1.5"
+                        >Diskon (Rp)</label
+                      >
+                      <input
+                        type="number"
+                        x-model.number="discount"
+                        placeholder="0"
+                        min="0"
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200"
+                      />
+                      <p class="text-xs text-slate-400 mt-1">
+                        Masukkan nominal diskon dalam Rupiah
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Right: Totals -->
+                  <div
+                    class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-5 space-y-3"
+                  >
+                    <!-- Subtotal -->
+                    <div
+                      class="flex justify-between items-center text-slate-600"
+                    >
+                      <span class="text-sm">Total Kotor</span>
+                      <span
+                        class="font-semibold"
+                        x-text="formatCurrency(subtotal)"
+                      ></span>
+                    </div>
+
+                    <!-- Discount Display -->
+                    <div class="flex justify-between items-center text-red-500">
+                      <span class="text-sm">Diskon</span>
+                      <span
+                        class="font-semibold"
+                        x-text="'- ' + formatCurrency(discount)"
+                      ></span>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="border-t border-slate-200 my-2"></div>
+
+                    <!-- Grand Total -->
+                    <div class="flex justify-between items-center">
+                      <span class="text-lg font-bold text-slate-800"
+                        >Grand Total</span
+                      >
+                      <span
+                        class="text-2xl font-bold text-emerald-600"
+                        x-text="formatCurrency(grandTotal)"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                  <button
+                    @click="resetTransaction()"
+                    class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-3 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      ></path>
+                    </svg>
+                    Reset Transaksi
+                  </button>
+                  <button
+                    @click="generateInvoice()"
+                    :disabled="transactions.length === 0"
+                    class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:from-slate-400 disabled:to-slate-400 text-white font-medium py-3 px-6 rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 disabled:shadow-none transition-all duration-200 flex items-center justify-center gap-2"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                      ></path>
+                    </svg>
+                    Proses & Cetak Invoice
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <!-- ============================================ -->
+      <!-- Modal: Tambah Barang Baru (Add on the Fly)   -->
+      <!-- ============================================ -->
+      <div
+        x-show="showNewItemModal"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+        @click.self="showNewItemModal = false"
+      >
+        <div
+          x-show="showNewItemModal"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 scale-95"
+          x-transition:enter-end="opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-200"
+          x-transition:leave-start="opacity-100 scale-100"
+          x-transition:leave-end="opacity-0 scale-95"
+          class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+        >
+          <!-- Modal Header -->
+          <div class="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-4">
+            <h3 class="text-lg font-semibold text-white">Tambah Barang Baru</h3>
+            <p class="text-amber-100 text-sm mt-1">
+              Barang "<span x-text="addNewItemName"></span>" belum ada di
+              database
+            </p>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-6">
+            <form @submit.prevent="confirmAddNewItem()">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1.5"
+                    >Nama Barang</label
+                  >
+                  <input
+                    type="text"
+                    x-model="addNewItemName"
+                    class="w-full px-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-slate-700"
+                    readonly
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1.5"
+                    >Harga Satuan (Rp)</label
+                  >
+                  <input
+                    type="number"
+                    x-model.number="addNewItemPrice"
+                    placeholder="Masukkan harga"
+                    min="0"
+                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all duration-200"
+                    required
+                    x-ref="newItemPriceInput"
+                  />
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    x-model="saveToMaster"
+                    id="saveToMaster"
+                    class="w-4 h-4 text-amber-500 border-slate-300 rounded focus:ring-amber-500"
+                  />
+                  <label for="saveToMaster" class="text-sm text-slate-600"
+                    >Simpan ke Master Barang untuk penggunaan di masa
+                    depan</label
+                  >
+                </div>
+              </div>
+
+              <div class="flex gap-3 mt-6">
+                <button
+                  type="button"
+                  @click="showNewItemModal = false"
+                  class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 px-4 rounded-xl transition-all duration-200"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-medium py-2.5 px-4 rounded-xl shadow-lg shadow-amber-500/25 transition-all duration-200"
+                >
+                  Tambahkan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- ============================================ -->
+      <!-- Modal: Invoice Preview                       -->
+      <!-- ============================================ -->
+      <div
+        x-show="showInvoiceModal"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm modal-backdrop"
+        @click.self="showInvoiceModal = false"
+      >
+        <div
+          class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh]"
+        >
+          <!-- Modal Header -->
+          <div
+            class="bg-gradient-to-r from-slate-700 to-slate-800 px-6 py-4 flex-shrink-0"
+          >
+            <h3 class="text-lg font-semibold text-white">Preview Invoice</h3>
+            <p class="text-slate-300 text-sm mt-1">
+              Silakan periksa sebelum mencetak
+            </p>
+          </div>
+
+          <!-- Modal Body (The Invoice) - Scrollable -->
+          <div
+            class="flex-1 overflow-y-auto p-4 bg-slate-100 flex justify-center"
+          >
+            <!-- Exact Invoice Layout for 58mm -->
+            <div
+              id="invoice-preview-content"
+              class="bg-white shadow-md p-4"
+              style="
+                width: 58mm;
+                min-height: 100mm;
+                font-family:
+                  &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 10px;
+                color: black;
+              "
+            >
+              <div
+                style="
+                  text-align: center;
+                  margin-bottom: 20px;
+                  border-bottom: 2px dashed #000;
+                  padding-bottom: 10px;
+                "
+              >
+                <h1
+                  style="
+                    font-size: 14px;
+                    font-weight: bold;
+                    margin: 0;
+                    color: #000;
+                  "
+                >
+                  TOKO SERBA ADA
+                </h1>
+              </div>
+
+              <div style="margin-bottom: 15px; font-size: 10px">
+                <p style="margin: 0">
+                  <strong>Tanggal:</strong>
+                  <span x-text="invoiceDateStr"></span>
+                </p>
+                <p style="margin: 2px 0 0 0">
+                  <strong>No. Invoice:</strong>
+                  <span x-text="invoiceNumber"></span>
+                </p>
+                <p style="margin: 2px 0 0 0"><strong>Kasir:</strong> Admin</p>
+              </div>
+
+              <div
+                style="
+                  border-top: 1px dashed #000;
+                  border-bottom: 1px dashed #000;
+                  padding: 10px 0;
+                  margin-bottom: 10px;
+                "
+              >
+                <table
+                  style="
+                    width: 100%;
+                    font-size: 10px;
+                    border-collapse: collapse;
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th style="text-align: left; padding: 2px 0">
+                        Detail Item
+                      </th>
+                      <th style="text-align: right; padding: 2px 0">Total</th>
+                    </tr>
+                  </thead>
+
+                  <template x-for="row in validTransactions" :key="row.id">
+                    <tbody style="border-bottom: 1px dashed #ddd">
+                      <tr>
+                        <td
+                          colspan="2"
+                          style="
+                            padding-top: 5px;
+                            font-weight: bold;
+                            padding-bottom: 2px;
+                          "
+                          x-text="row.name"
+                        ></td>
+                      </tr>
+                      <tr>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: #555;
+                            padding-bottom: 5px;
+                          "
+                        >
+                          <span
+                            x-text="row.qty + ' x ' + formatCurrency(row.price)"
+                          ></span>
+                        </td>
+                        <td style="text-align: right; padding-bottom: 5px">
+                          <span
+                            x-text="formatCurrency(row.price * row.qty)"
+                          ></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </template>
+                  <tfoot>
+                    <tr style="height: 10px"></tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <div style="font-size: 10px">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 2px;
+                  "
+                >
+                  <span>Subtotal:</span>
+                  <span x-text="formatCurrency(subtotal)"></span>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 2px;
+                  "
+                >
+                  <span>Diskon:</span>
+                  <span x-text="'- ' + formatCurrency(discount)"></span>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 10px;
+                    border-top: 1px dashed #000;
+                    padding-top: 5px;
+                    font-weight: bold;
+                    font-size: 12px;
+                  "
+                >
+                  <span>TOTAL:</span>
+                  <span x-text="formatCurrency(grandTotal)"></span>
+                </div>
+              </div>
+
+              <div
+                style="
+                  text-align: center;
+                  margin-top: 20px;
+                  padding-top: 10px;
+                  border-top: 1px dashed #000;
+                "
+              >
+                <p style="margin: 0; font-size: 10px">Terima kasih!</p>
+                <p style="margin: 5px 0 0 0; font-size: 9px">
+                  Barang yang sudah dibeli tidak dapat ditukar
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div
+            class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex gap-3 flex-shrink-0 no-print"
+          >
+            <button
+              @click="showInvoiceModal = false"
+              class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium py-2.5 px-4 rounded-xl transition-all duration-200"
+            >
+              Tutup
+            </button>
+            <button
+              @click="printInvoice()"
+              class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-medium py-2.5 px-4 rounded-xl shadow-lg shadow-emerald-500/25 transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                ></path>
+              </svg>
+              Cetak (Print)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Alpine.js App Container -->
+
+    <!-- ============================================ -->
+    <!-- Alpine.js Application Logic                  -->
+    <!-- ============================================ -->
+    <script>
+      /**
+       * Main POS Application using Alpine.js
+       * Handles inventory management, transactions, and PDF invoice generation
+       */
+      function posApp() {
+        return {
+          // ==========================================
+          // STATE PROPERTIES
+          // ==========================================
+
+          // Master items (loaded from LocalStorage)
+          items: [],
+          newItemName: "",
+          newItemPrice: 0,
+
+          // Current transactions
+          transactions: [],
+
+          // Payment
+          discount: 0,
+
+          // Modal state for adding new item on-the-fly
+          showNewItemModal: false,
+          addNewItemName: "",
+          addNewItemPrice: 0,
+          saveToMaster: true,
+          currentTransactionRowId: null,
+
+          // Date/Time display
+          currentDate: "",
+          currentTime: "",
+
+          // Invoice state
+          showInvoiceModal: false,
+          invoiceNumber: "",
+          invoiceDateStr: "",
+
+          // ==========================================
+          // COMPUTED PROPERTIES
+          // ==========================================
+
+          get validTransactions() {
+            return this.transactions.filter(
+              (row) => row.name.trim() && row.price > 0 && row.qty > 0,
+            );
+          },
+
+          /**
+           * Calculate subtotal of all transaction items
+           */
+          get subtotal() {
+            return this.transactions.reduce((sum, row) => {
+              return sum + row.price * row.qty;
+            }, 0);
+          },
+
+          /**
+           * Calculate grand total after discount
+           */
+          get grandTotal() {
+            const total = this.subtotal - this.discount;
+            return Math.max(0, total); // Prevent negative total
+          },
+
+          // ==========================================
+          // INITIALIZATION
+          // ==========================================
+
+          /**
+           * Initialize the application
+           */
+          init() {
+            // Load items from LocalStorage
+            this.loadItems();
+
+            // Update date/time
+            this.updateDateTime();
+            setInterval(() => this.updateDateTime(), 1000);
+
+            // Add initial transaction row
+            this.addTransactionRow();
+          },
+
+          /**
+           * Update current date and time display
+           */
+          updateDateTime() {
+            const now = new Date();
+            const options = {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            };
+            this.currentDate = now.toLocaleDateString("id-ID", options);
+            this.currentTime = now.toLocaleTimeString("id-ID", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            });
+          },
+
+          // ==========================================
+          // LOCALSTORAGE OPERATIONS
+          // ==========================================
+
+          /**
+           * Load items from LocalStorage
+           */
+          loadItems() {
+            const stored = localStorage.getItem("pos_items");
+            if (stored) {
+              try {
+                this.items = JSON.parse(stored);
+              } catch (e) {
+                console.error("Error loading items:", e);
+                this.items = [];
+              }
+            }
+          },
+
+          /**
+           * Save items to LocalStorage
+           */
+          saveItems() {
+            localStorage.setItem("pos_items", JSON.stringify(this.items));
+          },
+
+          // ==========================================
+          // INVENTORY MANAGEMENT (AREA 1)
+          // ==========================================
+
+          /**
+           * Add new item to master inventory
+           */
+          addItem() {
+            if (!this.newItemName.trim() || this.newItemPrice <= 0) {
+              alert("Mohon isi nama barang dan harga yang valid!");
+              return;
+            }
+
+            // Check if item already exists
+            if (this.itemExists(this.newItemName)) {
+              alert("Barang dengan nama tersebut sudah ada!");
+              return;
+            }
+
+            const newItem = {
+              id: Date.now(),
+              name: this.newItemName.trim(),
+              price: this.newItemPrice,
+            };
+
+            this.items.push(newItem);
+            this.saveItems();
+
+            // Reset form
+            this.newItemName = "";
+            this.newItemPrice = 0;
+          },
+
+          /**
+           * Delete item from master inventory
+           */
+          deleteItem(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus barang ini?")) {
+              this.items = this.items.filter((item) => item.id !== id);
+              this.saveItems();
+            }
+          },
+
+          /**
+           * Check if item exists in master inventory
+           */
+          itemExists(name) {
+            return this.items.some(
+              (item) => item.name.toLowerCase() === name.toLowerCase(),
+            );
+          },
+
+          /**
+           * Get item by name from master inventory
+           */
+          getItemByName(name) {
+            return this.items.find(
+              (item) => item.name.toLowerCase() === name.toLowerCase(),
+            );
+          },
+
+          // ==========================================
+          // TRANSACTION MANAGEMENT (AREA 2)
+          // ==========================================
+
+          /**
+           * Add new transaction row
+           */
+          addTransactionRow() {
+            this.transactions.push({
+              id: Date.now(),
+              name: "",
+              price: 0,
+              qty: 1,
+              priceFromMaster: false,
+            });
+          },
+
+          /**
+           * Handle select change for item selection
+           */
+          onSelectItem(row, itemId) {
+            if (!itemId) {
+              row.name = "";
+              row.price = 0;
+              row.priceFromMaster = false;
+              return;
+            }
+            const item = this.items.find((i) => i.id == itemId);
+            if (item) {
+              row.name = item.name;
+              row.price = item.price;
+              row.priceFromMaster = true;
+            }
+          },
+
+          /**
+           * Delete transaction row
+           */
+          deleteTransactionRow(id) {
+            this.transactions = this.transactions.filter(
+              (row) => row.id !== id,
+            );
+          },
+
+          /**
+           * Show modal for adding new item on-the-fly
+           */
+          showAddNewItemModal(row, prefillName = "") {
+            this.addNewItemName = prefillName
+              ? prefillName.trim()
+              : row.searchQuery.trim();
+            this.addNewItemPrice = 0;
+            this.saveToMaster = true;
+            this.currentTransactionRowId = row.id;
+            this.showNewItemModal = true;
+            row.isOpen = false; // Close dropdown
+
+            // Focus on price input after modal opens
+            this.$nextTick(() => {
+              if (this.$refs.newItemPriceInput) {
+                this.$refs.newItemPriceInput.focus();
+              }
+            });
+          },
+
+          /**
+           * Confirm adding new item from modal
+           */
+          confirmAddNewItem() {
+            if (this.addNewItemPrice <= 0) {
+              alert("Mohon masukkan harga yang valid!");
+              return;
+            }
+
+            // Save to master if checked
+            if (this.saveToMaster) {
+              const newItem = {
+                id: Date.now(),
+                name: this.addNewItemName,
+                price: this.addNewItemPrice,
+              };
+              this.items.push(newItem);
+              this.saveItems();
+            }
+
+            // Update the transaction row
+            const row = this.transactions.find(
+              (r) => r.id === this.currentTransactionRowId,
+            );
+            if (row) {
+              row.price = this.addNewItemPrice;
+              row.priceFromMaster = this.saveToMaster;
+              row.showAddNew = false;
+            }
+
+            // Close modal
+            this.showNewItemModal = false;
+          },
+
+          // ==========================================
+          // PAYMENT & INVOICE (AREA 3)
+          // ==========================================
+
+          /**
+           * Reset current transaction
+           */
+          resetTransaction() {
+            if (this.transactions.length > 0) {
+              if (confirm("Apakah Anda yakin ingin mereset transaksi ini?")) {
+                this.transactions = [];
+                this.discount = 0;
+                this.addTransactionRow();
+              }
+            }
+          },
+
+          /**
+           * Generate Invoice and Show Modal
+           */
+          generateInvoice() {
+            if (this.validTransactions.length === 0) {
+              alert("Tidak ada item valid untuk dicetak!");
+              return;
+            }
+
+            // Generate invoice details
+            const now = new Date();
+            this.invoiceDateStr = now.toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            this.invoiceNumber = "INV-" + now.getTime().toString().slice(-8);
+
+            // Show Modal
+            this.showInvoiceModal = true;
+          },
+
+          /**
+           * Print Invoice (Native Browser Print)
+           */
+          printInvoice() {
+            window.print();
+
+            // Optional: Ask to reset after printing
+            // Note: setTimeout needed because print() blocks JS execution
+            setTimeout(() => {
+              if (confirm("Reset transaksi untuk pesanan baru?")) {
+                this.showInvoiceModal = false;
+                this.transactions = [];
+                this.discount = 0;
+                this.addTransactionRow();
+              }
+            }, 500);
+          },
+
+          // ==========================================
+          // UTILITY FUNCTIONS
+          // ==========================================
+
+          /**
+           * Select item from dropdown
+           */
+          selectItem(row, item) {
+            row.name = item.name;
+            row.price = item.price;
+            row.qty = 1;
+            row.priceFromMaster = true;
+            row.isOpen = false;
+            row.searchQuery = "";
+          },
+
+          /**
+           * Get filtered items based on query
+           */
+          getFilteredItems(query) {
+            if (!query) return [];
+            const lowerQuery = query.toLowerCase();
+            return this.items.filter((item) =>
+              item.name.toLowerCase().includes(lowerQuery),
+            );
+          },
+
+          /**
+           * Format number to Indonesian Rupiah currency
+           */
+          formatCurrency(amount) {
+            return new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(amount);
+          },
+        };
+      }
+    </script>
+  </body>
+</html>
