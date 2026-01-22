@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="KALA Wastra - Membawa keagungan motif Nusantara ke dalam siluet modern. Simfoni antara tradisi dan inovasi."
+    />
+    <title>KALA Wastra | Menenun Masa Lalu, Mengenakan Masa Depan</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "kala-bg": "#FBFBFB",
+              "kala-text": "#1A1A1A",
+              "kala-gold": "#D4AF37",
+              "kala-gold-light": "#E8C85A",
+              "kala-gold-dark": "#B8962E",
+              "kala-charcoal": "#2D2D2D",
+            },
+            fontFamily: {
+              serif: ["Playfair Display", "serif"],
+              sans: ["Montserrat", "sans-serif"],
+            },
+            animation: {
+              "fade-in-up": "fadeInUp 0.8s ease-out forwards",
+              "fade-in-left": "fadeInLeft 0.8s ease-out forwards",
+              "fade-in-right": "fadeInRight 0.8s ease-out forwards",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-kala-bg text-kala-text font-sans antialiased">
+    <!-- Navigation -->
+    <nav
+      id="navbar"
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+    >
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo -->
+          <a href="#" class="flex items-center space-x-2">
+            <span
+              class="font-serif text-2xl font-semibold tracking-wide text-kala-charcoal"
+              >KALA</span
+            >
+            <span class="font-serif text-2xl font-light text-kala-gold"
+              >Wastra</span
+            >
+          </a>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center space-x-10">
+            <a href="#philosophy" class="nav-link">Filosofi</a>
+            <a href="#collection" class="nav-link">Koleksi</a>
+            <a href="#craftsmanship" class="nav-link">Kerajinan</a>
+            <a href="#contact" class="cta-button">Hubungi Kami</a>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobile-menu-btn"
+            class="md:hidden p-2 -mr-2"
+            aria-label="Toggle menu"
+          >
+            <svg
+              class="w-6 h-6 text-kala-charcoal"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                id="menu-icon"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="md:hidden hidden bg-kala-bg/95 backdrop-blur-lg border-t border-gray-100"
+      >
+        <div class="px-6 py-6 space-y-4">
+          <a href="#philosophy" class="mobile-nav-link">Filosofi</a>
+          <a href="#collection" class="mobile-nav-link">Koleksi</a>
+          <a href="#craftsmanship" class="mobile-nav-link">Kerajinan</a>
+          <a href="#contact" class="block cta-button text-center mt-4"
+            >Hubungi Kami</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Hero Section -->
+      <section
+        id="hero"
+        class="min-h-screen flex items-center relative overflow-hidden"
+      >
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+          <img
+            src="assets/images/hero-tenun.png"
+            alt="Kain Tenun Indonesia"
+            class="w-full h-full object-cover opacity-30"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-kala-bg via-kala-bg/80 to-transparent"
+          ></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-32 lg:py-0">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Text Content -->
+            <div class="animate-on-scroll">
+              <span
+                class="inline-block text-kala-gold text-sm font-medium tracking-[0.3em] uppercase mb-6"
+              >
+                Tradisi Bertemu Modern
+              </span>
+              <h1
+                class="font-serif text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium leading-tight text-kala-charcoal mb-8"
+              >
+                Menenun Masa Lalu,<br />
+                <span class="text-kala-gold">Mengenakan</span> Masa Depan.
+              </h1>
+              <p
+                class="text-lg md:text-xl text-gray-600 leading-relaxed mb-10 max-w-xl"
+              >
+                KALA Wastra membawa keagungan motif Nusantara ke dalam siluet
+                modern. Sebuah simfoni antara tradisi dan inovasi.
+              </p>
+              <a href="#collection" class="cta-underline group">
+                <span>Jelajahi Koleksi</span>
+                <svg
+                  class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </a>
+            </div>
+
+            <!-- Hero Image -->
+            <div
+              class="hidden lg:block animate-on-scroll"
+              style="animation-delay: 0.2s"
+            >
+              <div class="relative">
+                <div
+                  class="absolute -inset-4 bg-kala-gold/10 rounded-2xl transform rotate-3"
+                ></div>
+                <img
+                  src="assets/images/product-3.png"
+                  alt="Model wearing KALA Wastra"
+                  class="relative rounded-2xl shadow-2xl w-full max-w-lg ml-auto"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div
+          class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce"
+        >
+          <span class="text-xs text-gray-400 tracking-widest uppercase mb-2"
+            >Scroll</span
+          >
+          <svg
+            class="w-5 h-5 text-kala-gold"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"
+            />
+          </svg>
+        </div>
+      </section>
+
+      <!-- Philosophy Section -->
+      <section id="philosophy" class="py-24 lg:py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <div class="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            <!-- Image Column -->
+            <div class="lg:col-span-5 animate-on-scroll">
+              <div class="relative">
+                <div
+                  class="absolute -top-6 -left-6 w-32 h-32 border-2 border-kala-gold/30 rounded-tl-3xl"
+                ></div>
+                <img
+                  src="assets/images/craftsman.png"
+                  alt="Pengrajin Tenun Indonesia"
+                  class="relative rounded-2xl shadow-xl w-full"
+                />
+                <div
+                  class="absolute -bottom-6 -right-6 w-32 h-32 border-2 border-kala-gold/30 rounded-br-3xl"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Text Column -->
+            <div
+              class="lg:col-span-7 animate-on-scroll"
+              style="animation-delay: 0.15s"
+            >
+              <span
+                class="inline-block text-kala-gold text-sm font-medium tracking-[0.3em] uppercase mb-6"
+              >
+                Filosofi Kami
+              </span>
+              <h2
+                class="font-serif text-3xl md:text-4xl lg:text-5xl font-medium text-kala-charcoal mb-8 leading-tight"
+              >
+                Setiap Kain Adalah <span class="text-kala-gold">Doa</span> dan
+                <span class="text-kala-gold">Harapan</span>
+              </h2>
+              <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                Dari pelosok Nusantara, tangan-tangan dingin para ibu pengrajin
+                menenun lebih dari sekadar benang. Mereka menenun cerita,
+                harapan, dan warisan leluhur yang tak lekang dimakan waktu. Di
+                KALA Wastra, kami percaya bahwa setiap helai kain membawa jiwa
+                pembuatnya.
+              </p>
+
+              <!-- Quote Block -->
+              <blockquote
+                class="relative pl-8 border-l-4 border-kala-gold my-10"
+              >
+                <p
+                  class="font-serif text-xl md:text-2xl text-kala-charcoal italic leading-relaxed"
+                >
+                  "Setiap helai benang adalah cerita yang menolak untuk
+                  dilupakan."
+                </p>
+              </blockquote>
+
+              <p class="text-gray-600 leading-relaxed">
+                Kami tidak hanya menjual pakaian. Kami menjembatani dua
+                dunia—dunia tradisi yang penuh makna dan dunia modern yang
+                menghargai keindahan autentik. Inilah komitmen kami:
+                melestarikan warisan, menciptakan masa depan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Collection Section -->
+      <section id="collection" class="py-24 lg:py-32 bg-kala-bg">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <!-- Section Header -->
+          <div class="text-center mb-16 animate-on-scroll">
+            <span
+              class="inline-block text-kala-gold text-sm font-medium tracking-[0.3em] uppercase mb-4"
+            >
+              Koleksi Terbaru
+            </span>
+            <h2
+              class="font-serif text-3xl md:text-4xl lg:text-5xl font-medium text-kala-charcoal mb-6"
+            >
+              Warisan dalam Balutan Modern
+            </h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+              Setiap karya adalah perpaduan sempurna antara teknik tradisional
+              dan estetika kontemporer.
+            </p>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Product 1 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll block"
+              style="animation-delay: 0.1s"
+            >
+              <div class="product-image-container">
+                <img
+                  src="assets/images/product-1.png"
+                  alt="Blazer Batik Modern"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-2.png"
+                  alt="Detail Tekstur Batik"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-6">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Blazer</span
+                >
+                <h3 class="font-serif text-xl text-kala-charcoal mt-2">
+                  Batik Parang Elegance
+                </h3>
+                <p class="text-gray-500 text-sm mt-2">
+                  Siluet modern dengan motif parang klasik
+                </p>
+              </div>
+            </a>
+
+            <!-- Product 2 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll block"
+              style="animation-delay: 0.2s"
+            >
+              <div class="product-image-container">
+                <img
+                  src="assets/images/product-3.png"
+                  alt="Dress Songket Burgundy"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-4.png"
+                  alt="Detail Tekstur Songket"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-6">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Dress</span
+                >
+                <h3 class="font-serif text-xl text-kala-charcoal mt-2">
+                  Songket Mahkota Burgundy
+                </h3>
+                <p class="text-gray-500 text-sm mt-2">
+                  Kemewahan songket dalam potongan kontemporer
+                </p>
+              </div>
+            </a>
+
+            <!-- Product 3 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll block"
+              style="animation-delay: 0.3s"
+            >
+              <div class="product-image-container">
+                <img
+                  src="assets/images/product-5.png"
+                  alt="Vest Lurik Jawa"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-6.png"
+                  alt="Detail Tekstur Lurik"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-6">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Vest</span
+                >
+                <h3 class="font-serif text-xl text-kala-charcoal mt-2">
+                  Lurik Jawa Premium
+                </h3>
+                <p class="text-gray-500 text-sm mt-2">
+                  Kesederhanaan lurik dalam potongan formal
+                </p>
+              </div>
+            </a>
+
+            <!-- Product 4 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll block"
+              style="animation-delay: 0.4s"
+            >
+              <div class="product-image-container">
+                <img
+                  src="assets/images/product-7.png"
+                  alt="Cape Ulos Batak"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-8.png"
+                  alt="Detail Tekstur Ulos"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-6">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Cape</span
+                >
+                <h3 class="font-serif text-xl text-kala-charcoal mt-2">
+                  Ulos Batak Heritage
+                </h3>
+                <p class="text-gray-500 text-sm mt-2">
+                  Kehangatan ulos dalam desain avant-garde
+                </p>
+              </div>
+            </a>
+
+            <!-- Product 5 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll block"
+              style="animation-delay: 0.5s"
+            >
+              <div class="product-image-container">
+                <img
+                  src="assets/images/product-9.png"
+                  alt="Kebaya Encim Pesisir"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-10.png"
+                  alt="Detail Tekstur Encim"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-6">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Kebaya</span
+                >
+                <h3 class="font-serif text-xl text-kala-charcoal mt-2">
+                  Kebaya Encim Pesisir
+                </h3>
+                <p class="text-gray-500 text-sm mt-2">
+                  Sentuhan pesisir dalam kebaya modern
+                </p>
+              </div>
+            </a>
+
+            <!-- Product 6 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll block"
+              style="animation-delay: 0.6s"
+            >
+              <div class="product-image-container">
+                <img
+                  src="assets/images/product-2.png"
+                  alt="Selendang Tenun Ikat"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/hero-tenun.png"
+                  alt="Detail Tekstur Tenun"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-6">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Selendang</span
+                >
+                <h3 class="font-serif text-xl text-kala-charcoal mt-2">
+                  Tenun Ikat Sumba Artisan
+                </h3>
+                <p class="text-gray-500 text-sm mt-2">
+                  Keindahan tenun ikat dalam aksesoris premium
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Craftsmanship Section -->
+      <section
+        id="craftsmanship"
+        class="py-24 lg:py-32 bg-kala-charcoal text-white"
+      >
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <!-- Section Header -->
+          <div class="text-center mb-16 animate-on-scroll">
+            <span
+              class="inline-block text-kala-gold text-sm font-medium tracking-[0.3em] uppercase mb-4"
+            >
+              Kerajinan Tangan
+            </span>
+            <h2
+              class="font-serif text-3xl md:text-4xl lg:text-5xl font-medium mb-6"
+            >
+              Dari Tangan <span class="text-kala-gold">Sang Penenun</span>
+            </h2>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto">
+              Dari tangan dingin para ibu pengrajin, diolah dengan presisi
+              modern. Setiap karya adalah bukti dedikasi dan cinta terhadap
+              warisan budaya.
+            </p>
+          </div>
+
+          <!-- Three Pillars -->
+          <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+            <!-- Pillar 1 -->
+            <div
+              class="pillar-card animate-on-scroll"
+              style="animation-delay: 0.1s"
+            >
+              <div class="pillar-icon">
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                  />
+                </svg>
+              </div>
+              <h3 class="font-serif text-2xl mb-4">Authenticity</h3>
+              <p class="text-gray-400 leading-relaxed">
+                Setiap motif dibuat langsung oleh pengrajin lokal dengan teknik
+                tradisional yang telah diwariskan turun-temurun. Tidak ada
+                mesin, hanya tangan dan hati.
+              </p>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div
+              class="pillar-card animate-on-scroll"
+              style="animation-delay: 0.2s"
+            >
+              <div class="pillar-icon">
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                  />
+                </svg>
+              </div>
+              <h3 class="font-serif text-2xl mb-4">Modern Cut</h3>
+              <p class="text-gray-400 leading-relaxed">
+                Potongan kontemporer yang dirancang untuk gaya hidup modern.
+                Nyaman dipakai sehari-hari namun tetap memukau di acara formal.
+              </p>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div
+              class="pillar-card animate-on-scroll"
+              style="animation-delay: 0.3s"
+            >
+              <div class="pillar-icon">
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 class="font-serif text-2xl mb-4">Sustainable Fashion</h3>
+              <p class="text-gray-400 leading-relaxed">
+                Kami berkomitmen pada fashion berkelanjutan. Bahan alami,
+                pewarna organik, dan produksi yang menghormati lingkungan serta
+                komunitas pengrajin.
+              </p>
+            </div>
+          </div>
+
+          <!-- Process Timeline -->
+          <div class="mt-20 animate-on-scroll" style="animation-delay: 0.4s">
+            <div
+              class="flex flex-wrap justify-center items-center gap-4 text-center"
+            >
+              <div class="process-step">
+                <span class="process-number">01</span>
+                <span class="process-label">Pemilihan Bahan</span>
+              </div>
+              <div class="process-arrow">→</div>
+              <div class="process-step">
+                <span class="process-number">02</span>
+                <span class="process-label">Pewarnaan Alami</span>
+              </div>
+              <div class="process-arrow">→</div>
+              <div class="process-step">
+                <span class="process-number">03</span>
+                <span class="process-label">Tenun Tradisional</span>
+              </div>
+              <div class="process-arrow">→</div>
+              <div class="process-step">
+                <span class="process-number">04</span>
+                <span class="process-label">Desain Modern</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final CTA Section -->
+      <section
+        id="contact"
+        class="py-24 lg:py-32 bg-kala-bg relative overflow-hidden"
+      >
+        <!-- Decorative Background -->
+        <div class="absolute inset-0 opacity-5">
+          <div
+            class="absolute top-0 left-0 w-96 h-96 bg-kala-gold rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
+          ></div>
+          <div
+            class="absolute bottom-0 right-0 w-96 h-96 bg-kala-gold rounded-full blur-3xl translate-x-1/2 translate-y-1/2"
+          ></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <div class="animate-on-scroll">
+            <span
+              class="inline-block text-kala-gold text-sm font-medium tracking-[0.3em] uppercase mb-6"
+            >
+              Saatnya Bertransformasi
+            </span>
+            <h2
+              class="font-serif text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-medium text-kala-charcoal mb-8 leading-tight"
+            >
+              Bawa Bisnis Anda ke<br /><span class="text-kala-gold"
+                >Level Selanjutnya</span
+              >
+            </h2>
+
+            <!-- Spinotek Note -->
+            <div
+              class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 mb-10 max-w-2xl mx-auto"
+            >
+              <div class="flex items-center justify-center gap-2 mb-4">
+                <span class="w-8 h-0.5 bg-kala-gold"></span>
+                <span class="text-xs text-gray-400 tracking-widest uppercase"
+                  >Catatan dari Spinotek</span
+                >
+                <span class="w-8 h-0.5 bg-kala-gold"></span>
+              </div>
+              <p class="text-gray-600 leading-relaxed">
+                Website ini adalah
+                <strong class="text-kala-charcoal">simulasi</strong> bagaimana
+                kami bisa mengubah UMKM Anda menjadi brand premium dengan
+                tampilan kelas dunia. Dari branding, copywriting, hingga
+                pengembangan web—kami siap membantu Anda.
+              </p>
+            </div>
+
+            <p class="text-lg text-gray-600 mb-10 max-w-xl mx-auto">
+              Ingin brand Anda terlihat sepremium ini? Mari berdiskusi tentang
+              bagaimana kami bisa membantu transformasi digital bisnis Anda.
+            </p>
+
+            <a href="#" class="cta-button-large group">
+              <span>Hubungi Tim Spinotek</span>
+              <svg
+                class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-kala-charcoal text-white py-12">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center gap-6"
+        >
+          <!-- Logo -->
+          <div class="flex items-center space-x-2">
+            <span class="font-serif text-xl font-semibold">KALA</span>
+            <span class="font-serif text-xl font-light text-kala-gold"
+              >Wastra</span
+            >
+          </div>
+
+          <!-- Copyright -->
+          <p class="text-gray-400 text-sm">
+            © 2026 KALA Wastra. Dibuat dengan ❤️ oleh
+            <a href="#" class="text-kala-gold hover:underline">Spinotek</a>
+          </p>
+
+          <!-- Social Links -->
+          <div class="flex items-center gap-4">
+            <a
+              href="#"
+              class="text-gray-400 hover:text-kala-gold transition-colors"
+              aria-label="Instagram"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                />
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="text-gray-400 hover:text-kala-gold transition-colors"
+              aria-label="Facebook"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                />
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="text-gray-400 hover:text-kala-gold transition-colors"
+              aria-label="WhatsApp"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+  </body>
+</html>

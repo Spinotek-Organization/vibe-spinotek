@@ -1,0 +1,747 @@
+/* =====================================
+   KALA Wastra - Premium Interactive Styles
+   ===================================== */
+
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ========================
+   PREMIUM ANIMATIONS
+   ======================== */
+
+/* Floating animation for hero elements */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Subtle glow pulse */
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+  }
+}
+
+/* Text reveal animation */
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Shimmer effect for premium elements */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Rotate animation for decorative elements */
+@keyframes slowRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scale pulse for interactive elements */
+@keyframes scalePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Gradient shift animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ========================
+   NAVIGATION
+   ======================== */
+
+.nav-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2d2d2d;
+  letter-spacing: 0.05em;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #d4af37;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, #e8c85a);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: -4px;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.mobile-nav-link {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #2d2d2d;
+  padding: 0.75rem 0;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f3f4f6;
+  transform: translateX(0);
+}
+
+.mobile-nav-link:hover {
+  color: #d4af37;
+  transform: translateX(8px);
+}
+
+/* Navbar Scroll State */
+.navbar-scrolled {
+  background-color: rgba(251, 251, 251, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ========================
+   CTA BUTTONS
+   ======================== */
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, #d4af37, #e8c85a, #d4af37);
+  background-size: 200% 200%;
+  color: white;
+  border-radius: 9999px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.cta-button:hover {
+  background-position: 100% 0;
+  box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+.cta-button-large {
+  display: inline-flex;
+  align-items: center;
+  padding: 1.25rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, #d4af37, #e8c85a, #d4af37);
+  background-size: 200% 200%;
+  color: white;
+  border-radius: 9999px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.cta-button-large::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.cta-button-large:hover {
+  background-position: 100% 0;
+  box-shadow: 0 20px 50px -10px rgba(212, 175, 55, 0.5);
+  transform: translateY(-4px) scale(1.02);
+  animation: none;
+}
+
+.cta-button-large:hover::before {
+  left: 100%;
+}
+
+.cta-underline {
+  display: inline-flex;
+  align-items: center;
+  color: #2d2d2d;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.cta-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, #e8c85a);
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-underline:hover::after {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.cta-underline:hover {
+  color: #d4af37;
+}
+
+/* ========================
+   PRODUCT CARDS - ENHANCED
+   ======================== */
+
+.product-card {
+  background-color: white;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0) scale(1);
+  position: relative;
+}
+
+.product-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(212, 175, 55, 0),
+    transparent
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.product-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-12px) scale(1.02);
+}
+
+.product-card:hover::before {
+  opacity: 1;
+  background: linear-gradient(
+    135deg,
+    #d4af37,
+    rgba(212, 175, 55, 0.3),
+    #d4af37
+  );
+}
+
+.product-image-container {
+  position: relative;
+  height: 22rem;
+  overflow: hidden;
+}
+
+.product-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-image.primary {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.product-image.secondary {
+  opacity: 0;
+  transform: scale(1.15);
+  filter: brightness(1.05);
+}
+
+.product-card:hover .product-image.primary {
+  opacity: 0;
+  transform: scale(0.9);
+  filter: blur(2px);
+}
+
+.product-card:hover .product-image.secondary {
+  opacity: 1;
+  transform: scale(1);
+  filter: brightness(1);
+}
+
+/* Category label enhancement */
+.product-card .p-6 span {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .p-6 span {
+  background: rgba(212, 175, 55, 0.2);
+  transform: translateX(4px);
+}
+
+/* Touch support for mobile */
+.product-card.touch-active .product-image.primary {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.product-card.touch-active .product-image.secondary {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ========================
+   PILLAR CARDS - ENHANCED
+   ======================== */
+
+.pillar-card {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), transparent);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.pillar-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+.pillar-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-8px);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent);
+}
+
+.pillar-card:hover::before {
+  transform: scaleX(1);
+}
+
+.pillar-icon {
+  width: 5rem;
+  height: 5rem;
+  margin: 0 auto 1.5rem;
+  border-radius: 9999px;
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.pillar-icon::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 2px dashed rgba(212, 175, 55, 0.3);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.pillar-card:hover .pillar-icon {
+  background: linear-gradient(135deg, #d4af37, #e8c85a);
+  color: white;
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.4);
+}
+
+.pillar-card:hover .pillar-icon::after {
+  opacity: 1;
+  animation: slowRotate 8s linear infinite;
+}
+
+/* ========================
+   PROCESS STEPS - ENHANCED
+   ======================== */
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.process-step:hover {
+  transform: translateY(-4px);
+}
+
+.process-number {
+  font-size: 2.5rem;
+  font-family: "Playfair Display", serif;
+  background: linear-gradient(135deg, #d4af37, #e8c85a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.process-step:hover .process-number {
+  transform: scale(1.1);
+}
+
+.process-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.process-step:hover .process-label {
+  color: #d4af37;
+}
+
+.process-arrow {
+  color: #d4af37;
+  font-size: 1.5rem;
+  display: none;
+  transition: transform 0.3s ease;
+  animation: float 2s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+  .process-arrow {
+    display: block;
+  }
+}
+
+/* ========================
+   SCROLL ANIMATIONS - ENHANCED
+   ======================== */
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.8s ease;
+  filter: blur(5px);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Stagger children animations */
+.animate-stagger > *:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.animate-stagger > *:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.animate-stagger > *:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.animate-stagger > *:nth-child(4) {
+  transition-delay: 0.4s;
+}
+.animate-stagger > *:nth-child(5) {
+  transition-delay: 0.5s;
+}
+.animate-stagger > *:nth-child(6) {
+  transition-delay: 0.6s;
+}
+
+/* ========================
+   QUOTE BLOCK - ENHANCED
+   ======================== */
+
+blockquote {
+  position: relative;
+  overflow: hidden;
+}
+
+blockquote::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  font-size: 8rem;
+  font-family: "Playfair Display", serif;
+  color: rgba(212, 175, 55, 0.1);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ========================
+   HERO SECTION ENHANCEMENTS
+   ======================== */
+
+.hero-floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+.hero-glow {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* Decorative borders */
+.decorative-border {
+  transition: all 0.5s ease;
+}
+
+.decorative-border:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+  transform: translate(-2px, -2px);
+}
+
+/* ========================
+   SPINOTEK CARD - ENHANCED
+   ======================== */
+
+.spinotek-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spinotek-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.1),
+    transparent
+  );
+  transition: left 0.8s ease;
+}
+
+.spinotek-card:hover::before {
+  left: 150%;
+}
+
+/* ========================
+   MOBILE MENU ANIMATION
+   ======================== */
+
+#mobile-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mobile-menu.open {
+  max-height: 400px;
+}
+
+/* ========================
+   RESPONSIVE ADJUSTMENTS
+   ======================== */
+
+@media (max-width: 768px) {
+  .process-step {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .process-arrow {
+    transform: rotate(90deg);
+    margin: 0.5rem 0;
+  }
+
+  .product-image-container {
+    height: 18rem;
+  }
+}
+
+/* ========================
+   UTILITIES
+   ======================== */
+
+/* Selection Color */
+::selection {
+  background-color: #d4af37;
+  color: white;
+}
+
+/* Smooth Image Loading */
+img {
+  background-color: #f3f4f6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fbfbfb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #d4af37, #b8962e);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #e8c85a, #d4af37);
+}
+
+/* Focus states for accessibility */
+a:focus,
+button:focus {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+}
+
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Gold text gradient utility */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #d4af37, #e8c85a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Magnetic hover effect for buttons */
+.magnetic {
+  transition: transform 0.3s ease;
+}
+
+/* Tilt effect on cards */
+.tilt-effect {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Line decoration */
+.line-decoration::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, transparent);
+  margin-top: 1rem;
+}
+
+/* Animated underline */
+.animated-underline {
+  background-image: linear-gradient(#d4af37, #d4af37);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size 0.4s ease;
+}
+
+.animated-underline:hover {
+  background-size: 100% 2px;
+}

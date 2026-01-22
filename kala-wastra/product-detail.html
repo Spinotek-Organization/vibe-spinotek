@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Songket Mahkota Burgundy - Kemewahan songket dalam potongan kontemporer. Dress premium dari KALA Wastra."
+    />
+    <title>Songket Mahkota Burgundy | KALA Wastra</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "kala-bg": "#FBFBFB",
+              "kala-text": "#1A1A1A",
+              "kala-gold": "#D4AF37",
+              "kala-gold-light": "#E8C85A",
+              "kala-gold-dark": "#B8962E",
+              "kala-charcoal": "#2D2D2D",
+            },
+            fontFamily: {
+              serif: ["Playfair Display", "serif"],
+              sans: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* Product Detail Specific Styles */
+      .gallery-thumb {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        opacity: 0.6;
+      }
+
+      .gallery-thumb:hover,
+      .gallery-thumb.active {
+        opacity: 1;
+        border-color: #d4af37;
+      }
+
+      .main-image {
+        transition: transform 0.5s ease;
+      }
+
+      .main-image-container:hover .main-image {
+        transform: scale(1.05);
+      }
+
+      .size-option {
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .size-option:hover {
+        border-color: #d4af37;
+        color: #d4af37;
+      }
+
+      .size-option.selected {
+        background-color: #d4af37;
+        border-color: #d4af37;
+        color: white;
+      }
+
+      .size-option.out-of-stock {
+        opacity: 0.4;
+        cursor: not-allowed;
+        text-decoration: line-through;
+      }
+
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+      }
+
+      .accordion-content.open {
+        max-height: 500px;
+      }
+
+      .accordion-icon {
+        transition: transform 0.3s ease;
+      }
+
+      .accordion-icon.open {
+        transform: rotate(180deg);
+      }
+
+      .zoom-lens {
+        position: absolute;
+        border: 2px solid #d4af37;
+        width: 150px;
+        height: 150px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+
+      .main-image-container:hover .zoom-lens {
+        opacity: 1;
+      }
+
+      .breadcrumb a {
+        transition: color 0.3s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: #d4af37;
+      }
+
+      /* Image zoom modal */
+      .zoom-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 100;
+        cursor: zoom-out;
+      }
+
+      .zoom-modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .zoom-modal img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body class="bg-kala-bg text-kala-text font-sans antialiased">
+    <!-- Navigation -->
+    <nav
+      id="navbar"
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 navbar-scrolled"
+    >
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo -->
+          <a href="index.html" class="flex items-center space-x-2">
+            <span
+              class="font-serif text-2xl font-semibold tracking-wide text-kala-charcoal"
+              >KALA</span
+            >
+            <span class="font-serif text-2xl font-light text-kala-gold"
+              >Wastra</span
+            >
+          </a>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center space-x-10">
+            <a href="index.html#philosophy" class="nav-link">Filosofi</a>
+            <a href="index.html#collection" class="nav-link">Koleksi</a>
+            <a href="index.html#craftsmanship" class="nav-link">Kerajinan</a>
+            <a href="index.html#contact" class="cta-button">Hubungi Kami</a>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobile-menu-btn"
+            class="md:hidden p-2 -mr-2"
+            aria-label="Toggle menu"
+          >
+            <svg
+              class="w-6 h-6 text-kala-charcoal"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                id="menu-icon"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="md:hidden hidden bg-kala-bg/95 backdrop-blur-lg border-t border-gray-100"
+      >
+        <div class="px-6 py-6 space-y-4">
+          <a href="index.html#philosophy" class="mobile-nav-link">Filosofi</a>
+          <a href="index.html#collection" class="mobile-nav-link">Koleksi</a>
+          <a href="index.html#craftsmanship" class="mobile-nav-link"
+            >Kerajinan</a
+          >
+          <a href="index.html#contact" class="block cta-button text-center mt-4"
+            >Hubungi Kami</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-20">
+      <!-- Breadcrumb -->
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6">
+        <nav
+          class="breadcrumb flex items-center space-x-2 text-sm text-gray-500"
+        >
+          <a href="index.html">Beranda</a>
+          <span>/</span>
+          <a href="index.html#collection">Koleksi</a>
+          <span>/</span>
+          <span class="text-kala-charcoal">Songket Mahkota Burgundy</span>
+        </nav>
+      </div>
+
+      <!-- Product Detail Section -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+          <!-- Product Gallery -->
+          <div class="animate-on-scroll">
+            <!-- Main Image -->
+            <div
+              class="main-image-container relative overflow-hidden rounded-2xl bg-gray-100 mb-4 cursor-zoom-in"
+              onclick="openZoom()"
+            >
+              <img
+                id="main-product-image"
+                src="assets/images/product-3.png"
+                alt="Songket Mahkota Burgundy"
+                class="main-image w-full aspect-[3/4] object-cover"
+              />
+
+              <!-- Zoom hint -->
+              <div
+                class="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full text-xs text-gray-600 flex items-center gap-2"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                  />
+                </svg>
+                <span>Klik untuk zoom</span>
+              </div>
+            </div>
+
+            <!-- Thumbnail Gallery -->
+            <div class="grid grid-cols-4 gap-3">
+              <button
+                class="gallery-thumb active rounded-xl overflow-hidden border-2 border-transparent"
+                onclick="changeImage(this, 'assets/images/product-3.png')"
+              >
+                <img
+                  src="assets/images/product-3.png"
+                  alt="View 1"
+                  class="w-full aspect-square object-cover"
+                />
+              </button>
+              <button
+                class="gallery-thumb rounded-xl overflow-hidden border-2 border-transparent"
+                onclick="changeImage(this, 'assets/images/product-4.png')"
+              >
+                <img
+                  src="assets/images/product-4.png"
+                  alt="View 2"
+                  class="w-full aspect-square object-cover"
+                />
+              </button>
+              <button
+                class="gallery-thumb rounded-xl overflow-hidden border-2 border-transparent"
+                onclick="changeImage(this, 'assets/images/product-7.png')"
+              >
+                <img
+                  src="assets/images/product-7.png"
+                  alt="View 3"
+                  class="w-full aspect-square object-cover"
+                />
+              </button>
+              <button
+                class="gallery-thumb rounded-xl overflow-hidden border-2 border-transparent"
+                onclick="changeImage(this, 'assets/images/product-8.png')"
+              >
+                <img
+                  src="assets/images/product-8.png"
+                  alt="View 4"
+                  class="w-full aspect-square object-cover"
+                />
+              </button>
+            </div>
+          </div>
+
+          <!-- Product Info -->
+          <div class="animate-on-scroll" style="animation-delay: 0.2s">
+            <!-- Category & Name -->
+            <div class="mb-6">
+              <span
+                class="inline-block text-kala-gold text-sm font-medium tracking-[0.2em] uppercase mb-3"
+                >Dress</span
+              >
+              <h1
+                class="font-serif text-3xl md:text-4xl lg:text-5xl font-medium text-kala-charcoal leading-tight"
+              >
+                Songket Mahkota Burgundy
+              </h1>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-8">
+              <div class="flex items-baseline gap-3">
+                <span class="text-3xl font-semibold text-kala-charcoal"
+                  >Rp 4.500.000</span
+                >
+                <span class="text-lg text-gray-400 line-through"
+                  >Rp 5.200.000</span
+                >
+              </div>
+              <p class="text-sm text-kala-gold mt-1">
+                Hemat 13% - Penawaran Terbatas
+              </p>
+            </div>
+
+            <!-- Short Description -->
+            <p class="text-gray-600 leading-relaxed mb-8">
+              Dress eksklusif yang menggabungkan kemewahan kain songket
+              Palembang dengan potongan modern yang elegan. Setiap helai benang
+              emas ditenun langsung oleh pengrajin berpengalaman, menciptakan
+              motif mahkota yang melambangkan keagungan.
+            </p>
+
+            <!-- Size Selector -->
+            <div class="mb-8">
+              <span class="text-sm font-medium text-kala-charcoal block mb-4"
+                >Pilih Ukuran</span
+              >
+              <div class="flex flex-wrap gap-3" id="size-options">
+                <button
+                  class="size-option w-14 h-14 border-2 border-gray-200 rounded-xl font-medium text-gray-700 hover:border-kala-gold"
+                  data-size="XS"
+                >
+                  XS
+                </button>
+                <button
+                  class="size-option w-14 h-14 border-2 border-gray-200 rounded-xl font-medium text-gray-700 hover:border-kala-gold"
+                  data-size="S"
+                >
+                  S
+                </button>
+                <button
+                  class="size-option w-14 h-14 border-2 border-gray-200 rounded-xl font-medium text-gray-700 selected"
+                  data-size="M"
+                >
+                  M
+                </button>
+                <button
+                  class="size-option w-14 h-14 border-2 border-gray-200 rounded-xl font-medium text-gray-700 hover:border-kala-gold"
+                  data-size="L"
+                >
+                  L
+                </button>
+                <button
+                  class="size-option w-14 h-14 border-2 border-gray-200 rounded-xl font-medium text-gray-700 hover:border-kala-gold"
+                  data-size="XL"
+                >
+                  XL
+                </button>
+                <button
+                  class="size-option w-14 h-14 border-2 border-gray-200 rounded-xl font-medium text-gray-400 out-of-stock"
+                  data-size="XXL"
+                  disabled
+                >
+                  XXL
+                </button>
+              </div>
+            </div>
+
+            <!-- Color Selector -->
+            <div class="mb-8">
+              <span class="text-sm font-medium text-kala-charcoal block mb-4"
+                >Warna: <span class="text-gray-500">Burgundy Gold</span></span
+              >
+              <div class="flex gap-3">
+                <button
+                  class="w-10 h-10 rounded-full border-2 border-kala-gold bg-gradient-to-br from-red-900 to-red-800 ring-2 ring-offset-2 ring-kala-gold"
+                  title="Burgundy Gold"
+                ></button>
+                <button
+                  class="w-10 h-10 rounded-full border-2 border-gray-200 bg-gradient-to-br from-blue-900 to-blue-800 hover:border-kala-gold transition-colors"
+                  title="Navy Gold"
+                ></button>
+                <button
+                  class="w-10 h-10 rounded-full border-2 border-gray-200 bg-gradient-to-br from-emerald-900 to-emerald-800 hover:border-kala-gold transition-colors"
+                  title="Emerald Gold"
+                ></button>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-row gap-3 mb-8">
+              <button class="cta-button-large flex-1 justify-center h-14">
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                <span class="hidden sm:inline">Tambah ke Keranjang</span>
+                <span class="sm:hidden">Keranjang</span>
+              </button>
+              <button
+                class="flex items-center justify-center w-14 h-14 flex-shrink-0 border-2 border-gray-200 rounded-xl hover:border-kala-gold hover:text-kala-gold transition-all"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!-- WhatsApp Quick Order -->
+            <a
+              href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20Songket%20Mahkota%20Burgundy"
+              target="_blank"
+              class="flex items-center justify-center gap-3 w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl transition-all mb-8"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                />
+              </svg>
+              <span class="font-medium">Pesan via WhatsApp</span>
+            </a>
+
+            <!-- Trust Badges -->
+            <div
+              class="grid grid-cols-3 gap-4 py-6 border-t border-b border-gray-100"
+            >
+              <div class="text-center">
+                <div
+                  class="w-10 h-10 mx-auto mb-2 rounded-full bg-kala-gold/10 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-5 h-5 text-kala-gold"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <p class="text-xs text-gray-600">100% Original</p>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-10 h-10 mx-auto mb-2 rounded-full bg-kala-gold/10 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-5 h-5 text-kala-gold"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                    />
+                  </svg>
+                </div>
+                <p class="text-xs text-gray-600">Gratis Ongkir</p>
+              </div>
+              <div class="text-center">
+                <div
+                  class="w-10 h-10 mx-auto mb-2 rounded-full bg-kala-gold/10 flex items-center justify-center"
+                >
+                  <svg
+                    class="w-5 h-5 text-kala-gold"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                </div>
+                <p class="text-xs text-gray-600">Garansi Kualitas</p>
+              </div>
+            </div>
+
+            <!-- Accordion Details -->
+            <div class="mt-8 space-y-4">
+              <!-- Description -->
+              <div class="border-b border-gray-100">
+                <button
+                  class="accordion-trigger w-full py-4 flex items-center justify-between text-left"
+                  onclick="toggleAccordion(this)"
+                >
+                  <span class="font-medium text-kala-charcoal"
+                    >Deskripsi Lengkap</span
+                  >
+                  <svg
+                    class="accordion-icon w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="pb-6 text-gray-600 leading-relaxed">
+                    <p class="mb-4">
+                      Dress Songket Mahkota Burgundy adalah mahakarya yang
+                      memadukan kemewahan kain songket tradisional Palembang
+                      dengan desain kontemporer yang elegan. Setiap helai benang
+                      emas murni ditenun dengan teliti oleh para pengrajin
+                      berpengalaman yang telah mewarisi keahlian ini selama
+                      generasi.
+                    </p>
+                    <p class="mb-4">
+                      Motif mahkota yang menghiasi dress ini melambangkan
+                      keagungan dan kemakmuran, menjadikannya pilihan sempurna
+                      untuk acara-acara istimewa seperti pernikahan, gala
+                      dinner, atau perjamuan formal.
+                    </p>
+                    <p>
+                      Dengan potongan A-line yang flattering dan detail v-neck
+                      yang anggun, dress ini dirancang untuk menonjolkan
+                      keindahan setiap wanita yang mengenakannya.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Material & Care -->
+              <div class="border-b border-gray-100">
+                <button
+                  class="accordion-trigger w-full py-4 flex items-center justify-between text-left"
+                  onclick="toggleAccordion(this)"
+                >
+                  <span class="font-medium text-kala-charcoal"
+                    >Material & Perawatan</span
+                  >
+                  <svg
+                    class="accordion-icon w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="pb-6 text-gray-600">
+                    <h4 class="font-medium text-kala-charcoal mb-3">
+                      Material:
+                    </h4>
+                    <ul class="list-disc list-inside space-y-1 mb-4">
+                      <li>100% Sutra Songket Palembang</li>
+                      <li>Benang emas murni 24 karat</li>
+                      <li>Lining: Sutra premium</li>
+                    </ul>
+                    <h4 class="font-medium text-kala-charcoal mb-3">
+                      Perawatan:
+                    </h4>
+                    <ul class="list-disc list-inside space-y-1">
+                      <li>Dry clean only</li>
+                      <li>Simpan dengan gantungan berlapis</li>
+                      <li>Hindari paparan sinar matahari langsung</li>
+                      <li>Gunakan kantong pelindung saat menyimpan</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sizing -->
+              <div class="border-b border-gray-100">
+                <button
+                  class="accordion-trigger w-full py-4 flex items-center justify-between text-left"
+                  onclick="toggleAccordion(this)"
+                >
+                  <span class="font-medium text-kala-charcoal"
+                    >Detail Ukuran</span
+                  >
+                  <svg
+                    class="accordion-icon w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="pb-6">
+                    <table class="w-full text-sm text-gray-600">
+                      <thead>
+                        <tr class="border-b">
+                          <th
+                            class="py-2 text-left font-medium text-kala-charcoal"
+                          >
+                            Ukuran
+                          </th>
+                          <th
+                            class="py-2 text-center font-medium text-kala-charcoal"
+                          >
+                            Dada
+                          </th>
+                          <th
+                            class="py-2 text-center font-medium text-kala-charcoal"
+                          >
+                            Pinggang
+                          </th>
+                          <th
+                            class="py-2 text-center font-medium text-kala-charcoal"
+                          >
+                            Panjang
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="border-b">
+                          <td class="py-2">XS</td>
+                          <td class="text-center">82 cm</td>
+                          <td class="text-center">64 cm</td>
+                          <td class="text-center">115 cm</td>
+                        </tr>
+                        <tr class="border-b">
+                          <td class="py-2">S</td>
+                          <td class="text-center">86 cm</td>
+                          <td class="text-center">68 cm</td>
+                          <td class="text-center">117 cm</td>
+                        </tr>
+                        <tr class="border-b bg-kala-gold/5">
+                          <td class="py-2 font-medium">M</td>
+                          <td class="text-center">90 cm</td>
+                          <td class="text-center">72 cm</td>
+                          <td class="text-center">119 cm</td>
+                        </tr>
+                        <tr class="border-b">
+                          <td class="py-2">L</td>
+                          <td class="text-center">94 cm</td>
+                          <td class="text-center">76 cm</td>
+                          <td class="text-center">121 cm</td>
+                        </tr>
+                        <tr class="border-b">
+                          <td class="py-2">XL</td>
+                          <td class="text-center">98 cm</td>
+                          <td class="text-center">80 cm</td>
+                          <td class="text-center">123 cm</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipping -->
+              <div class="border-b border-gray-100">
+                <button
+                  class="accordion-trigger w-full py-4 flex items-center justify-between text-left"
+                  onclick="toggleAccordion(this)"
+                >
+                  <span class="font-medium text-kala-charcoal"
+                    >Pengiriman & Pengembalian</span
+                  >
+                  <svg
+                    class="accordion-icon w-5 h-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div class="accordion-content">
+                  <div class="pb-6 text-gray-600">
+                    <h4 class="font-medium text-kala-charcoal mb-3">
+                      Pengiriman:
+                    </h4>
+                    <ul class="list-disc list-inside space-y-1 mb-4">
+                      <li>GRATIS ongkir ke seluruh Indonesia</li>
+                      <li>
+                        Estimasi: 3-5 hari kerja (Jawa), 5-7 hari kerja (Luar
+                        Jawa)
+                      </li>
+                      <li>Kemasan premium dengan box eksklusif</li>
+                    </ul>
+                    <h4 class="font-medium text-kala-charcoal mb-3">
+                      Pengembalian:
+                    </h4>
+                    <ul class="list-disc list-inside space-y-1">
+                      <li>Pengembalian gratis dalam 7 hari</li>
+                      <li>Produk harus dalam kondisi original</li>
+                      <li>
+                        Hubungi customer service untuk proses pengembalian
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Artisan Story Section -->
+      <section class="bg-kala-charcoal text-white py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="animate-on-scroll">
+              <span
+                class="inline-block text-kala-gold text-sm font-medium tracking-[0.3em] uppercase mb-6"
+              >
+                Cerita di Balik Kain
+              </span>
+              <h2
+                class="font-serif text-3xl md:text-4xl font-medium mb-6 leading-tight"
+              >
+                Dibuat dengan <span class="text-kala-gold">Cinta</span> dan
+                <span class="text-kala-gold">Dedikasi</span>
+              </h2>
+              <p class="text-gray-300 leading-relaxed mb-6">
+                Setiap dress Songket Mahkota membutuhkan waktu 3-4 bulan untuk
+                diselesaikan oleh pengrajin ahli. Proses menenun dilakukan
+                sepenuhnya dengan tangan, menggunakan alat tenun tradisional
+                yang telah digunakan selama berabad-abad.
+              </p>
+              <p class="text-gray-300 leading-relaxed mb-8">
+                Ibu Siti, sang penenun, telah menggeluti kerajinan songket
+                selama 35 tahun. Baginya, setiap helai benang yang ditenun
+                adalah doa untuk kebahagiaan pemakainya.
+              </p>
+
+              <div class="flex items-center gap-4">
+                <img
+                  src="assets/images/craftsman.png"
+                  alt="Ibu Siti - Penenun"
+                  class="w-16 h-16 rounded-full object-cover"
+                />
+                <div>
+                  <p class="font-medium">Ibu Siti</p>
+                  <p class="text-sm text-gray-400">
+                    Penenun Songket, Palembang
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="animate-on-scroll" style="animation-delay: 0.2s">
+              <div class="relative">
+                <div
+                  class="absolute -inset-4 bg-kala-gold/10 rounded-2xl transform -rotate-3"
+                ></div>
+                <img
+                  src="assets/images/craftsman.png"
+                  alt="Proses Pembuatan Songket"
+                  class="relative rounded-2xl w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Products -->
+      <section class="py-20 lg:py-28 bg-kala-bg">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <div class="text-center mb-12 animate-on-scroll">
+            <span
+              class="inline-block text-kala-gold text-sm font-medium tracking-[0.3em] uppercase mb-4"
+            >
+              Anda Mungkin Juga Suka
+            </span>
+            <h2
+              class="font-serif text-3xl md:text-4xl font-medium text-kala-charcoal"
+            >
+              Koleksi Serupa
+            </h2>
+          </div>
+
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Related Product 1 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll group"
+              style="animation-delay: 0.1s"
+            >
+              <div class="product-image-container" style="height: 18rem">
+                <img
+                  src="assets/images/product-1.png"
+                  alt="Batik Parang Elegance"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-2.png"
+                  alt="Detail"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-5">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Blazer</span
+                >
+                <h3
+                  class="font-serif text-lg text-kala-charcoal mt-2 group-hover:text-kala-gold transition-colors"
+                >
+                  Batik Parang Elegance
+                </h3>
+                <p class="text-kala-charcoal font-medium mt-2">Rp 3.200.000</p>
+              </div>
+            </a>
+
+            <!-- Related Product 2 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll group"
+              style="animation-delay: 0.2s"
+            >
+              <div class="product-image-container" style="height: 18rem">
+                <img
+                  src="assets/images/product-7.png"
+                  alt="Ulos Batak Heritage"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-8.png"
+                  alt="Detail"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-5">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Cape</span
+                >
+                <h3
+                  class="font-serif text-lg text-kala-charcoal mt-2 group-hover:text-kala-gold transition-colors"
+                >
+                  Ulos Batak Heritage
+                </h3>
+                <p class="text-kala-charcoal font-medium mt-2">Rp 3.800.000</p>
+              </div>
+            </a>
+
+            <!-- Related Product 3 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll group"
+              style="animation-delay: 0.3s"
+            >
+              <div class="product-image-container" style="height: 18rem">
+                <img
+                  src="assets/images/product-9.png"
+                  alt="Kebaya Encim Pesisir"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-10.png"
+                  alt="Detail"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-5">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Kebaya</span
+                >
+                <h3
+                  class="font-serif text-lg text-kala-charcoal mt-2 group-hover:text-kala-gold transition-colors"
+                >
+                  Kebaya Encim Pesisir
+                </h3>
+                <p class="text-kala-charcoal font-medium mt-2">Rp 2.800.000</p>
+              </div>
+            </a>
+
+            <!-- Related Product 4 -->
+            <a
+              href="product-detail.html"
+              class="product-card animate-on-scroll group"
+              style="animation-delay: 0.4s"
+            >
+              <div class="product-image-container" style="height: 18rem">
+                <img
+                  src="assets/images/product-5.png"
+                  alt="Lurik Jawa Premium"
+                  class="product-image primary"
+                />
+                <img
+                  src="assets/images/product-6.png"
+                  alt="Detail"
+                  class="product-image secondary"
+                />
+              </div>
+              <div class="p-5">
+                <span class="text-xs text-kala-gold tracking-widest uppercase"
+                  >Vest</span
+                >
+                <h3
+                  class="font-serif text-lg text-kala-charcoal mt-2 group-hover:text-kala-gold transition-colors"
+                >
+                  Lurik Jawa Premium
+                </h3>
+                <p class="text-kala-charcoal font-medium mt-2">Rp 2.400.000</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="py-20 bg-white">
+        <div
+          class="max-w-4xl mx-auto px-6 lg:px-8 text-center animate-on-scroll"
+        >
+          <h2
+            class="font-serif text-3xl md:text-4xl font-medium text-kala-charcoal mb-6"
+          >
+            Butuh Bantuan Memilih?
+          </h2>
+          <p class="text-gray-600 mb-8 max-w-xl mx-auto">
+            Tim styling kami siap membantu Anda menemukan piece yang sempurna
+            sesuai dengan kebutuhan dan preferensi Anda.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="https://wa.me/6281234567890" class="cta-button-large">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                />
+              </svg>
+              Konsultasi via WhatsApp
+            </a>
+            <a
+              href="index.html#collection"
+              class="inline-flex items-center justify-center px-8 py-4 border-2 border-kala-charcoal text-kala-charcoal rounded-full hover:bg-kala-charcoal hover:text-white transition-all font-medium"
+            >
+              Lihat Semua Koleksi
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-kala-charcoal text-white py-12">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center gap-6"
+        >
+          <!-- Logo -->
+          <div class="flex items-center space-x-2">
+            <span class="font-serif text-xl font-semibold">KALA</span>
+            <span class="font-serif text-xl font-light text-kala-gold"
+              >Wastra</span
+            >
+          </div>
+
+          <!-- Copyright -->
+          <p class="text-gray-400 text-sm">
+            © 2026 KALA Wastra. Dibuat dengan ❤️ oleh
+            <a href="#" class="text-kala-gold hover:underline">Spinotek</a>
+          </p>
+
+          <!-- Social Links -->
+          <div class="flex items-center gap-4">
+            <a
+              href="#"
+              class="text-gray-400 hover:text-kala-gold transition-colors"
+              aria-label="Instagram"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                />
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="text-gray-400 hover:text-kala-gold transition-colors"
+              aria-label="Facebook"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                />
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="text-gray-400 hover:text-kala-gold transition-colors"
+              aria-label="WhatsApp"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Zoom Modal -->
+    <div id="zoom-modal" class="zoom-modal" onclick="closeZoom()">
+      <img id="zoom-image" src="" alt="Zoom view" />
+      <button
+        class="absolute top-6 right-6 text-white hover:text-kala-gold transition-colors"
+        onclick="closeZoom()"
+      >
+        <svg
+          class="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+    <script>
+      // Product Detail Page Specific Scripts
+
+      // Image Gallery
+      function changeImage(thumb, src) {
+        const mainImage = document.getElementById("main-product-image");
+        mainImage.style.opacity = "0";
+
+        setTimeout(() => {
+          mainImage.src = src;
+          mainImage.style.opacity = "1";
+        }, 200);
+
+        // Update active thumbnail
+        document
+          .querySelectorAll(".gallery-thumb")
+          .forEach((t) => t.classList.remove("active"));
+        thumb.classList.add("active");
+      }
+
+      // Zoom Modal
+      function openZoom() {
+        const modal = document.getElementById("zoom-modal");
+        const zoomImage = document.getElementById("zoom-image");
+        const mainImage = document.getElementById("main-product-image");
+
+        zoomImage.src = mainImage.src;
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeZoom() {
+        const modal = document.getElementById("zoom-modal");
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      // Close zoom with Escape key
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeZoom();
+      });
+
+      // Size Selection
+      const sizeOptions = document.querySelectorAll(
+        ".size-option:not(.out-of-stock)",
+      );
+      sizeOptions.forEach((option) => {
+        option.addEventListener("click", function () {
+          sizeOptions.forEach((o) => o.classList.remove("selected"));
+          this.classList.add("selected");
+        });
+      });
+
+      // Accordion
+      function toggleAccordion(trigger) {
+        const content = trigger.nextElementSibling;
+        const icon = trigger.querySelector(".accordion-icon");
+
+        content.classList.toggle("open");
+        icon.classList.toggle("open");
+      }
+
+      // Size Guide Modal (placeholder)
+      function openSizeGuide() {
+        alert(
+          "Panduan Ukuran akan ditampilkan dalam modal. Fitur ini dapat dikembangkan lebih lanjut.",
+        );
+      }
+
+      // Add smooth transition to main image
+      document.getElementById("main-product-image").style.transition =
+        "opacity 0.3s ease";
+    </script>
+  </body>
+</html>
