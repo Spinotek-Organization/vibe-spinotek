@@ -19,6 +19,12 @@
         
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: #C5A358; border-radius: 10px; }
+
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+        }
+        .animate-pulse-soft { animation: pulse-soft 3s infinite ease-in-out; }
     </style>
 </head>
 <body x-data="aksaApp()">
@@ -34,6 +40,7 @@
                 <a href="#home" class="hover:text-aksa-gold transition">Home</a>
                 <a href="#promo" class="hover:text-aksa-gold transition">Promo</a>
                 <a href="#menu" class="hover:text-aksa-gold transition">Menu</a>
+                <a href="#hub" class="hover:text-aksa-gold transition">Aksa Hub</a>
                 <a href="#spinofy" class="hover:text-stone-900 transition text-aksa-gold font-black">Spinofy</a>
             </div>
 
@@ -45,7 +52,7 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid md:grid-cols-12 gap-12 items-center">
                 <div class="md:col-span-7 z-10">
-                    <span class="inline-block px-4 py-1 rounded-full bg-aksa-beige text-aksa-gold text-[10px] font-bold uppercase tracking-widest mb-6">Built for Productivity</span>
+                    <span class="inline-block px-4 py-1 rounded-full bg-aksa-beige text-aksa-gold text-[10px] font-bold uppercase tracking-widest mb-6">Powered by Spinotek Ecosystem</span>
                     <h1 class="text-5xl md:text-7xl font-serif italic leading-[1.1] mb-6">Elevate Your<br>Work With <span class="text-aksa-gold">Aksa.</span></h1>
                     <p class="text-stone-500 max-w-md text-lg font-light leading-relaxed mb-10">
                         Ruang kolaboratif premium yang menggabungkan kualitas kopi artisan dengan fasilitas kerja standar profesional.
@@ -75,8 +82,8 @@
                 </div>
                 <div class="bg-aksa-primary p-8 rounded-[2rem] text-white">
                     <span class="text-aksa-gold text-[10px] font-bold uppercase tracking-widest">📅 Event Mendatang</span>
-                    <h3 class="text-3xl font-serif italic mt-4 mb-4">Spinofy Creator Talk</h3>
-                    <p class="text-stone-300 text-sm mb-6">Diskusi masa depan AI di industri kreatif bersama komunitas Spinofy.</p>
+                    <h3 class="text-3xl font-serif italic mt-4 mb-4">Spinotek Creator Talk</h3>
+                    <p class="text-stone-300 text-sm mb-6">Diskusi masa depan AI di industri kreatif bersama komunitas Spinotek.</p>
                     <div class="flex justify-between items-center">
                         <span class="text-[10px] font-bold">25 JAN 2026 • 19:00 WIB</span>
                         <a href="#reserve" class="bg-aksa-gold text-white px-4 py-2 rounded-full text-[10px] font-bold">RSVP</a>
@@ -113,35 +120,50 @@
                     </div>
                 </template>
             </div>
+        </div>
+    </section>
 
-            <div class="max-w-5xl mx-auto bg-aksa-beige p-8 md:p-16 rounded-[3rem] text-left border-2 border-dashed border-stone-200">
-                <div class="text-center mb-16">
-                    <h3 class="text-3xl font-serif italic">The Daily Digest</h3>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mt-2">Daftar Lengkap Menu (20+ Items)</p>
-                </div>
+    <section id="hub" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="relative bg-aksa-gold/10 rounded-[3rem] p-8 md:p-16 overflow-hidden border border-aksa-gold/20 flex flex-col md:flex-row items-center gap-12">
                 
-                <div class="grid md:grid-cols-2 gap-x-20 gap-y-12">
-                    <template x-for="cat in categories">
-                        <div>
-                            <h4 class="text-aksa-gold font-bold text-[12px] uppercase tracking-[0.3em] mb-6 border-b border-stone-300 pb-2" x-text="cat"></h4>
-                            <div class="space-y-4">
-                                <template x-for="item in menu.filter(m => m.cat === cat)">
-                                    <div class="flex justify-between items-end gap-2 group">
-                                        <div class="flex-1">
-                                            <p class="text-[11px] font-bold text-stone-800 uppercase" x-text="item.name"></p>
-                                            <p class="text-[9px] text-stone-500 italic" x-text="item.desc"></p>
-                                        </div>
-                                        <div class="border-b border-dotted border-stone-400 flex-1 h-0 mb-1 opacity-50"></div>
-                                        <span class="text-xs font-black text-aksa-primary" x-text="item.price/1000 + 'k'"></span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                    </template>
+                <div class="absolute inset-0 opacity-10 pointer-events-none">
+                    <svg width="100%" height="100%" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="3" fill="#C5A358"/>
+                        <circle cx="700" cy="300" r="3" fill="#C5A358"/>
+                        <circle cx="400" cy="200" r="5" fill="#C5A358" class="animate-pulse"/>
+                        <path d="M100 100 L400 200 L700 300 M400 200 L400 0 M400 200 L400 400" stroke="#C5A358" stroke-width="1" stroke-dasharray="4 4"/>
+                    </svg>
                 </div>
 
-                <div class="mt-16 pt-8 border-t border-stone-300 text-center">
-                    <a href="https://my.spinofy.id" target="_blank" class="inline-block bg-aksa-primary text-white px-10 py-4 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg">Buka Menu Digital di my.spinofy.id</a>
+                <div class="relative w-full md:w-1/3 flex justify-center">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-aksa-gold/20 rounded-full scale-150 animate-pulse-soft"></div>
+                        <div class="relative bg-white p-8 rounded-full shadow-2xl border border-aksa-gold/20">
+                            <svg class="w-16 h-16 text-aksa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 w-full md:w-2/3">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-aksa-gold mb-4 block">Networking Hub</span>
+                    <h2 class="text-4xl md:text-5xl font-serif italic mb-6 text-stone-900 leading-tight">Mari Terhubung dengan<br>Customer Lain.</h2>
+                    <p class="text-stone-600 text-lg mb-8 font-light">
+                        Jangan hanya sekadar bekerja sendiri. Di <b>Aksa Hub</b>, kamu bisa membangun relasi, berbagi ide, dan saling terkoneksi dengan sesama profesional dan kreator yang berkunjung ke Aksa Coffee.
+                    </p>
+                    <div class="flex flex-wrap gap-6 items-center">
+                        <a href="https://lab.spinotek.com/aksa-hub/" target="_blank" class="inline-flex items-center space-x-4 bg-aksa-primary text-white px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-[0.2em] hover:bg-stone-800 transition shadow-lg group">
+                            <span>Join Aksa Hub Community</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                        <div class="flex -space-x-3">
+                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=1">
+                            <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=2">
+                            <div class="w-10 h-10 rounded-full border-2 border-white bg-aksa-gold flex items-center justify-center text-[10px] font-bold text-white">+50</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,7 +172,7 @@
     <section id="spinofy" class="py-24 bg-stone-900 text-white text-center">
         <div class="max-w-4xl mx-auto px-6">
             <h2 class="text-4xl font-serif italic mb-8">Order Faster with Spinofy</h2>
-            <p class="text-stone-400 mb-10">Lewati antrean. Pesan dari tempat duduk Anda melalui platform kami.</p>
+            <p class="text-stone-400 mb-10">Lewati antrean. Pesan dari tempat duduk Anda melalui platform digital kami.</p>
             <a href="https://my.spinofy.id" target="_blank" class="bg-aksa-gold text-white px-10 py-5 rounded-full font-bold uppercase text-[10px] tracking-widest inline-block hover:bg-white hover:text-stone-900 transition">Go to my.spinofy.id</a>
         </div>
     </section>
@@ -172,6 +194,49 @@
         </div>
     </section>
 
+    <footer class="bg-white border-t border-stone-200 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12 mb-16">
+                <div class="space-y-6">
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-bold tracking-tighter uppercase">Aksa Coffee</span>
+                        <span class="text-[10px] tracking-[0.3em] font-medium text-aksa-gold uppercase">by Spinotek</span>
+                    </div>
+                    <p class="text-stone-500 text-xs leading-relaxed max-w-xs">
+                        Platform kolaborasi antara cita rasa kopi artisan dan teknologi produktivitas digital. Bagian dari ekosistem inovasi Spinotek.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-[10px] font-bold uppercase tracking-widest mb-6">Navigation</h5>
+                    <ul class="space-y-3 text-xs text-stone-500">
+                        <li><a href="#home" class="hover:text-aksa-gold">Home</a></li>
+                        <li><a href="#menu" class="hover:text-aksa-gold">Our Menu</a></li>
+                        <li><a href="#hub" class="hover:text-aksa-gold">Aksa Hub</a></li>
+                        <li><a href="https://my.spinofy.id" class="hover:text-aksa-gold">Spinofy App</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-[10px] font-bold uppercase tracking-widest mb-6">The Developer</h5>
+                    <p class="text-xs text-stone-500 mb-4 leading-relaxed">
+                        Website ini dikembangkan dan dikelola secara eksklusif oleh:
+                    </p>
+                    <a href="https://spinotek.com" target="_blank" class="group flex items-center space-x-3">
+                        <div class="bg-stone-900 text-white p-2 rounded-lg group-hover:bg-aksa-gold transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <span class="text-sm font-black tracking-tight group-hover:text-aksa-gold transition uppercase">Spinotek.com</span>
+                    </a>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-stone-100 gap-4">
+                <p class="text-[10px] text-stone-400 font-medium">© 2026 AKSA COFFEE. ALL RIGHTS RESERVED.</p>
+                <p class="text-[10px] text-stone-400 font-medium tracking-widest uppercase">
+                    CRAFTED WITH PRIDE BY <a href="https://spinotek.com" target="_blank" class="text-stone-600 hover:text-aksa-gold font-bold underline">SPINOTEK</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <script>
         function aksaApp() {
             return {
@@ -179,30 +244,23 @@
                 categories: ['Coffee', 'Non-Coffee', 'Food', 'Pastry'],
                 reserveForm: { name: '', guests: 1, time: '', area: 'QUIET ZONE' },
                 menu: [
-                    // COFFEE (7 items)
                     { id: 1, cat: 'Coffee', name: 'Aksa Signature Latte', price: 38000, desc: 'Hazelnut house-made syrup.', image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=500&q=80' },
                     { id: 2, cat: 'Coffee', name: 'Cold Brew Focus', price: 35000, desc: 'Ekstraksi dingin 12 jam.', image: 'https://images.unsplash.com/photo-1499961024600-ad094db305cc?w=800&auto=format&fit=crop' },
                     { id: 3, cat: 'Coffee', name: 'Manual Brew V60', price: 32000, desc: 'Single origin beans.', image: 'https://images.pexels.com/photos/3749174/pexels-photo-3749174.jpeg?auto=compress&cs=tinysrgb&w=600' },
                     { id: 4, cat: 'Coffee', name: 'Spanish Latte', price: 38000, desc: 'Sweetened creamy espresso.', image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=500&q=80' },
                     { id: 5, cat: 'Coffee', name: 'Piccolo White', price: 30000, desc: 'Small but strong coffee.', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&q=80' },
                     { id: 6, cat: 'Coffee', name: 'Caramel Macchiato', price: 42000, desc: 'Vanilla & caramel swirl.', image: 'https://images.pexels.com/photos/2638019/pexels-photo-2638019.jpeg?auto=compress&cs=tinysrgb&w=800' },
-                    { id: 7, cat: 'Coffee', name: 'Americano Ice', price: 28000, desc: 'Pure black coffee on ice.', image: 'https://images.unsplash.com/photo-1551046779-bc470a44485c?w=500&q=80' },
-
-                    // NON-COFFEE (5 items)
+                    { id: 7, cat: 'Coffee', name: 'Americano Ice', price: 28000, desc: 'Pure black coffee on ice.', image: 'https://caffeineandphotos.de/wp-content/uploads/2026/01/IMG_2870-2048x1365.jpg' },
                     { id: 8, cat: 'Non-Coffee', name: 'Dark Cocoa Ritual', price: 35000, desc: 'Pure dark chocolate.', image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=500&q=80' },
                     { id: 9, cat: 'Non-Coffee', name: 'Ceremonial Matcha', price: 40000, desc: 'Premium grade Japanese matcha.', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500&q=80' },
                     { id: 10, cat: 'Non-Coffee', name: 'Earl Grey Milk Tea', price: 32000, desc: 'Floral tea with fresh milk.', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=500&q=80' },
                     { id: 11, cat: 'Non-Coffee', name: 'Berry Hibiscus', price: 35000, desc: 'Refreshing fruit tea.', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80' },
                     { id: 12, cat: 'Non-Coffee', name: 'Golden Ginger Latte', price: 30000, desc: 'Warm spices and honey.', image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=500&q=80' },
-
-                    // FOOD (5 items)
                     { id: 13, cat: 'Food', name: 'Beef Teriyaki Bowl', price: 48000, desc: 'Sweet savory beef on rice.', image: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=500&q=80' },
                     { id: 14, cat: 'Food', name: 'Truffle Mac & Cheese', price: 55000, desc: 'Pasta with truffle aroma.', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=500&q=80' },
                     { id: 15, cat: 'Food', name: 'Aksa Club Sandwich', price: 45000, desc: 'Egg, chicken, and fresh veg.', image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&q=80' },
                     { id: 16, cat: 'Food', name: 'Chicken Katsu Curry', price: 52000, desc: 'Japanese curry with katsu.', image: 'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=500&q=80' },
                     { id: 17, cat: 'Food', name: 'Grilled Cheese', price: 38000, desc: 'Mozzarella & sourdough.', image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=500&q=80' },
-
-                    // PASTRY (4 items)
                     { id: 18, cat: 'Pastry', name: 'Almond Croissant', price: 32000, desc: 'Flaky almond pastry.', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80' },
                     { id: 19, cat: 'Pastry', name: 'Cinnamon Roll', price: 28000, desc: 'Glazed spiced roll.', image: 'https://images.unsplash.com/photo-1509365465985-25d11c17e812?w=500&q=80' },
                     { id: 20, cat: 'Pastry', name: 'Pain Au Chocolat', price: 30000, desc: 'Dark chocolate filling.', image: 'https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=500&q=80' },
