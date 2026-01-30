@@ -80,12 +80,24 @@
             />
 
             <!-- Connection Points -->
+            <!-- Connection End Point -->
             <circle 
               v-if="getLineCoords(conn)" 
               :cx="getLineCoords(conn).end.x" 
               :cy="getLineCoords(conn).end.y" 
               r="4" 
-              class="fill-blue-500 filter drop-shadow-[0_0_4px_rgba(59,130,246,0.8)] transition-transform duration-300 group-hover/line:scale-125"
+              class="fill-blue-500 filter drop-shadow-[0_0_4px_rgba(59,130,246,0.8)] transition-transform duration-300 origin-center group-hover/line:scale-150"
+              style="transform-box: fill-box; transform-origin: center;"
+            />
+
+            <!-- Connection Start Point -->
+             <circle 
+              v-if="getLineCoords(conn)" 
+              :cx="getLineCoords(conn).start.x" 
+              :cy="getLineCoords(conn).start.y" 
+              r="4" 
+              class="fill-blue-500 filter drop-shadow-[0_0_4px_rgba(59,130,246,0.8)] transition-transform duration-300 origin-center group-hover/line:scale-150"
+              style="transform-box: fill-box; transform-origin: center;"
             />
             
             <!-- Delete Icon at Midpoint (Only visible on hover) -->
