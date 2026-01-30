@@ -52,7 +52,8 @@
     <link rel="icon" type="image/png" href="assets/images/favicon.png" />
     <link rel="apple-touch-icon" href="assets/images/favicon.png" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vite Main Entry (Tailwind + JS) -->
+    <script type="module" src="./main.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;800&display=swap"
       rel="stylesheet"
@@ -252,9 +253,12 @@
           if (!Array.isArray(data)) return;
 
           // FILTER: Hanya ambil folder, dan abaikan folder sistem/aset
-          const excludedFolders = ["assets", ".github", "node_modules"];
+          const excludedFolders = ["assets", ".github", "node_modules", "dist", ".git"];
           const folders = data.filter(
-            item => item.type === "dir" && !excludedFolders.includes(item.name),
+            item => 
+              item.type === "dir" && 
+              !excludedFolders.includes(item.name) && 
+              !item.name.startsWith('.')
           );
 
           // Update project count
