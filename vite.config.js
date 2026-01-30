@@ -26,7 +26,28 @@ function getHtmlEntries() {
 }
 
 export default defineConfig({
-  plugins: [react(), vue()],
+  plugins: [
+    react(), 
+    vue(),
+    // Custom plugin to handle clean URLs for subdirectories in dev
+    {
+      name: 'handle-clean-urls',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const url = req.url.split('?')[0];
+          if (url !== '/' && !url.includes('.') && !url.endsWith('/')) {
+            const folderPath = resolve(__dirname, url.slice(1));
+            if (fs.existsSync(folderPath) && fs.lstatSync(folderPath).isDirectory()) {
+              if (fs.existsSync(resolve(folderPath, 'index.html'))) {
+                req.url = `${url}/`;
+              }
+            }
+          }
+          next();
+        });
+      }
+    }
+  ],
   build: {
     rollupOptions: {
       input: getHtmlEntries(),
