@@ -21,6 +21,7 @@
     "vite": "^4.5.3"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.93.3",
     "html-to-image": "^1.11.13",
     "interactjs": "^1.10.27",
     "lucide-vue-next": "^0.563.0",
