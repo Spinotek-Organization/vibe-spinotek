@@ -19,8 +19,8 @@
 
     <!-- Main Container -->
     <div 
-      class="w-full h-full bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-slate-200/50 dark:border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-2xl transition-colors duration-300 relative group/container"
-      :class="{'ring-2 ring-blue-500/40 border-blue-500/50': isSelected}"
+      class="w-full h-full bg-white/90 dark:bg-[#121212]/90 backdrop-blur-2xl border border-slate-200/50 dark:border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-xl dark:shadow-[0_0_20px_rgba(0,0,0,0.5)] transition-colors duration-300 relative group/container"
+      :class="{'ring-2 ring-blue-500/50 border-blue-500 shadow-blue-500/20': isSelected}"
     >
       <!-- Scanning Line Effect -->
       <div v-if="isSelected" class="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
