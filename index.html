@@ -253,7 +253,7 @@
           if (!Array.isArray(data)) return;
 
           // FILTER: Hanya ambil folder, dan abaikan folder sistem/aset
-          const excludedFolders = ["assets", ".github", "node_modules", "dist", ".git"];
+          const excludedFolders = ["assets", ".github", "node_modules", "dist", ".git", "lib", "_template-react", "_template-vue"];
           const folders = data.filter(
             item => 
               item.type === "dir" && 
