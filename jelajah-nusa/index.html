@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JelajahNusa - Experience the Unseen</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="./dist/output.css" rel="stylesheet" />
     <script
       defer
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
@@ -17,30 +17,7 @@
       rel="stylesheet"
     />
 
-    <script>
-      // Konfigurasi Tailwind untuk warna Custom (Sky Blue)
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Sora", "sans-serif"], // Memastikan Sora jadi font utama
-            },
-            colors: {
-              primary: {
-                50: "#f0f9ff", // Sangat terang (untuk background badge)
-                100: "#e0f2fe", // Terang (untuk hover light)
-                400: "#38bdf8", // Cerah (untuk aksen teks)
-                500: "#0ea5e9", // Warna utama (Sky Blue)
-                600: "#0284c7", // Warna tombol/interaksi
-                700: "#0369a1", // Warna hover gelap
-                800: "#075985", // Warna teks gelap
-                950: "#082f49", // Warna background gelap (Midnight Sky)
-              },
-            },
-          },
-        },
-      };
-    </script>
+
 
     <style>
       body {
@@ -781,7 +758,7 @@
     <script>
       (function () {
         const galleryContainer = document.getElementById("bromo-gallery");
-        const basePath = "./assets/bromo-2026/bromo-";
+        const basePath = "assets/bromo-2026/bromo-";
 
         const bromoImages = [
           "1.jpg",
