@@ -47,7 +47,7 @@
       <!-- Reset Confirmation -->
       <ConfirmationModal 
         :is-open="isResetModalOpen"
-        title="Reset System Flow?"
+        title="Reset Vibe Flow?"
         message="This will clear your entire workspace. Make sure you have exported your data if you wish to keep it."
         confirm-text="Purge Canvas"
         @close="isResetModalOpen = false"
@@ -86,80 +86,85 @@ const handleReset = () => {
 
 const applyTemplate = (templateName) => {
   const templates = {
-    auth: {
-      blocks: [
-        { id: 't1', type: 'login', title: 'User Login', x: 100, y: 100, width: 240, height: 180 },
-        { id: 't2', type: 'verify', title: 'MFA Security', x: 450, y: 100, width: 240, height: 180 },
-        { id: 't3', type: 'register', title: 'New Member', x: 100, y: 350, width: 240, height: 180 },
-        { id: 't4', type: 'profile', title: 'Member Area', x: 800, y: 100, width: 240, height: 180 },
-      ],
-      connections: [
-        { id: 'l1', from: 't1', fromPort: 'right', to: 't2', toPort: 'left' },
-        { id: 'l2', from: 't2', fromPort: 'right', to: 't4', toPort: 'left' },
-        { id: 'l3', from: 't3', fromPort: 'top', to: 't1', toPort: 'bottom' },
-      ]
-    },
-    ecommerce: {
-      blocks: [
-        { id: 'e1', type: 'search', title: 'Global Search', x: 50, y: 100, width: 240, height: 180 },
-        { id: 'e2', type: 'list', title: 'Product Results', x: 350, y: 100, width: 240, height: 180 },
-        { id: 'e3', type: 'details', title: 'Product Page', x: 650, y: 100, width: 240, height: 180 },
-        { id: 'e4', type: 'payment', title: 'Payment Desk', x: 950, y: 100, width: 240, height: 180 },
-        { id: 'e5', type: 'success', title: 'Order Complete', x: 1250, y: 100, width: 240, height: 180 },
-      ],
-      connections: [
-        { id: 'el1', from: 'e1', fromPort: 'right', to: 'e2', toPort: 'left' },
-        { id: 'el2', from: 'e2', fromPort: 'right', to: 'e3', toPort: 'left' },
-        { id: 'el3', from: 'e3', fromPort: 'right', to: 'e4', toPort: 'left' },
-        { id: 'el4', from: 'e4', fromPort: 'right', to: 'e5', toPort: 'left' },
-      ]
-    },
-    saas: {
-      blocks: [
-        { id: 's1', type: 'dashboard', title: 'Global Console', x: 300, y: 50, width: 240, height: 180 },
-        { id: 's2', type: 'analytics', title: 'Usage Metrics', x: 50, y: 300, width: 240, height: 180 },
-        { id: 's3', type: 'stats', title: 'Quick Summary', x: 550, y: 300, width: 240, height: 180 },
-        { id: 's4', type: 'settings', title: 'System Config', x: 300, y: 550, width: 240, height: 180 },
-      ],
-      connections: [
-        { id: 'sl1', from: 's1', fromPort: 'left', to: 's2', toPort: 'top' },
-        { id: 'sl2', from: 's1', fromPort: 'right', to: 's3', toPort: 'top' },
-        { id: 'sl3', from: 's1', fromPort: 'bottom', to: 's4', toPort: 'top' },
-      ]
-    },
-    erp: {
-      blocks: [
-        { id: 'erp1', type: 'login', title: 'Admin Gateway', x: 0, y: 300, width: 220, height: 160 },
-        { id: 'erp2', type: 'dashboard', title: 'Main Console', x: 300, y: 300, width: 220, height: 160 },
-        { id: 'erp3', type: 'search', title: 'Customer Search', x: 300, y: 50, width: 220, height: 160 },
-        { id: 'erp4', type: 'list', title: 'Product Inventory', x: 300, y: 550, width: 220, height: 160 },
-        { id: 'erp5', type: 'details', title: 'Customer Profile', x: 600, y: 50, width: 220, height: 160 },
-        { id: 'erp6', type: 'stats', title: 'Inventory Analytics', x: 600, y: 550, width: 220, height: 160 },
-        { id: 'erp7', type: 'terminal', title: 'Process Logs', x: 600, y: 300, width: 220, height: 160 },
-        { id: 'erp8', type: 'payment', title: 'Payment Processing', x: 900, y: 300, width: 220, height: 160 },
-        { id: 'erp9', type: 'invoice', title: 'Digital Receipt', x: 1200, y: 200, width: 220, height: 160 },
-        { id: 'erp10', type: 'success', title: 'Transaction Sync', x: 1200, y: 400, width: 220, height: 160 },
-      ],
-      connections: [
-        { id: 'erl1', from: 'erp1', fromPort: 'right', to: 'erp2', toPort: 'left' },
-        { id: 'erl2', from: 'erp2', fromPort: 'top', to: 'erp3', toPort: 'bottom' },
-        { id: 'erl3', from: 'erp2', fromPort: 'bottom', to: 'erp4', toPort: 'top' },
-        { id: 'erl4', from: 'erp3', fromPort: 'right', to: 'erp5', toPort: 'left' },
-        { id: 'erl5', from: 'erp4', fromPort: 'right', to: 'erp6', toPort: 'left' },
-        { id: 'erl6', from: 'erp2', fromPort: 'right', to: 'erp7', toPort: 'left' },
-        { id: 'erl7', from: 'erp7', fromPort: 'right', to: 'erp8', toPort: 'left' },
-        { id: 'erl8', from: 'erp5', fromPort: 'bottom', to: 'erp8', toPort: 'top' },
-        { id: 'erl9', from: 'erp6', fromPort: 'top', to: 'erp8', toPort: 'bottom' },
-        { id: 'erl10', from: 'erp8', fromPort: 'right', to: 'erp9', toPort: 'left' },
-        { id: 'erl11', from: 'erp9', fromPort: 'bottom', to: 'erp10', toPort: 'top' },
-      ]
-    }
+    project_mgmt: [
+      { id: 'p1', type: 'goal', title: 'Q1 Vision', desc: 'Define long-term objectives and KPIs.', x: 50, y: 100, width: 240, height: 180 },
+      { id: 'p2', type: 'brief', title: 'Market Brief', desc: 'Strategic analysis and user research.', x: 350, y: 100, width: 240, height: 180 },
+      { id: 'p3', type: 'project', title: 'Product Launch', desc: 'Core execution and development phase.', x: 650, y: 100, width: 240, height: 180 },
+      { id: 'p4', type: 'milestone', title: 'Beta Release', desc: 'Limited release and feedback loop.', x: 950, y: 100, width: 240, height: 180 },
+      { id: 'p5', type: 'complete', title: 'Global Live', desc: 'Full-scale market production live.', x: 1250, y: 100, width: 240, height: 180 },
+    ],
+    marketing: [
+      { id: 'm1', type: 'funnel', title: 'Ads Awareness', desc: 'Targeting top-of-funnel audiences.', x: 50, y: 100, width: 220, height: 160 },
+      { id: 'm2', type: 'campaign', title: 'Social Drive', desc: 'Viral expansion and organic growth.', x: 350, y: 100, width: 220, height: 160 },
+      { id: 'm3', type: 'doc', title: 'Landing Page', desc: 'High conversion entry points.', x: 650, y: 100, width: 220, height: 160 },
+      { id: 'm4', type: 'person', title: 'Leads Conv', desc: 'Nurturing interested prospects.', x: 950, y: 100, width: 220, height: 160 },
+      { id: 'm5', type: 'analytics', title: 'ROI Report', desc: 'Performance tracking and audit.', x: 1250, y: 100, width: 220, height: 160 },
+    ],
+    onboarding: [
+      { id: 'o1', type: 'team', title: 'Talent Pool', desc: 'Strategic recruitment and sourcing.', x: 300, y: 50, width: 240, height: 180 },
+      { id: 'o2', type: 'chat', title: 'Initial Sync', desc: 'Expectation setting and meeting.', x: 50, y: 300, width: 240, height: 180 },
+      { id: 'o3', type: 'doc', title: 'Rules & NDA', desc: 'Governance and legal compliance.', x: 550, y: 300, width: 240, height: 180 },
+      { id: 'o4', type: 'meeting', title: 'Townhall', desc: 'Global alignment and culture building.', x: 300, y: 550, width: 240, height: 180 },
+    ],
+    erp: [
+      { id: 'erp1', type: 'process', title: 'Admin Gateway', desc: 'Secure entry point for managers.', x: 0, y: 300, width: 220, height: 160 },
+      { id: 'erp2', type: 'vision', title: 'Main Console', desc: 'Centralized steering and monitoring.', x: 300, y: 300, width: 220, height: 160 },
+      { id: 'erp3', type: 'research', title: 'Customer Search', desc: 'Advanced CRM and lead directory.', x: 300, y: 50, width: 220, height: 160 },
+      { id: 'erp4', type: 'project', title: 'Product Inventory', desc: 'Real-time stock and logistics data.', x: 300, y: 550, width: 220, height: 160 },
+      { id: 'erp5', type: 'brief', title: 'Customer Profile', desc: 'Detailed 360 view of client assets.', x: 600, y: 50, width: 220, height: 160 },
+      { id: 'erp6', type: 'analytics', title: 'Inventory Analytics', desc: 'Predictive modeling and stock forecasting.', x: 600, y: 550, width: 220, height: 160 },
+      { id: 'erp7', type: 'process', title: 'Process Logs', desc: 'Immutable audit trail for all events.', x: 600, y: 300, width: 220, height: 160 },
+      { id: 'erp8', type: 'complete', title: 'Payment Processing', desc: 'Secure multi-gateway settlement.', x: 900, y: 300, width: 220, height: 160 },
+      { id: 'erp9', type: 'doc', title: 'Digital Receipt', desc: 'Automated invoice generation.', x: 1200, y: 200, width: 220, height: 160 },
+      { id: 'erp10', type: 'complete', title: 'Transaction Sync', desc: 'Distributed ledger synchronization.', x: 1200, y: 400, width: 220, height: 160 },
+    ]
   };
 
-  const selected = templates[templateName];
-  if (selected) {
-    state.blocks = [...selected.blocks];
-    state.connections = [...selected.connections];
+  const selectedBlocks = templates[templateName];
+  if (selectedBlocks) {
+    // Reset state clearly
+    state.blocks = [];
+    state.connections = [];
+    state.selectedBlockId = null;
+
+    // Apply blocks
+    state.blocks = selectedBlocks.map(b => ({ ...b }));
+
+    // Auto-generate connections for linear templates (Project and Marketing)
+    if (templateName === 'project_mgmt' || templateName === 'marketing') {
+        const prefix = templateName === 'project_mgmt' ? 'p' : 'm';
+        for (let i = 1; i < 5; i++) {
+            state.connections.push({
+                id: `cl_${templateName}_${i}`,
+                from: `${prefix}${i}`,
+                fromPort: 'right',
+                to: `${prefix}${i+1}`,
+                toPort: 'left',
+                label: ''
+            });
+        }
+    } else if (templateName === 'onboarding') {
+        state.connections = [
+            { id: 'ol1', from: 'o1', fromPort: 'left', to: 'o2', toPort: 'top', label: '' },
+            { id: 'ol2', from: 'o1', fromPort: 'right', to: 'o3', toPort: 'top', label: '' },
+            { id: 'ol3', from: 'o1', fromPort: 'bottom', to: 'o4', toPort: 'top', label: '' },
+        ];
+    } else if (templateName === 'erp') {
+        state.connections = [
+            { id: 'erl1', from: 'erp1', fromPort: 'right', to: 'erp2', toPort: 'left', label: '' },
+            { id: 'erl2', from: 'erp2', fromPort: 'top', to: 'erp3', toPort: 'bottom', label: '' },
+            { id: 'erl3', from: 'erp2', fromPort: 'bottom', to: 'erp4', toPort: 'top', label: '' },
+            { id: 'erl4', from: 'erp3', fromPort: 'right', to: 'erp5', toPort: 'left', label: '' },
+            { id: 'erl5', from: 'erp4', fromPort: 'right', to: 'erp6', toPort: 'left', label: '' },
+            { id: 'erl6', from: 'erp2', fromPort: 'right', to: 'erp7', toPort: 'left', label: '' },
+            { id: 'erl7', from: 'erp7', fromPort: 'right', to: 'erp8', toPort: 'left', label: '' },
+            { id: 'erl8', from: 'erp5', fromPort: 'bottom', to: 'erp8', toPort: 'top', label: '' },
+            { id: 'erl9', from: 'erp6', fromPort: 'top', to: 'erp8', toPort: 'bottom', label: '' },
+            { id: 'erl10', from: 'erp8', fromPort: 'right', to: 'erp9', toPort: 'left', label: '' },
+            { id: 'erl11', from: 'erp9', fromPort: 'bottom', to: 'erp10', toPort: 'top', label: '' },
+        ];
+    }
+
     save();
     showToast(`Template '${templateName.toUpperCase()}' applied`, "success");
   }
@@ -210,17 +215,40 @@ onMounted(() => {
   const flowData = params.get('flow');
   if (flowData) {
     try {
-      const decoded = JSON.parse(atob(flowData));
-      if (decoded.blocks && decoded.connections) {
+      let decodedString;
+      if (window.LZString && flowData.length > 0) {
+        // Try decompressing first
+        decodedString = LZString.decompressFromEncodedURIComponent(flowData);
+        // If it fails (returns null or empty), fallback to btoa
+        if (!decodedString) decodedString = atob(flowData);
+      } else {
+        decodedString = atob(flowData);
+      }
+
+      const decoded = JSON.parse(decodedString);
+      
+      // Handle New Compact Array Format [ [blocks], [connections] ]
+      if (Array.isArray(decoded) && decoded.length === 2) {
+        state.blocks = decoded[0].map(b => ({
+          id: b[0], type: b[1], x: b[2], y: b[3], width: b[4], height: b[5], title: b[6], desc: b[7]
+        }));
+        state.connections = decoded[1].map(c => ({
+          id: c[0], from: c[1], to: c[2], fromPort: c[3], toPort: c[4], label: c[5]
+        }));
+        save();
+        showToast("Short-link flow imported!", "success");
+      } 
+      // Handle Legacy Object Format
+      else if (decoded.blocks && decoded.connections) {
         state.blocks = decoded.blocks;
         state.connections = decoded.connections;
         save();
         showToast("Shared flow imported successfully!", "success");
-        
-        // Clean URL without reload
-        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-        window.history.pushState({ path: newUrl }, '', newUrl);
       }
+      
+      // Clean URL without reload
+      const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+      window.history.pushState({ path: newUrl }, '', newUrl);
     } catch (e) {
       console.error("Failed to parse shared flow", e);
       showToast("Invalid share link", "error");

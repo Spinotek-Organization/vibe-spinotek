@@ -108,7 +108,7 @@
 import { 
   SunIcon, MoonIcon, DownloadIcon, UploadIcon, 
   LayoutTemplateIcon, RefreshCcwIcon, ChevronDownIcon,
-  ShieldCheckIcon, ShoppingCartIcon, ServerIcon, DatabaseIcon,
+  FlagIcon, MegaphoneIcon, UsersIcon, DatabaseIcon,
   FileJsonIcon, ImageIcon, Share2Icon
 } from 'lucide-vue-next';
 import { onMounted, onUnmounted, watch, ref } from 'vue';
@@ -152,9 +152,9 @@ const handleAction = (action) => {
 };
 
 const templates = [
-  { id: 'auth', name: 'Auth Flow', desc: 'Login & Verification', icon: ShieldCheckIcon },
-  { id: 'ecommerce', name: 'Commerce', desc: 'Product to Success', icon: ShoppingCartIcon },
-  { id: 'saas', name: 'SaaS Layout', desc: 'Dashboard Hub', icon: ServerIcon },
+  { id: 'project_mgmt', name: 'Project Mgmt', desc: 'Strategy to Launch', icon: FlagIcon },
+  { id: 'marketing', name: 'Marketing', desc: 'Leads to Growth', icon: MegaphoneIcon },
+  { id: 'onboarding', name: 'Onboarding', desc: 'Team & Culture', icon: UsersIcon },
   { id: 'erp', name: 'ERP Complex', desc: 'Management System', icon: DatabaseIcon },
 ];
 
@@ -240,15 +240,33 @@ const exportScreenshot = async () => {
 };
 
 const shareFlow = () => {
-  const flowData = {
-    blocks: props.state.blocks,
-    connections: props.state.connections
-  };
-  const encoded = btoa(JSON.stringify(flowData));
+  // Ultra-compact format: [ [blocks], [connections] ]
+  // block: [id, type, x, y, width, height, title, desc]
+  // connection: [id, from, to, fromPort, toPort, label]
+  const compactBlocks = props.state.blocks.map(b => [
+    b.id, b.type, Math.round(b.x), Math.round(b.y), 
+    Math.round(b.width || 280), Math.round(b.height || 200),
+    b.title, b.desc || ''
+  ]);
+  
+  const compactConnections = props.state.connections.map(c => [
+    c.id, c.from, c.to, c.fromPort, c.toPort, c.label || ''
+  ]);
+
+  const flowData = [compactBlocks, compactConnections];
+  const jsonString = JSON.stringify(flowData);
+  let encoded;
+  
+  if (window.LZString) {
+    encoded = LZString.compressToEncodedURIComponent(jsonString);
+  } else {
+    encoded = btoa(jsonString);
+  }
+  
   const url = `${window.location.origin}${window.location.pathname}?flow=${encoded}`;
   
   navigator.clipboard.writeText(url).then(() => {
-    emit('notify', { message: 'Shareable link copied to clipboard!', type: 'success' });
+    emit('notify', { message: 'Short share link created!', type: 'success' });
   });
 };
 </script>

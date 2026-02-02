@@ -3,8 +3,21 @@
     <!-- Decorative side accent -->
     <div class="absolute top-0 right-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-blue-500/20 to-transparent"></div>
 
-    <div class="flex-1 overflow-y-auto custom-scrollbar p-8">
-      <div v-for="(group, gIndex) in groupedLibrary" :key="group.category" 
+    <div class="flex-1 overflow-y-auto custom-scrollbar p-6">
+      <!-- Search Bar -->
+      <div class="mb-8 relative group">
+        <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+          <SearchIcon class="w-3.5 h-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+        </div>
+        <input 
+          v-model="searchQuery"
+          type="text" 
+          placeholder="Cari komponen..."
+          class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 rounded-xl text-[11px] font-bold text-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all shadow-inner placeholder:text-slate-400 dark:placeholder:text-white/20"
+        />
+      </div>
+
+      <div v-for="(group, gIndex) in filteredLibrary" :key="group.category" 
            :class="{'mt-10': gIndex > 0}">
         <div class="flex items-center gap-2 mb-6">
           <div class="w-1 h-3 bg-blue-500 rounded-full"></div>
@@ -29,13 +42,21 @@
           </div>
         </div>
       </div>
+
+      <!-- Empty State -->
+      <div v-if="filteredLibrary.length === 0" class="py-20 flex flex-col items-center text-center">
+         <div class="w-12 h-12 bg-slate-50 dark:bg-white/5 rounded-2xl flex items-center justify-center mb-4 text-slate-300 dark:text-white/20">
+            <SearchIcon class="w-6 h-6" />
+         </div>
+         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Komponen tidak ditemukan</p>
+      </div>
     </div>
 
     <div class="mt-auto p-6 border-t border-slate-100 dark:border-white/5 relative overflow-hidden">
       <!-- High-Tech Scan Line Animation -->
       <div class="absolute top-0 left-0 right-0 h-[1px] bg-blue-500/20 animate-scan pointer-events-none"></div>
 
-      <a href="https://spinotek.com" target="_blank" class="block group/cta relative">
+      <a href="https://spinotek.com/contact" target="_blank" class="block group/cta relative">
         <div class="absolute -inset-2 bg-blue-500/10 rounded-[2.5rem] blur-2xl opacity-0 group-hover/cta:opacity-100 transition-opacity duration-700"></div>
         
         <div class="relative p-5 rounded-3xl bg-white dark:bg-[#080808] border border-slate-200 dark:border-white/5 shadow-2xl transition-all duration-500 group-hover/cta:border-blue-500/40 group-hover/cta:-translate-y-2 overflow-hidden">
@@ -49,16 +70,16 @@
             </div>
             <div class="flex flex-col">
                <span class="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest">Spinotek</span>
-               <span class="text-[7px] font-black text-blue-500 uppercase tracking-widest leading-none">Systems Architect</span>
+               <span class="text-[7px] font-black text-blue-500 uppercase tracking-widest leading-none">Software Company</span>
             </div>
           </div>
 
           <p class="text-[11px] text-slate-600 dark:text-white/50 leading-relaxed font-semibold mb-4">
-            Build Your <span class="relative inline-block mx-0.5"><span class="absolute bottom-0.5 left-0 right-0 h-[35%] bg-blue-500/20 dark:bg-blue-500/40 -skew-x-12 rounded-sm border-r-2 border-blue-500/50"></span><span class="relative text-slate-900 dark:text-white font-black italic">Digital Empire</span></span>. Let us transform your complex ideas into high-performance systems.
+            Bangun <span class="relative inline-block mx-0.5"><span class="absolute bottom-0.5 left-0 right-0 h-[35%] bg-blue-500/20 dark:bg-blue-500/40 -skew-x-12 rounded-sm border-r-2 border-blue-500/50"></span><span class="relative text-slate-900 dark:text-white font-black">Produk Digital</span></span> Untuk Kebutuhan Bisnis Kamu.
           </p>
 
           <div class="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl transition-all group-hover/cta:shadow-[0_0_20px_rgba(37,99,235,0.3)]">
-            <span class="text-[9px] font-black uppercase tracking-widest flex-1">Launch Project</span>
+            <span class="text-[9px] font-black uppercase tracking-widest flex-1">Hubungi Kami</span>
             <ExternalLinkIcon class="w-3 h-3" />
           </div>
         </div>
@@ -68,72 +89,87 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
 import { 
-  LayoutIcon, UserIcon, LogInIcon, ClipboardListIcon, BarChart3Icon, 
-  FileTextIcon, SettingsIcon, CreditCardIcon, CheckCircleIcon, MailIcon,
-  SearchIcon, CalendarIcon, MapIcon, ActivityIcon, TagIcon, HelpCircleIcon,
-  UploadIcon, ExternalLinkIcon, AlertCircleIcon, UserPlusIcon,
-  FingerprintIcon, PieChartIcon, PlayCircleIcon, TerminalIcon, ReceiptIcon, HammerIcon
+  FlagIcon, SparklesIcon, SearchIcon, FileTextIcon,
+  BriefcaseIcon, ClipboardCheckIcon, TargetIcon, CalendarIcon,
+  FilterIcon, MegaphoneIcon, CopyIcon, BarChart3Icon,
+  UserIcon, UsersIcon, MessageSquareIcon, VideoIcon,
+  FilmIcon, ImageIcon, FileIcon, ExternalLinkIcon,
+  PlayCircleIcon, CheckCircleIcon, AlertCircleIcon, SettingsIcon
 } from 'lucide-vue-next';
+
+const searchQuery = ref('');
 
 const groupedLibrary = [
   {
-    category: 'Auth & Profile',
+    category: 'Strategy & Goal',
     items: [
-      { type: 'login', label: 'Login', icon: LogInIcon },
-      { type: 'register', label: 'Register', icon: UserPlusIcon },
-      { type: 'profile', label: 'Profile', icon: UserIcon },
-      { type: 'verify', label: 'OTP Verify', icon: FingerprintIcon },
+      { type: 'goal', label: 'Main Goal', icon: FlagIcon },
+      { type: 'vision', label: 'Vision & Mission', icon: SparklesIcon },
+      { type: 'research', label: 'Research', icon: SearchIcon },
+      { type: 'brief', label: 'Project Brief', icon: FileTextIcon },
     ]
   },
   {
-    category: 'Dashboard & Feed',
+    category: 'Planning & Ops',
     items: [
-      { type: 'dashboard', label: 'Dashboard', icon: LayoutIcon },
-      { type: 'analytics', label: 'Charts', icon: BarChart3Icon },
-      { type: 'feed', label: 'Activity', icon: ActivityIcon },
-      { type: 'stats', label: 'Stats Card', icon: PieChartIcon },
+      { type: 'project', label: 'Project', icon: BriefcaseIcon },
+      { type: 'task', label: 'Task Item', icon: ClipboardCheckIcon },
+      { type: 'milestone', label: 'Milestone', icon: TargetIcon },
+      { type: 'schedule', label: 'Schedule', icon: CalendarIcon },
     ]
   },
   {
-    category: 'Data & Content',
+    category: 'Growth & Market',
     items: [
-      { type: 'list', label: 'List View', icon: ClipboardListIcon },
-      { type: 'details', label: 'Details', icon: FileTextIcon },
-      { type: 'search', label: 'Search', icon: SearchIcon },
-      { type: 'calendar', label: 'Calendar', icon: CalendarIcon },
-      { type: 'map', label: 'Map view', icon: MapIcon },
-      { type: 'media', label: 'Video Player', icon: PlayCircleIcon },
+       { type: 'funnel', label: 'Funnel', icon: FilterIcon },
+       { type: 'campaign', label: 'Campaign', icon: MegaphoneIcon },
+       { type: 'ad_set', label: 'Ad Set', icon: CopyIcon },
+       { type: 'analytics', label: 'Growth Data', icon: BarChart3Icon },
     ]
   },
   {
-    category: 'System & Tools',
+    category: 'Team & Social',
     items: [
-      { type: 'settings', label: 'Settings', icon: SettingsIcon },
-      { type: 'messaging', label: 'Inbox', icon: MailIcon },
-      { type: 'upload', label: 'Upload', icon: UploadIcon },
-      { type: 'modal', label: 'Modal', icon: ExternalLinkIcon },
-      { type: 'terminal', label: 'Console', icon: TerminalIcon },
+      { type: 'person', label: 'Person', icon: UserIcon },
+      { type: 'team', label: 'Team Box', icon: UsersIcon },
+      { type: 'chat', label: 'Communication', icon: MessageSquareIcon },
+      { type: 'meeting', label: 'Sync Up', icon: VideoIcon },
     ]
   },
   {
-    category: 'Business',
+    category: 'Assets & Media',
     items: [
-      { type: 'payment', label: 'Checkout', icon: CreditCardIcon },
-      { type: 'pricing', label: 'Pricing', icon: TagIcon },
-      { type: 'invoice', label: 'Invoice', icon: ReceiptIcon },
+      { type: 'media', label: 'Video Asset', icon: FilmIcon },
+      { type: 'image', label: 'Visual', icon: ImageIcon },
+      { type: 'doc', label: 'Document', icon: FileIcon },
+      { type: 'link', label: 'External', icon: ExternalLinkIcon },
     ]
   },
   {
-    category: 'Status & Help',
+    category: 'Status & Flow',
     items: [
-      { type: 'success', label: 'Success', icon: CheckCircleIcon },
-      { type: 'error', label: 'Error State', icon: AlertCircleIcon },
-      { type: 'faq', label: 'FAQ', icon: HelpCircleIcon },
-      { type: 'maintenance', label: 'Service', icon: HammerIcon },
+      { type: 'start', label: 'Trigger', icon: PlayCircleIcon },
+      { type: 'complete', label: 'Achieved', icon: CheckCircleIcon },
+      { type: 'error', label: 'Blocker', icon: AlertCircleIcon },
+      { type: 'process', label: 'In Progress', icon: SettingsIcon },
     ]
   }
 ];
+
+const filteredLibrary = computed(() => {
+  if (!searchQuery.value.trim()) return groupedLibrary;
+  
+  const query = searchQuery.value.toLowerCase();
+  return groupedLibrary.map(group => ({
+    ...group,
+    items: group.items.filter(item => 
+      item.label.toLowerCase().includes(query) || 
+      item.type.toLowerCase().includes(query)
+    )
+  })).filter(group => group.items.length > 0);
+});
 
 const onDragStart = (e, type) => {
   e.dataTransfer.effectAllowed = 'copy';

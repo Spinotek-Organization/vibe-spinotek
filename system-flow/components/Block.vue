@@ -137,11 +137,47 @@ const nodeRef = ref(null);
 
 const resolveBlockComponent = (type) => {
   const map = {
+    // Strategy & Goal
+    goal: SuccessBlock,
+    vision: DashboardBlock,
+    research: SearchBlock,
+    brief: DetailsBlock,
+
+    // Planning & Ops
+    project: SettingsBlock,
+    task: ListBlock,
+    milestone: CalendarBlock,
+    schedule: CalendarBlock,
+
+    // Growth & Market
+    funnel: AnalyticsBlock,
+    campaign: FeedBlock,
+    ad_set: InvoiceBlock,
+    analytics: AnalyticsBlock,
+
+    // Team & Social
+    person: ProfileBlock,
+    team: ProfileBlock,
+    chat: MessagingBlock,
+    meeting: MediaBlock,
+
+    // Assets & Media
+    media: MediaBlock,
+    image: MediaBlock,
+    doc: DetailsBlock,
+    link: ModalBlock,
+
+    // Status & Flow
+    start: SuccessBlock,
+    complete: SuccessBlock,
+    error: MaintenanceBlock,
+    process: SettingsBlock,
+
+    // Legacy / Auth (Keep for compatibility)
     login: LoginRegisterBlock,
     register: LoginRegisterBlock,
     dashboard: DashboardBlock,
     list: ListBlock,
-    analytics: AnalyticsBlock,
     details: DetailsBlock,
     settings: SettingsBlock,
     payment: PaymentBlock,
@@ -158,7 +194,6 @@ const resolveBlockComponent = (type) => {
     faq: FaqBlock,
     verify: VerifyBlock,
     stats: StatsBlock,
-    media: MediaBlock,
     terminal: TerminalBlock,
     invoice: InvoiceBlock,
     maintenance: MaintenanceBlock,

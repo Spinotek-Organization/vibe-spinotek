@@ -23,7 +23,7 @@
       <div class="flex flex-col">
         <div class="flex items-center gap-2">
           <h1 class="text-xs md:text-xs font-black tracking-widest text-slate-900 dark:text-white uppercase truncate">
-            System <span class="text-blue-500">Flow</span>
+            Orbit <span class="text-blue-500">Flow</span>
           </h1>
           <div class="hidden sm:block px-1.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[7px] font-black text-blue-500 uppercase tracking-widest animate-pulse">
             Live
