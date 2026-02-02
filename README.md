@@ -1,8 +1,8 @@
-# 🌊 Spinotek Labs — Keep the Vibe Coding!
+# 🌊 Spinotek Labs — Keep the Innovation!
 
-Wadah buat pamer karya, prototipe, atau hasil eksperimen UI/UX kamu. Di sini tempatnya kita kumpulin energi kreatif dari tim Spinotek dan kamu semua! 🚀
+Wadah buat pamer karya, prototipe, atau hasil eksperimen kamu. Di sini tempatnya kita kumpulin energi kreatif dari tim Spinotek dan kamu semua! 🚀
 
-🔗 **Live Gallery**: [vibe.spinotek.com](https://vibe.spinotek.com)
+🔗 **Live Gallery**: [lab.spinotek.com](https://lab.spinotek.com)
 
 ---
 
