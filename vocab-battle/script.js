@@ -36,31 +36,41 @@ let gameState = {
   },
 };
 
-const startBtn = document.getElementById("start-btn");
-const overlay = document.getElementById("overlay");
-const menuContent = document.getElementById("menu-content");
-const countdownEl = document.getElementById("countdown");
-const winnerCard = document.getElementById("winner-card");
+let startBtn;
+let overlay;
+let menuContent;
+let countdownEl;
+let winnerCard;
 
-startBtn.onclick = () => {
-  menuContent.classList.add("hidden");
-  countdownEl.classList.remove("hidden");
-  let count = 3;
+document.addEventListener("DOMContentLoaded", () => {
+  startBtn = document.getElementById("start-btn");
+  overlay = document.getElementById("overlay");
+  menuContent = document.getElementById("menu-content");
+  countdownEl = document.getElementById("countdown");
+  winnerCard = document.getElementById("winner-card");
 
-  const countInterval = setInterval(() => {
-    countdownEl.innerText = count === 0 ? "GO!" : count;
-    countdownEl.classList.remove("animate__zoomIn");
-    void countdownEl.offsetWidth;
-    countdownEl.classList.add("animate__zoomIn");
+  if (startBtn) {
+    startBtn.onclick = () => {
+      menuContent.classList.add("hidden");
+      countdownEl.classList.remove("hidden");
+      let count = 3;
 
-    if (count < 0) {
-      clearInterval(countInterval);
-      countdownEl.classList.add("hidden");
-      initGame();
-    }
-    count--;
-  }, 1000);
-};
+      const countInterval = setInterval(() => {
+        countdownEl.innerText = count === 0 ? "GO!" : count;
+        countdownEl.classList.remove("animate__zoomIn");
+        void countdownEl.offsetWidth;
+        countdownEl.classList.add("animate__zoomIn");
+
+        if (count < 0) {
+          clearInterval(countInterval);
+          countdownEl.classList.add("hidden");
+          initGame();
+        }
+        count--;
+      }, 1000);
+    };
+  }
+});
 
 function initGame() {
   overlay.classList.add("hidden");
