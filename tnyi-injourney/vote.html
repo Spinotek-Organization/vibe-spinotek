@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Voting & Portfolio - TNYI x InJourney</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/tnyi-injourney/style.css">
+    <link rel="stylesheet" href="/tnyi-injourney/vote.css">
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col theme-injourney-vibrant overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 navbar-premium">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 py-2 px-4 rounded-xl logo-container">
+                        <img src="/tnyi-injourney/injourney-logo.png" alt="InJourney Logo" class="h-14 w-auto">
+                        <div class="h-8 w-px bg-gray-300"></div>
+                        <img src="/tnyi-injourney/tnyi-logo.png" alt="TNYI Logo" class="h-8 w-auto">
+                    </div>
+                </div>
+                <div id="user-info" class="hidden flex items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-800" id="nav-username">User Name</p>
+                        <p class="text-xs text-[#009E97] font-semibold tracking-wide" id="nav-role">ROLE</p>
+                    </div>
+                    <button onclick="logout()" class="p-2 text-gray-400 hover:text-[#EC3E32] transition-colors" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-12 relative z-10">
+        
+        <!-- LOGIN PAGE -->
+        <section id="page-login" class="page-section active-section">
+            <div class="max-w-md mx-auto mt-10">
+                <div class="glass-panel shadow-md p-10 rounded-2xl text-center relative overflow-hidden">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold mb-2 text-gray-800">Access Portal</h2>
+                        <p class="text-gray-500 text-sm">Welcome back, Leaders & Change Makers.</p>
+                    </div>
+                    <form id="login-form" class="space-y-6">
+                        <div class="text-left">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email Official</label>
+                            <input type="email" id="login-email" class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="name@injourney.id" required>
+                        </div>
+                        <div class="text-left">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                            <input type="password" id="login-password" class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="w-full bg-[#005eb8] text-white py-4 rounded-xl font-bold shadow-lg hover:shadow-xl hover:bg-[#004e9a] transition-all transform hover:scale-[1.02]">
+                            LOGIN
+                        </button>
+                    </form>
+                    <div class="mt-8 text-xs text-gray-500 border-t border-gray-100 pt-4">
+                        <p class="mb-2 uppercase tracking-widest font-bold text-[#009E97]">Simulation Access</p>
+                        <div class="bg-gray-50 p-4 rounded-lg text-left space-y-2 font-mono border border-gray-100">
+                            <p><span class="text-gray-800 font-bold">Direksi:</span> director@injourney.id / 123</p>
+                            <p><span class="text-gray-800 font-bold">Karyawan:</span> employee@injourney.id / 123</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIRECTOR PAGE (PORTFOLIO) -->
+        <section id="page-director" class="page-section">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-8 flex flex-col md:flex-row justify-between items-end gap-4">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-800">Digital Portfolio Submission</h2>
+                        <p class="text-gray-500">Lengkapi esai kepemimpinan Anda dengan metode STAR.</p>
+                    </div>
+                     <!-- Progress Bar -->
+                    <div class="w-full md:w-1/3 text-right">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1" id="director-step-info">Step 1 of 5</p>
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div id="director-progress-bar" class="h-full bg-gradient-to-r from-[#EC3E32] to-[#009E97] w-0 transition-all duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="director-content-area">
+                    <!-- Dynamic Content for Steps 1-5 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- EMPLOYEE PAGE (E-VOTING) -->
+        <section id="page-employee" class="page-section">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Culture Role Model E-Voting</h2>
+                    <p class="text-gray-500">Pilih kandidat terbaik dari entitas Anda (<span id="employee-entity-badge" class="font-bold text-[#F48F1F]">...</span>) yang mencerminkan nilai AKHLAK.</p>
+                </div>
+
+                <div id="candidate-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Valid Candidates Injected Here -->
+                </div>
+
+                <!-- AKHLAK Values Reminder -->
+                <div class="mt-24 pt-12 border-t border-gray-200">
+                     <h3 class="text-2xl font-bold text-center text-gray-800 mb-10 tracking-tight">Our Core Values: <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#005eb8] to-[#009E97]">AKHLAK</span></h3>
+                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        
+                        <!-- Amanah -->
+                        <div class="group glass-panel p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 border-b-4 border-transparent hover:border-[#EC3E32]">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-[#EC3E32]/10 flex items-center justify-center mb-3 group-hover:bg-[#EC3E32] transition-colors">
+                                <i class="fa-solid fa-hand-holding-heart text-[#EC3E32] text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">Amanah</h4>
+                            <p class="text-[10px] text-gray-500 leading-tight">Memegang teguh kepercayaan yang diberikan</p>
+                        </div>
+
+                        <!-- Kompeten -->
+                        <div class="group glass-panel p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 border-b-4 border-transparent hover:border-[#F48F1F]">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-[#F48F1F]/10 flex items-center justify-center mb-3 group-hover:bg-[#F48F1F] transition-colors">
+                                <i class="fa-solid fa-book-open-reader text-[#F48F1F] text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">Kompeten</h4>
+                            <p class="text-[10px] text-gray-500 leading-tight">Terus belajar & mengembangkan kapabilitas</p>
+                        </div>
+
+                        <!-- Harmonis -->
+                        <div class="group glass-panel p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 border-b-4 border-transparent hover:border-[#009E97]">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-[#009E97]/10 flex items-center justify-center mb-3 group-hover:bg-[#009E97] transition-colors">
+                                <i class="fa-solid fa-hands-holding-circle text-[#009E97] text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">Harmonis</h4>
+                            <p class="text-[10px] text-gray-500 leading-tight">Saling peduli & menghargai perbedaan</p>
+                        </div>
+
+                        <!-- Loyal -->
+                        <div class="group glass-panel p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 border-b-4 border-transparent hover:border-[#80A93F]">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-[#80A93F]/10 flex items-center justify-center mb-3 group-hover:bg-[#80A93F] transition-colors">
+                                <i class="fa-solid fa-heart text-[#80A93F] text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">Loyal</h4>
+                            <p class="text-[10px] text-gray-500 leading-tight">Berdedikasi & mengutamakan kepentingan Bangsa</p>
+                        </div>
+
+                        <!-- Adaptif -->
+                         <div class="group glass-panel p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 border-b-4 border-transparent hover:border-[#005eb8]">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-[#005eb8]/10 flex items-center justify-center mb-3 group-hover:bg-[#005eb8] transition-colors">
+                                <i class="fa-solid fa-rocket text-[#005eb8] text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">Adaptif</h4>
+                            <p class="text-[10px] text-gray-500 leading-tight">Terus berinovasi & antusias menggerakkan perubahan</p>
+                        </div>
+
+                        <!-- Kolaboratif -->
+                         <div class="group glass-panel p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 border-b-4 border-transparent hover:border-[#c5a96f]">
+                            <div class="w-12 h-12 mx-auto rounded-full bg-[#c5a96f]/10 flex items-center justify-center mb-3 group-hover:bg-[#c5a96f] transition-colors">
+                                <i class="fa-solid fa-users-gear text-[#c5a96f] text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">Kolaboratif</h4>
+                            <p class="text-[10px] text-gray-500 leading-tight">Membangun kerja sama yang sinergis</p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN DASHBOARD -->
+        <section id="page-admin" class="page-section">
+            <div class="max-w-4xl mx-auto">
+                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Live Voting Results</h2>
+                 <div id="results-container" class="space-y-6">
+                     <!-- Results -->
+                 </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Review Modal Container -->
+    <div id="modal-container"></div>
+
+    <script src="/tnyi-injourney/vote.js"></script>
+</body>
+</html>

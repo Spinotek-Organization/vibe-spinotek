@@ -150,14 +150,86 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Rendering ---
     function render() {
-        updateProgress();
+        renderWizard();
         renderContent();
     }
 
-    function updateProgress() {
-        const percentage = ((state.step - 1) / (CONFIG.totalSteps - 1)) * 100;
-        ui.progressBar.style.width = `${percentage}%`;
-        ui.progressStepInfo.innerText = `Step ${state.step} of ${CONFIG.totalSteps}`;
+    // --- Navigation Helper ---
+    window.goToStep = function(targetStep) {
+        // Can only navigate to previous steps or the current step
+        if (targetStep < state.step) {
+            state.step = targetStep;
+            render();
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
+    function renderWizard() {
+        const wizardContainer = document.getElementById('wizard-container');
+        if (!wizardContainer) return;
+
+        wizardContainer.innerHTML = `
+            <div class="relative py-4">
+                <!-- Background Line -->
+                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 rounded-full -z-0 shadow-inner"></div>
+                
+                <!-- Active Progress Line with Animation -->
+                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-[#EC3E32] via-[#F48F1F] to-[#009E97] rounded-full transition-all duration-700 ease-out -z-0 animate-gradient-flow shadow-[0_0_10px_rgba(0,158,151,0.3)]" style="width: ${((state.step - 1) / (CONFIG.totalSteps - 1)) * 100}%"></div>
+                
+                <!-- Steps -->
+                <div class="flex items-center justify-between relative z-10 px-4 md:px-0">
+                    ${Array.from({length: CONFIG.totalSteps}).map((_, i) => {
+                        const stepNum = i + 1;
+                        const isActive = stepNum === state.step;
+                        const isCompleted = stepNum < state.step;
+                        
+                        // Interaction classes
+                        let cursorClass = isCompleted ? "cursor-pointer hover:scale-110" : "cursor-default";
+                        let clickHandler = isCompleted ? `onclick="goToStep(${stepNum})"` : "";
+                        
+                        // Circle Styles - Softer Professional Look
+                        let circleBase = "w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg border-[3px] transition-all duration-300 transform bg-white shadow-lg relative z-20";
+                        let circleStateIndex = "";
+                        let labelColor = "";
+
+                        if (isActive) {
+                            // Active: Subtle Glow, Branding Color, slightly larger
+                            circleStateIndex = "border-[#009E97] text-[#009E97] scale-105 shadow-[0_0_20px_rgba(0,158,151,0.25)]"; 
+                            labelColor = "text-[#009E97] font-bold";
+                        } else if (isCompleted) {
+                            // Completed: Solid Branding Color, Checkmark
+                            circleStateIndex = "border-[#80A93F] bg-[#80A93F] text-white hover:bg-[#729c34] hover:shadow-md";
+                            labelColor = "text-[#80A93F] font-semibold";
+                        } else {
+                            // Future: Subtle Gray
+                            circleStateIndex = "border-gray-100 text-gray-300 bg-gray-50";
+                            labelColor = "text-gray-400 font-medium";
+                        }
+
+                        return `
+                            <div class="flex flex-col items-center group relative min-w-[100px]" ${clickHandler}>
+                                <div class="${circleBase} ${circleStateIndex} ${cursorClass}">
+                                    ${isCompleted ? '<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>' : stepNum}
+                                </div>
+                                <span class="absolute top-16 text-[10px] uppercase tracking-widest transition-all duration-300 ${labelColor} whitespace-nowrap bg-white/95 px-4 py-1.5 rounded-full shadow-sm border border-gray-100 backdrop-blur-sm z-10">
+                                    ${getStepLabel(stepNum)}
+                                </span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function getStepLabel(step) {
+        if(step === 1) return "Identitas";
+        if(step === 2) return "Foundation";
+        if(step === 3) return "Change";
+        if(step === 4) return "Future";
+        if(step === 5) return "Submit";
+        return "";
     }
 
     function renderContent() {
@@ -189,14 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="text-gray-500">Lengkapi data diri profesional Anda untuk memulai penyusunan portofolio.</p>
                 </div>
 
-                <div class="glass-panel p-8 rounded-2xl space-y-6">
+                <div class="glass-panel shadow-md p-8 rounded-2xl space-y-6">
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
                         <input type="text" data-model="identity.fullName" value="${state.identity.fullName}" 
                             class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="Masukkan nama lengkap beserta gelar">
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 gap-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Jabatan Saat Ini</label>
                             <input type="text" data-model="identity.position" value="${state.identity.position}"
@@ -285,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const color = progress >= 100 ? 'bg-green-500' : 'bg-yellow-500';
 
         return `
-            <div class="glass-panel p-6 md:p-8 rounded-2xl mb-8 border-l-4 ${progress >= 100 ? 'border-green-500' : 'border-[#c5a96f]'}">
+            <div class="glass-panel shadow-md p-6 md:p-8 rounded-2xl mb-8">
                 <div class="flex justify-between items-start mb-6">
                     <div>
                         <h3 class="text-xl font-bold text-gray-800">${q.title}</h3>
@@ -305,29 +377,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="font-semibold text-blue-800">Result:</span> Kenaikan skor engagement 20% dalam 3 bulan.
                 </div>
 
-                <div class="star-grid">
+                <div class="space-y-6">
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Situation</label>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-[#EC3E32]"></span>
+                            <label class="text-xs font-bold text-[#EC3E32] uppercase tracking-wider">Situation</label>
+                        </div>
                         <textarea data-q="${q.id}" data-part="s" 
-                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none" 
+                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none border-l-4 border-l-[#EC3E32] focus:border-[#EC3E32]" 
                             placeholder="Jelaskan konteks atau tantangan yang dihadapi...">${val.s}</textarea>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Task</label>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-[#F48F1F]"></span>
+                            <label class="text-xs font-bold text-[#F48F1F] uppercase tracking-wider">Task</label>
+                        </div>
                         <textarea data-q="${q.id}" data-part="t" 
-                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none" 
+                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none border-l-4 border-l-[#F48F1F] focus:border-[#F48F1F]" 
                             placeholder="Apa tanggung jawab atau peran Anda dalam situasi tersebut?">${val.t}</textarea>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Action</label>
+                         <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-[#009E97]"></span>
+                            <label class="text-xs font-bold text-[#009E97] uppercase tracking-wider">Action</label>
+                        </div>
                         <textarea data-q="${q.id}" data-part="a" 
-                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none" 
+                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none border-l-4 border-l-[#009E97] focus:border-[#009E97]" 
                             placeholder="Langkah konkret apa yang Anda lakukan?">${val.a}</textarea>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Result</label>
+                         <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-[#80A93F]"></span>
+                            <label class="text-xs font-bold text-[#80A93F] uppercase tracking-wider">Result</label>
+                        </div>
                         <textarea data-q="${q.id}" data-part="r" 
-                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none" 
+                            class="glass-input w-full p-4 rounded-xl min-h-[120px] text-sm focus:outline-none resize-none border-l-4 border-l-[#80A93F] focus:border-[#80A93F]" 
                             placeholder="Apa hasil nyata yang dicapai? (Kualitatif/Kuantitatif)">${val.r}</textarea>
                     </div>
                 </div>
@@ -354,7 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="text-gray-500">Sertakan dokumen pendukung untuk memperkuat portofolio Anda.</p>
                 </div>
 
-                <div class="glass-panel p-10 rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#005eb8] transition-colors cursor-pointer group" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+                <div class="glass-panel shadow-md p-10 rounded-2xl border-2 border-dashed border-gray-300 hover:border-[#005eb8] transition-colors cursor-pointer group" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
                     <div class="flex flex-col items-center justify-center space-y-4">
                         <div class="w-16 h-16 bg-blue-50 text-[#005eb8] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
@@ -378,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
                      <button onclick="prevStep()" class="px-6 py-3 text-gray-500 hover:text-gray-800 font-medium mr-4">
                         Kembali
                     </button>
-                    <button onclick="submitPortfolio()" class="bg-gradient-to-r from-[#005eb8] to-[#c5a96f] text-white px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
+                    <button onclick="submitPortfolio()" class="bg-[#005eb8] text-white px-10 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
                         Simpan & Submit Portofolio
                     </button>
                 </div>
@@ -408,39 +492,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // STAR Textareas
         document.querySelectorAll('textarea[data-q]').forEach(el => {
-            el.addEventListener('input', (e) => {
+            // Remove the 'input' listener that was calling render()
+            // We only save to state on input
+             el.addEventListener('input', (e) => {
                 const qId = e.target.dataset.q;
                 const part = e.target.dataset.part;
                 state.answers[qId][part] = e.target.value;
                 debounceSave();
-                render(); // Re-render to update counters/progress - Optimization: could just update DOM text
-                // For prototype, re-rendering is fine, but focus might be lost. 
-                // fix: don't re-render full step on input, just update the counter DOM
-                // Hack fallback: re-focus. 
-                // BETTER: Just update the specific counter.
+                
+                // --- OPTIMIZED UPDATE WITHOUT RE-RENDER ---
+                // 1. Calculate new word count for this question
+                const ans = state.answers[qId];
+                const totalWords = countWords(ans.s) + countWords(ans.t) + countWords(ans.a) + countWords(ans.r);
+                
+                // 2. Find the progress bar elements for THIS question card
+                // We assume the textarea is inside the card
+                const card = el.closest('.glass-panel');
+                if (card) {
+                    const barContainer = card.querySelector('.rounded-full.overflow-hidden');
+                    const bar = barContainer ? barContainer.firstElementChild : null;
+                    const textLabel = card.querySelector('span.text-xs.font-bold');
+
+                    if (bar && textLabel) {
+                         const progress = Math.min((totalWords / CONFIG.minWordsPerQuestion) * 100, 100);
+                         const isComplete = progress >= 100;
+                         
+                         // Update Width
+                         bar.style.width = `${progress}%`;
+                         
+                         // Update Color
+                         if (isComplete) {
+                             bar.classList.remove('bg-yellow-500');
+                             bar.classList.add('bg-green-500');
+                             // Update border color
+                             card.classList.remove('border-[#c5a96f]');
+                             card.classList.add('border-green-500');
+                             
+                             textLabel.classList.remove('text-gray-400');
+                             textLabel.classList.add('text-green-600');
+                         } else {
+                             bar.classList.remove('bg-green-500');
+                             bar.classList.add('bg-yellow-500');
+                             
+                             card.classList.remove('border-green-500');
+                             card.classList.add('border-[#c5a96f]');
+
+                             textLabel.classList.remove('text-green-600');
+                             textLabel.classList.add('text-gray-400');
+                         }
+
+                         // Update Text
+                         textLabel.innerText = `${totalWords} / ${CONFIG.minWordsPerQuestion} words`;
+                    }
+                }
             });
-            // Override auto-render on input to prevent focus loss
-            // Just update local counter in DOM
-            el.oninput = (e) => {
-                const qId = e.target.dataset.q;
-                const part = e.target.dataset.part;
-                state.answers[qId][part] = e.target.value;
-                debounceSave();
-                
-                // Update counter locally
-                const val = state.answers[qId];
-                const currentWords = countWords(val.s) + countWords(val.t) + countWords(val.a) + countWords(val.r);
-                const progress = Math.min((currentWords / CONFIG.minWordsPerQuestion) * 100, 100);
-                
-                // Update Progress bar visuals via DOM traversal (fragile but fast for prototype)
-                const container = e.target.closest('.glass-panel');
-                const bar = container.querySelector('.bg-green-500, .bg-yellow-500'); // find bar
-                const text = container.querySelector('.text-xs.font-bold'); // find text
-                
-                // This logic regarding updating DOM without re-render is safer for focus
-                // Implementation detail for later if needed. For now simple redraw has issues.
-                // Let's stick to simple implementation: don't call render() on every keystroke.
-            };
+            // Removed the old .oninput override
         });
     }
 

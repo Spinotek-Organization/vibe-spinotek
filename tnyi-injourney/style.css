@@ -33,10 +33,6 @@ h6 {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 .glass-input {
@@ -134,4 +130,138 @@ h6 {
     box-shadow: 
         inset 0 0 0 1px rgba(255,255,255,0.8),
         0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Futuristic Light Theme (for index.html) */
+body.light-futuristic {
+    background: #f0f4f8; /* Very pleasant light gray/blue */
+    background-image: 
+        radial-gradient(circle at 5% 10%, rgba(0, 94, 184, 0.08) 0%, transparent 40%),
+         radial-gradient(circle at 95% 90%, rgba(197, 169, 111, 0.1) 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23005eb8' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    color: #334155;
+}
+
+body.light-futuristic .navbar-premium {
+    background: rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+}
+
+body.light-futuristic .glass-panel {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+body.light-futuristic .glass-input {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #e2e8f0;
+}
+
+body.light-futuristic .glass-input:focus {
+    background: #fff;
+    border-color: #005eb8;
+    box-shadow: 0 0 0 4px rgba(0, 94, 184, 0.1);
+}
+
+/* InJourney Vibrant Palette */
+:root {
+    --ij-red: #EC3E32;
+    --ij-orange: #F48F1F;
+    --ij-cyan: #009E97;
+    --ij-green: #80A93F;
+}
+
+/* Vibrant Theme */
+/* Google Forms-like Simplicity */
+body.theme-injourney-vibrant {
+    background: #eff6fc; /* Very light blue-grey similar to GForms default */
+    background-image: none; /* Remove gradients */
+}
+
+body.theme-injourney-vibrant .navbar-premium {
+    background: rgba(255, 255, 255, 0.85); /* Translucent */
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to right, #EC3E32, #F48F1F, #009E97, #80A93F) 1;
+    box-shadow: 0 4px 20px -10px rgba(0,0,0,0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+}
+
+body.theme-injourney-vibrant .logo-container {
+    background: transparent; /* Cleaner look without box */
+    box-shadow: none;
+    padding: 0;
+}
+body.theme-injourney-vibrant .glass-panel {
+    background: #ffffff; /* Solid white */
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-radius: 12px;
+}
+
+/* Top border accent for cards */
+body.theme-injourney-vibrant .glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, var(--ij-red), var(--ij-orange));
+}
+
+body.theme-injourney-vibrant .glass-input {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+body.theme-injourney-vibrant .glass-input:focus {
+    background: #fff;
+    border-color: var(--ij-cyan);
+    box-shadow: 0 0 0 4px rgba(0, 158, 151, 0.1);
+}
+
+/* Wizard Stepper Styling */
+.wizard-step {
+    position: relative;
+    z-index: 1;
+}
+.wizard-step.active .step-circle {
+    background: var(--ij-cyan);
+    color: white;
+    border-color: var(--ij-cyan);
+    box-shadow: 0 0 15px rgba(0, 158, 151, 0.4);
+}
+.wizard-step.completed .step-circle {
+    background: var(--ij-green);
+    color: white;
+    border-color: var(--ij-green);
+}
+
+
+/* Flowing Gradient Animation for Wizard Line */
+@keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-flow {
+    background-size: 200% 200%;
+    animation: gradient-flow 3s ease infinite;
+}
+
+/* Pulsing Ring for Active Step */
+@keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(0, 158, 151, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 158, 151, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 158, 151, 0); }
+}
+
+.wizard-active-pulse {
+    animation: pulse-ring 2s infinite;
 }
