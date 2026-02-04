@@ -212,3 +212,24 @@ Vite akan secara otomatis menyuntikkan (inject) nilai-nilai ini ke dalam kode Ja
 ---
 
 _Happy coding & deploying!_ ⚡️
+
+## 📝 Troubleshooting Scripts
+
+### 1. Script JS Error 404 di Production?
+
+Jika file JavaScript kamu (seperti `script.js` atau `vote.js`) tidak ter-load (404) di production padahal di local jalan, pastikan:
+
+1.  Gunakan `type="module"` pada tag script.
+2.  Gunakan **Relative Path** (`./`) bukan absolute path.
+
+**Contoh Salah (Akan 404):**
+```html
+<script src="/folder-project/script.js"></script>
+```
+
+**Contoh Benar ✅:**
+```html
+<script type="module" src="./script.js"></script>
+```
+
+**Penjelasan:** Vite hanya akan mem-bundle file yang diimport sebagai module atau asset yang terlink relatif. Path absolute dianggap static file yang mungkin tidak ada di struktur final `dist`.
