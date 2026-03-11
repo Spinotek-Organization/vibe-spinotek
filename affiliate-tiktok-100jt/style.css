@@ -1,5 +1,4 @@
-/* Existing CSS + new animations */
-
+/* RESET & BASE */
 * {
     margin: 0;
     padding: 0;
@@ -15,7 +14,6 @@ body {
     color: #333;
     background-color: #f9f9f9;
     line-height: 1.6;
-    overflow-x: hidden;
 }
 
 .container {
@@ -29,7 +27,637 @@ body {
     font-weight: 800;
 }
 
-/* New Animations */
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    border-bottom: 5px solid #ff4d4d;
+}
+
+.header-content h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.header-content h1 i {
+    color: #00ff9d;
+    margin-right: 10px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.countdown-box {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    display: inline-block;
+    margin-top: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.countdown-box p {
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.countdown-box i {
+    color: #00ff9d;
+    margin-right: 8px;
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.countdown div {
+    background: #ff4d4d;
+    color: white;
+    border-radius: 10px;
+    padding: 15px 20px;
+    min-width: 100px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(255, 77, 77, 0.3);
+}
+
+.countdown span {
+    font-size: 2.5rem;
+    font-weight: 900;
+    display: block;
+    line-height: 1;
+}
+
+.countdown small {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* HERO */
+.hero {
+    padding: 60px 0;
+    background: white;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.hero-text h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 25px;
+}
+
+.lead {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.benefit-list {
+    list-style: none;
+    margin-bottom: 40px;
+}
+
+.benefit-list li {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.benefit-list i {
+    color: #00cc66;
+    margin-right: 12px;
+    margin-top: 5px;
+    font-size: 1.2rem;
+}
+
+.cta-box {
+    background: linear-gradient(145deg, #fff5f5, #ffeaea);
+    border-radius: 20px;
+    padding: 30px;
+    border: 2px dashed #ff4d4d;
+}
+
+.price-old {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.strike {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.price-new {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ff4d4d;
+    margin-bottom: 15px;
+}
+
+.big-price {
+    font-size: 3.5rem;
+    color: #ff2a2a;
+}
+
+.discount-badge {
+    background: #ffcc00;
+    color: #333;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 50px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.discount-badge i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+.btn-order {
+    display: block;
+    background: linear-gradient(to right, #ff4d4d, #ff3333);
+    color: white;
+    text-align: center;
+    padding: 22px;
+    border-radius: 15px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(255, 77, 77, 0.4);
+}
+
+.btn-order:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 77, 77, 0.6);
+}
+
+.guarantee {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+}
+
+.guarantee i {
+    color: #4d94ff;
+    margin-right: 8px;
+}
+
+/* HERO IMAGE */
+.hero-image {
+    position: relative;
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.image-badge {
+    position: absolute;
+    bottom: -20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.badge {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.badge i {
+    color: #ff4d4d;
+    font-size: 1.2rem;
+}
+
+/* STORY */
+.story {
+    padding: 70px 0;
+    background: #f0f7ff;
+}
+
+.story h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.story-content {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+.story-content p {
+    margin-bottom: 25px;
+}
+
+.proof h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+.proof h3 i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+.proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.proof-item img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* BONUS */
+.bonus {
+    padding: 70px 0;
+    background: white;
+}
+
+.bonus h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.bonus-card {
+    background: #f8f9ff;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    border: 2px solid #e0e7ff;
+    transition: all 0.3s ease;
+}
+
+.bonus-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff4d4d;
+    box-shadow: 0 20px 40px rgba(255, 77, 77, 0.15);
+}
+
+.bonus-icon {
+    font-size: 3rem;
+    color: #4d94ff;
+    margin-bottom: 20px;
+}
+
+.bonus-card h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #1a1a2e;
+}
+
+.bonus-card p {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* TESTIMONIALS */
+.testimonials {
+    padding: 70px 0;
+    background: #f0f7ff;
+}
+
+.testimonials h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.testimonial-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 3px solid #4d94ff;
+}
+
+.testimonial-header h5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.testimonial-header p {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.testimonial-card p {
+    font-style: italic;
+    color: #555;
+    line-height: 1.7;
+}
+
+/* ORDER */
+.order {
+    padding: 70px 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+}
+
+.order h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.order-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 50px;
+    max-width: 900px;
+    margin: 0 auto;
+    color: #333;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+.order-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.order-header h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: #1a1a2e;
+    margin-bottom: 15px;
+}
+
+.includes {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.includes i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+.order-price {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px dashed #ccc;
+}
+
+.old-price {
+    font-size: 2rem;
+    text-decoration: line-through;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.new-price {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ff4d4d;
+    margin-bottom: 10px;
+}
+
+.save {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00cc66;
+}
+
+.order-features ul {
+    list-style: none;
+    margin-bottom: 40px;
+}
+
+.order-features li {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.order-features i {
+    color: #00cc66;
+    margin-right: 15px;
+    font-size: 1.3rem;
+}
+
+.order-cta {
+    text-align: center;
+}
+
+.btn-wa {
+    display: inline-block;
+    background: linear-gradient(to right, #25D366, #128C7E);
+    color: white;
+    padding: 25px 40px;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+}
+
+.btn-wa:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(37, 211, 102, 0.6);
+}
+
+.payment-note {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.payment-note i {
+    color: #4d94ff;
+    margin-right: 8px;
+}
+
+.guarantee-badge {
+    background: #ffefef;
+    color: #333;
+    padding: 20px;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: 2px solid #ff4d4d;
+}
+
+.guarantee-badge i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+/* FAQ */
+.faq {
+    padding: 70px 0;
+    background: white;
+}
+
+.faq h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.faq-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border: 2px solid #e0e7ff;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 25px 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    background: #f8f9ff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-question i {
+    color: #4d94ff;
+    transition: transform 0.3s ease;
+}
+
+.faq-answer {
+    padding: 0 30px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.faq-answer p {
+    padding: 25px 0;
+    font-size: 1.1rem;
+    color: #555;
+    border-top: 1px dashed #ccc;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 300px;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+/* FOOTER */
+.footer {
+    background: #1a1a2e;
+    color: #ccc;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.footer p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.footer .disclaimer {
+    font-size: 0.9rem;
+    color: #999;
+    max-width: 800px;
+    margin: 20px auto;
+    line-height: 1.6;
+}
+
+.footer-links a {
+    color: #4d94ff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: 500;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* ANIMATIONS */
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 10px #ffcc00; }
   50% { box-shadow: 0 0 30px #ffcc00, 0 0 40px #ffcc00; }
@@ -66,7 +694,7 @@ body {
 }
 
 .countdown.urgent span {
-    color: #ff0000;
+    color: #ff0000 !important;
     animation: flash 0.5s infinite;
 }
 
@@ -81,11 +709,10 @@ body {
     animation: bounce 0.6s;
 }
 
-.btn-wa, .btn-order {
+.btn-order, .btn-wa {
     animation: bounce 2s infinite;
 }
 
-/* Progress Bar */
 .promo-progress-container {
     background: rgba(255,255,255,0.2);
     height: 8px;
@@ -100,20 +727,91 @@ body {
     transition: width 1s ease;
 }
 
-/* Parallax */
-.hero-image {
-    perspective: 1px;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+.sticky-wa {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(to right, #25D366, #128C7E);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    animation: bounce 2s infinite;
+    transition: all 0.3s ease;
 }
-.hero-image img {
-    transform: translateZ(-1px) scale(2);
+.sticky-wa:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6);
 }
-
-/* Existing styles... (paste all previous CSS here, but truncated for brevity) */
+.sticky-wa i {
+    margin-bottom: 2px;
+}
 
 /* RESPONSIVE */
 @media (max-width: 992px) {
-    /* ... */
+    .hero-grid,
+    .bonus-grid,
+    .testimonial-grid,
+    .proof-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-grid,
+    .bonus-grid,
+    .testimonial-grid,
+    .proof-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-text h2 {
+        font-size: 1.8rem;
+    }
+
+    .countdown {
+        gap: 15px;
+    }
+
+    .countdown div {
+        min-width: 80px;
+        padding: 12px 15px;
+    }
+
+    .countdown span {
+        font-size: 2rem;
+    }
+
+    .image-badge {
+        flex-direction: column;
+        gap: 15px;
+        position: static;
+        margin-top: 20px;
+    }
+
+    .order-box {
+        padding: 30px 20px;
+    }
+
+    .new-price {
+        font-size: 3rem;
+    }
+
+    .btn-order,
+    .btn-wa {
+        font-size: 1.2rem;
+        padding: 20px;
+    }
 }
