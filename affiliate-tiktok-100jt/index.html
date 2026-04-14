@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBOOK: Raih 100 Juta Pertama dengan Affiliate TikTok Shop!</title>
+    <style>
+/* COMPLETE CSS HERE - paste the full restored CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.highlight {
+    color: #ff4d4d;
+    font-weight: 800;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    border-bottom: 5px solid #ff4d4d;
+}
+
+.header-content h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.header-content h1 i {
+    color: #00ff9d;
+    margin-right: 10px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.countdown-box {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    display: inline-block;
+    margin-top: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.countdown-box p {
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.countdown-box i {
+    color: #00ff9d;
+    margin-right: 8px;
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.countdown div {
+    background: #ff4d4d;
+    color: white;
+    border-radius: 10px;
+    padding: 15px 20px;
+    min-width: 100px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(255, 77, 77, 0.3);
+}
+
+.countdown span {
+    font-size: 2.5rem;
+    font-weight: 900;
+    display: block;
+    line-height: 1;
+}
+
+.countdown small {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.promo-progress-container {
+    background: rgba(255,255,255,0.2);
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+#promo-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4d4d, #ffcc00);
+    width: 0%;
+    transition: width 1s ease;
+}
+
+/* HERO */
+.hero {
+    padding: 60px 0;
+    background: white;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.hero-text h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 25px;
+}
+
+.lead {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.benefit-list {
+    list-style: none;
+    margin-bottom: 40px;
+}
+
+.benefit-list li {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.benefit-list i {
+    color: #00cc66;
+    margin-right: 12px;
+    margin-top: 5px;
+    font-size: 1.2rem;
+}
+
+.cta-box {
+    background: linear-gradient(145deg, #fff5f5, #ffeaea);
+    border-radius: 20px;
+    padding: 30px;
+    border: 2px dashed #ff4d4d;
+}
+
+.price-old {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.strike {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.price-new {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ff4d4d;
+    margin-bottom: 15px;
+}
+
+.big-price {
+    font-size: 3.5rem;
+    color: #ff2a2a;
+}
+
+.discount-badge {
+    background: #ffcc00;
+    color: #333;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 50px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.1rem;
+    animation: pulse 1.5s infinite;
+}
+
+.discount-badge i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+.btn-order {
+    display: block;
+    background: linear-gradient(to right, #ff4d4d, #ff3333);
+    color: white;
+    text-align: center;
+    padding: 22px;
+    border-radius: 15px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(255, 77, 77, 0.4);
+    animation: bounce 2s infinite;
+}
+
+.btn-order:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 77, 77, 0.6);
+}
+
+.guarantee {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+}
+
+.guarantee i {
+    color: #4d94ff;
+    margin-right: 8px;
+}
+
+/* HERO IMAGE */
+.hero-image {
+    position: relative;
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.image-badge {
+    position: absolute;
+    bottom: -20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.badge {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.badge i {
+    color: #ff4d4d;
+    font-size: 1.2rem;
+}
+
+.image-badge .badge:nth-child(1) {
+    animation: float 4s ease-in-out infinite;
+}
+.image-badge .badge:nth-child(2) {
+    animation: float 4s ease-in-out infinite 1.3s;
+}
+.image-badge .badge:nth-child(3) {
+    animation: float 4s ease-in-out infinite 2.6s;
+}
+
+/* STORY */
+.story {
+    padding: 70px 0;
+    background: #f0f7ff;
+}
+
+.story h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.story-content {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+.story-content p {
+    margin-bottom: 25px;
+}
+
+.proof h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+.proof h3 i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+.proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.proof-item img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* BONUS */
+.bonus {
+    padding: 70px 0;
+    background: white;
+}
+
+.bonus h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.bonus-card {
+    background: #f8f9ff;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    border: 2px solid #e0e7ff;
+    transition: all 0.3s ease;
+}
+
+.bonus-card:hover {
+    transform: translateY(-10px);
+    border-color: #ff4d4d;
+    box-shadow: 0 20px 40px rgba(255, 77, 77, 0.15);
+}
+
+.bonus-icon {
+    font-size: 3rem;
+    color: #4d94ff;
+    margin-bottom: 20px;
+}
+
+.bonus-card h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #1a1a2e;
+}
+
+.bonus-card p {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* TESTIMONIALS */
+.testimonials {
+    padding: 70px 0;
+    background: #f0f7ff;
+}
+
+.testimonials h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    opacity: 0.7;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: scale(0.98);
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.testimonial-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 3px solid #4d94ff;
+}
+
+.testimonial-header h5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.testimonial-header p {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.testimonial-card p {
+    font-style: italic;
+    color: #555;
+    line-height: 1.7;
+}
+
+.testimonial-card.active-test {
+    opacity: 1;
+    transform: scale(1.02);
+    animation: bounce 0.6s;
+}
+
+/* ORDER */
+.order {
+    padding: 70px 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+}
+
+.order h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.order-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 50px;
+    max-width: 900px;
+    margin: 0 auto;
+    color: #333;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+.order-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.order-header h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: #1a1a2e;
+    margin-bottom: 15px;
+}
+
+.includes {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.includes i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+.order-price {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px dashed #ccc;
+}
+
+.old-price {
+    font-size: 2rem;
+    text-decoration: line-through;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.new-price {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ff4d4d;
+    margin-bottom: 10px;
+}
+
+.save {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00cc66;
+}
+
+.order-features ul {
+    list-style: none;
+    margin-bottom: 40px;
+}
+
+.order-features li {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.order-features i {
+    color: #00cc66;
+    margin-right: 15px;
+    font-size: 1.3rem;
+}
+
+.order-cta {
+    text-align: center;
+}
+
+.btn-wa {
+    display: inline-block;
+    background: linear-gradient(to right, #25D366, #128C7E);
+    color: white;
+    padding: 25px 40px;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+    animation: bounce 2s infinite;
+}
+
+.btn-wa:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(37, 211, 102, 0.6);
+}
+
+.payment-note {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.payment-note i {
+    color: #4d94ff;
+    margin-right: 8px;
+}
+
+.guarantee-badge {
+    background: #ffefef;
+    color: #333;
+    padding: 20px;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: 2px solid #ff4d4d;
+}
+
+.guarantee-badge i {
+    color: #ff4d4d;
+    margin-right: 10px;
+}
+
+/* FAQ */
+.faq {
+    padding: 70px 0;
+    background: white;
+}
+
+.faq h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.faq-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border: 2px solid #e0e7ff;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 25px 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    background: #f8f9ff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-question i {
+    color: #4d94ff;
+    transition: transform 0.3s ease;
+}
+
+.faq-answer {
+    padding: 0 30px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+}
+
+.faq-answer p {
+    padding: 25px 0;
+    font-size: 1.1rem;
+    color: #555;
+    border-top: 1px dashed #ccc;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 300px;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+/* FOOTER */
+.footer {
+    background: #1a1a2e;
+    color: #ccc;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.footer p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.footer .disclaimer {
+    font-size: 0.9rem;
+    color: #999;
+    max-width: 800px;
+    margin: 20px auto;
+    line-height: 1.6;
+}
+
+.footer-links a {
+    color: #4d94ff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: 500;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* ANIMATIONS */
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 10px #ffcc00; }
+  50% { box-shadow: 0 0 30px #ffcc00, 0 0 40px #ffcc00; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes flash {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+.countdown.urgent span {
+    color: #ff0000 !important;
+    animation: flash 0.5s infinite;
+}
+
+.sticky-wa {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(to right, #25D366, #128C7E);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    animation: bounce 2s infinite;
+    transition: all 0.3s ease;
+}
+.sticky-wa:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6);
+}
+.sticky-wa i {
+    margin-bottom: 2px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .hero-grid,
+    .bonus-grid,
+    .testimonial-grid,
+    .proof-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-grid,
+    .bonus-grid,
+    .testimonial-grid,
+    .proof-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-text h2 {
+        font-size: 1.8rem;
+    }
+
+    .countdown {
+        gap: 15px;
+    }
+
+    .countdown div {
+        min-width: 80px;
+        padding: 12px 15px;
+    }
+
+    .countdown span {
+        font-size: 2rem;
+    }
+
+    .image-badge {
+        flex-direction: column;
+        gap: 15px;
+        position: static;
+        margin-top: 20px;
+    }
+
+    .order-box {
+        padding: 30px 20px;
+    }
+
+    .new-price {
+        font-size: 3rem;
+    }
+
+    .btn-order,
+    .btn-wa {
+        font-size: 1.2rem;
+        padding: 20px;
+    }
+}
+</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header dengan countdown -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-bolt"></i> EBOOK EKSPRES: <span class="highlight">100 JUTA PERTAMA</span> DARI AFFILIATE TIKTOK SHOP</h1>
+                <p class="subtitle">Dari NOL ke 100 Juta dalam 90 Hari – Tanpa Modal, Tanpa Wajah, Tanpa Ribet!</p>
+                <div class="countdown-box">
+                    <p><i class="fas fa-clock"></i> PROMO BERAKHIR DALAM:</p>
+                    <div class="countdown" id="countdown">
+                        <div><span id="hours">23</span><small>Jam</small></div>
+                        <div><span id="minutes">59</span><small>Menit</small></div>
+                        <div><span id="seconds">59</span><small>Detik</small></div>
+                    </div>
+                    <div class="promo-progress-container">
+                        <div id="promo-progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <h2>GUE DULU JUALAN KOPI DI WARUNG, SEKARANG DAPET <span class="highlight">127 JUTA/BULAN</span> CUMA DARI AFFILIATE TIKTOK SHOP.</h2>
+                    <p class="lead">Dan di ebook ini, gue bocorin <strong>step-by-step</strong> persis gimana caranya – dari seting akun, cari produk viral, bikin konten auto laris, sampe withdraw ratusan juta ke rekening lu.</p>
+                    <ul class="benefit-list">
+                        <li><i class="fas fa-check-circle"></i> <strong>Tanpa Modal</strong> – Ga perlu keluar uang sepeserpun</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Tanpa Tampang</strong> – Ga perlu jadi selebgram atau tampang kece</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Tanpa Edit Ribet</strong> – Pakai template konten yang udah gue siapin</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Full Screen Recording</strong> – Gue rekam layar gue sendiri jalanin sistem ini</li>
+                    </ul>
+                    <div class="cta-box">
+                        <p class="price-old">Harga Normal: <span class="strike">Rp 497.000</span></p>
+                        <p class="price-new">HARI INI: <span class="big-price">Rp 97.000</span></p>
+                        <p class="discount-badge"><i class="fas fa-fire"></i> DISKON 80% HANYA UNTUK 100 PEMBELI PERTAMA!</p>
+                        <a href="#order" class="btn-order"><i class="fas fa-shopping-cart"></i> Saya Mau! Ambil Ebook Sekarang</a>
+                        <p class="guarantee"><i class="fas fa-shield-alt"></i> Jaminan 100% Uang Kembali dalam 30 Hari – Jika Tidak Puas</p>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="TikTok Shop Affiliate Success">
+                    <div class="image-badge">
+                        <div class="badge"><i class="fas fa-play-circle"></i> 47+ Video Tutorial</div>
+                        <div class="badge"><i class="fas fa-file-pdf"></i> 218 Halaman PDF</div>
+                        <div class="badge"><i class="fas fa-chart-line"></i> Spreadsheet Tracking</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Storytelling -->
+    <section class="story">
+        <div class="container">
+            <h2>Dulu Gue Ngenes, Sekarang Gue Bisa <span class="highlight">Belikan Emak Mercedes</span></h2>
+            <div class="story-content">
+                <p>Nama gue <strong>Rizki</strong>, umur 28 tahun. 2 tahun lalu gue masih jadi karyawan kontrak di pabrik sepatu, gaji 3,2 juta sebulan. Setiap bulan selalu minus, ngutang ke temen buat bayar kosan.</p>
+                <p>Suatu hari gue nemuin TikTok Shop. Gue liat orang‑orang cuma repost produk dari TikTok Shop ke TikTok mereka, dapet komisi. “Ini mah gampang banget,” pikir gue.</p>
+                <p>Ternyata <strong>GAGAL TOTAL 3 BULAN</strong>. Dapet 0 rupiah. Gue hampir nyerah.</p>
+                <p>Sampai akhirnya gue nemuin <strong>“FORMULA 3 LAYER”</strong> yang bikin gue dapet komisi pertama 1,2 juta dalam 3 hari. Dari situ gue kembalin, skaliing, sampe bulan ke‑4 gue catet <strong>PENGHASILAN 127 JUTA DALAM 1 BULAN.</strong></p>
+                <p>Di ebook ini, gue kasih lu <strong>SEMUA RAHASIA</strong> yang gue pelajari dengan susah payah – plus update terbaru 2025 biar lu ga ketinggalan algoritma.</p>
+            </div>
+            <div class="proof">
+                <h3><i class="fas fa-screenshot"></i> BUKTI PENARIKAN DANA</h3>
+                <div class="proof-grid">
+                    <div class="proof-item"><img src="https://images.unsplash.com/photo-1613243555988-441166d4d6fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Withdrawal Proof 1"></div>
+                    <div class="proof-item"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Withdrawal Proof 2"></div>
+                    <div class="proof-item"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Withdrawal Proof 3"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What You Get -->
+    <section class="bonus">
+        <div class="container">
+            <h2>Yang Lu Dapetin Ga Cuma Ebook Biasa – Tapi <span class="highlight">“BUSINESS IN A BOX”</span></h2>
+            <div class="bonus-grid">
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fas fa-book-open"></i></div>
+                    <h4>EBOOK 218 HALAMAN</h4>
+                    <p>Step‑by‑step dari nol sampe bisa withdraw 100 juta. Bahasa santai, ga bertele‑tele.</p>
+                </div>
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fas fa-video"></i></div>
+                    <h4>47 VIDEO TUTORIAL</h4>
+                    <p>Rekaman layar gue sendiri – dari seting akun, cari produk, bikin konten, sampe withdraw.</p>
+                </div>
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fas fa-file-excel"></i></div>
+                    <h4>SPREADSHEET TRACKING</h4>
+                    <p>Template Google Sheets buat track produk, komisi, dan progress lu biar ga mumet.</p>
+                </div>
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fas fa-users"></i></div>
+                    <h4>GRUP PRIVATE DISCORD</h4>
+                    <p>Akses ke komunitas anggota buat sharing, tanya‑tanya, dan collab.</p>
+                </div>
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fas fa-sync-alt"></i></div>
+                    <h4>UPDATE SEUMUR HIDUP</h4>
+                    <p>Kalau ada perubahan algoritma TikTok, lu dapetin update‑nya gratis selamanya.</p>
+                </div>
+                <div class="bonus-card">
+                    <div class="bonus-icon"><i class="fas fa-headset"></i></div>
+                    <h4>SUPPORT 1‑ON‑1</h4>
+                    <p>Bisa konsultasi langsung via DM Instagram kalo bingung di step mana pun.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>Mereka Udah Buktikan – Sekarang Giliran Lu</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Andi">
+                        <div>
+                            <h5>Andi, 24</h5>
+                            <p>Karyawan Swasta</p>
+                        </div>
+                    </div>
+                    <p>“Bulan pertama coba, dapet 8 juta. Bulan kedua naik ke 32 juta. Gila ini sistem works banget!”</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sari">
+                        <div>
+                            <h5>Sari, 29</h5>
+                            <p>Ibu Rumah Tangga</p>
+                        </div>
+                    </div>
+                    <p>“Ga nyangka bisa dapet 17 juta sambil jagain anak. Kontennya ga perlu edit ribet, tinggal follow template.”</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Budi">
+                        <div>
+                            <h5>Budi, 31</h5>
+                            <p>Driver Online</p>
+                        </div>
+                    </div>
+                    <p>“Dari penghasilan 4 juta sebulan jadi 45 juta sebulan. Sekarang udah resign jadi driver, fokus affiliate full‑time.”</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Section -->
+    <section class="order" id="order">
+        <div class="container">
+            <h2>Ambil Akses Sekarang – Sebelum Promo Berakhir!</h2>
+            <div class="order-box">
+                <div class="order-header">
+                    <h3>PAKET LENGKAP “100 JUTA PERTAMA”</h3>
+                    <p class="includes"><i class="fas fa-gift"></i> Termasuk 6 Bonus Eksklusif</p>
+                </div>
+                <div class="order-price">
+                    <p class="old-price">Rp 497.000</p>
+                    <p class="new-price">Rp 97.000</p>
+                    <p class="save">Hemat Rp 400.000 (80%)</p>
+                </div>
+                <div class="order-features">
+                    <ul>
+                        <li><i class="fas fa-check"></i> Ebook 218 Halaman (PDF)</li>
+                        <li><i class="fas fa-check"></i> 47 Video Tutorial (Akses Lifetime)</li>
+                        <li><i class="fas fa-check"></i> Spreadsheet Tracking System</li>
+                        <li><i class="fas fa-check"></i> Akses Grup Private Discord</li>
+                        <li><i class="fas fa-check"></i> Update Selamanya Gratis</li>
+                        <li><i class="fas fa-check"></i> Support 1‑on‑1 via DM</li>
+                    </ul>
+                </div>
+                <div class="order-cta">
+                    <a href="https://wa.me/6281234567890?text=Saya%20mau%20order%20Ebook%20Affiliate%20TikTok%20Shop%20100JT" class="btn-wa" target="_blank"><i class="fab fa-whatsapp"></i> ORDER VIA WHATSAPP SEKARANG</a>
+                    <p class="payment-note"><i class="fas fa-lock"></i> Pembayaran via Transfer Bank, OVO, Dana, atau QRIS. Akses langsung setelah pembayaran.</p>
+                    <p class="guarantee-badge"><i class="fas fa-shield-alt"></i> JAMINAN 100% UANG KEMBALI – 30 Hari Tanpa Syarat</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="container">
+            <h2>Pertanyaan yang Sering Ditanyain</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">Saya pemula banget, ga pernah jualan online, bisa ga? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">
+                        <p><strong>BISA BANGET!</strong> Ebook ini dirancang khusus untuk pemula total. Semua diajari dari nol, dari bikin akun TikTok Shop sampe withdraw. Bahkan gue kasih template konten yang tinggal copas.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Berapa lama bisa dapet hasil? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">
+                        <p>Banyak member yang dapet komisi pertama dalam 3‑7 hari. Tapi rata‑rata butuh 2‑3 minggu buat mulai konsisten. Yang penting <strong>ACTION</strong> dan ikuti step‑by‑step‑nya.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Perlu modal berapa? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">
+                        <p><strong>MODAL 0 RUPIAH.</strong> Semua bisa dilakukan tanpa keluar uang. Bahkan buat bikin kontennya bisa pakai HP aja, ga perlu camera mahal atau editing software berbayar.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Beli sekarang dapat bonus? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">
+                        <p><strong>YA!</strong> Kamu dapat 6 bonus yang udah disebutin di atas. Plus, kalau order dalam 24 jam ke depan, dapat extra bonus: “List 100 Produk TikTok Shop Paling Laris 2025”.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 – <strong>100 JUTA PERTAMA</strong> – Affiliate TikTok Shop System. Hak Cipta Dilindungi.</p>
+            <p class="disclaimer">Hasil yang didapatkan bisa berbeda‑beda tergantung usaha dan konsistensi masing‑masing. Ini bukan janji jadi kaya instan, tapi sistem yang terbukti bekerja jika dijalankan dengan benar.</p>
+            <div class="footer-links">
+                <a href="#">Syarat & Ketentuan</a> | 
+                <a href="#">Kebijakan Privasi</a> | 
+                <a href="#">Kontak</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sticky WhatsApp Button -->
+    <a href="https://wa.me/6281234567890?text=Saya%20mau%20order%20Ebook%20Affiliate%20TikTok%20Shop%20100JT" class="sticky-wa" target="_blank">
+        <i class="fab fa-whatsapp"></i> Order Sekarang!
+    </a>
+    
+    <script>
+        // Countdown Timer with urgent flash
+        function updateCountdown() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+
+            const diff = tomorrow - now;
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            const countdownEl = document.getElementById('countdown');
+            if (hours === 0 && minutes === 0 && seconds < 30) {
+                countdownEl.classList.add('urgent');
+            } else {
+                countdownEl.classList.remove('urgent');
+            }
+
+            // Update progress bar
+            const totalMs = 24 * 60 * 60 * 1000;
+            const progress = ((totalMs - diff) / totalMs) * 100;
+            const progressBar = document.getElementById('promo-progress');
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // FAQ Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    // Close other open items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+
+            // Auto-open first FAQ
+            if (faqItems.length > 0) {
+                faqItems[0].classList.add('active');
+            }
+
+            // Smooth scroll for order button
+            const orderBtn = document.querySelector('.btn-order');
+            if (orderBtn) {
+                orderBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const orderSection = document.getElementById('order');
+                    if (orderSection) {
+                        orderSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+
+            // Add animation on scroll (simple)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe sections
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+
+            // Typewriter effect for subtitle
+            function typeWriter(element, text, speed = 40) {
+                element.innerHTML = '';
+                let i = 0;
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+                type();
+            }
+            const subtitle = document.querySelector('.subtitle');
+            if (subtitle) typeWriter(subtitle, subtitle.textContent);
+
+            // Testimonial carousel
+            let currentTestimonial = 0;
+            const testimonialCards = document.querySelectorAll('.testimonial-card');
+            function nextTestimonial() {
+                testimonialCards.forEach((card, index) => {
+                    card.classList.toggle('active-test', index === currentTestimonial);
+                });
+                currentTestimonial = (currentTestimonial + 1) % testimonialCards.length;
+            }
+            setInterval(nextTestimonial, 4000);
+            nextTestimonial();
+
+            // Confetti on CTA
+            function launchConfetti() {
+                const canvas = document.createElement('canvas');
+                canvas.style.position = 'fixed';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                canvas.style.pointerEvents = 'none';
+                canvas.style.zIndex = '9999';
+                document.body.appendChild(canvas);
+                const ctx = canvas.getContext('2d');
+                let particles = [];
+                for (let i = 0; i < 100; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: canvas.height + 10,
+                        vx: (Math.random() - 0.5) * 10,
+                        vy: Math.random() * -15 - 5,
+                        color: ['#ff4d4d', '#ffcc00', '#00ff9d'][Math.floor(Math.random()*3)]
+                    });
+                }
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.2;
+                        p.rotation += 0.01;
+                        ctx.fillStyle = p.color;
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rotation);
+                        ctx.fillRect(-5, -5, 10, 10);
+                        ctx.restore();
+                    });
+                    particles = particles.filter(p => p.y < canvas.height);
+                    if (particles.length > 0) requestAnimationFrame(animate);
+                    else canvas.remove();
+                }
+                animate();
+            }
+
+            const orderBtns = document.querySelectorAll('.btn-order, .btn-wa, .sticky-wa');
+            orderBtns.forEach(btn => {
+                btn.addEventListener('click', launchConfetti);
+            });
+
+            // Parallax
+            function parallax() {
+                const scrolled = window.pageYOffset;
+                const heroImg = document.querySelector('.hero-image img');
+                if (heroImg) {
+                    heroImg.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }
+            }
+            window.addEventListener('scroll', parallax);
+        });
+    </script>
+</body>
+</html>
