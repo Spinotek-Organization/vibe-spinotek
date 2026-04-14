@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCoding Hackathon Vol 1 | Spinotek</title>
+    
+    <!-- Meta Tags -->
+    <meta name="title" content="VibeCoding Hackathon Vol 1 | Spinotek">
+    <meta name="description" content="Hackathon perdana dari Spinotek untuk para developer dan kreatif. Coding with vibe, build with purpose.">
+    <meta name="author" content="Spinotek">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../../assets/images/favicon.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#050505',
+                        primary: '#3b82f6',
+                        secondary: '#8b5cf6',
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Framer Motion (Optional but great for animations) -->
+    <!-- We'll use CSS for now for simplicity and performance -->
+    
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .vibe-gradient {
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .logo-white {
+            filter: brightness(0) invert(1);
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-lg px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="../../assets/images/spinotek-logo.png" alt="Spinotek" class="h-8 logo-white">
+                <div class="h-6 w-[1px] bg-white/20 hidden sm:block"></div>
+                <span class="text-sm font-bold tracking-widest uppercase text-primary hidden sm:block">VibeCoding</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="#about" class="text-sm font-medium hover:text-primary transition-colors">About</a>
+                <a href="#timeline" class="text-sm font-medium hover:text-primary transition-colors">Timeline</a>
+                <a href="#register" class="px-5 py-2 bg-primary hover:bg-primary/80 text-white rounded-full text-sm font-bold transition-all glow">Register Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-24 px-6 overflow-hidden">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] vibe-gradient blur-[100px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 mb-8 animate-bounce">
+                <span class="h-2 w-2 rounded-full bg-primary animate-ping"></span>
+                <span class="text-xs font-bold uppercase tracking-[0.2em]">Volume 01: The Beginning</span>
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl lg:text-[120px] font-black tracking-tighter leading-none mb-6">
+                VIBE<span class="gradient-text">CODING</span>
+            </h1>
+            
+            <p class="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-12 font-medium">
+                Satu hari penuh kreativitas, kolaborasi, dan kode. Bangun solusi inovatif dengan vibe terbaik bersama komunitas Spinotek.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#register" class="px-10 py-5 bg-white text-black font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all duration-300">
+                    Join Hackathon
+                </a>
+                <a href="#about" class="px-10 py-5 border border-white/20 hover:border-primary transition-all duration-300 font-black uppercase tracking-widest">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 px-6 border-y border-white/5 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <h3 class="text-4xl font-bold mb-2">24H</h3>
+                <p class="text-gray-500 uppercase text-xs tracking-widest font-bold">Coding Session</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl font-bold mb-2">Rp 10M+</h3>
+                <p class="text-gray-500 uppercase text-xs tracking-widest font-bold">Total Prizes</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl font-bold mb-2">50+</h3>
+                <p class="text-gray-500 uppercase text-xs tracking-widest font-bold">Developers</p>
+            </div>
+            <div class="text-center">
+                <h3 class="text-4xl font-bold mb-2">1</h3>
+                <p class="text-gray-500 uppercase text-xs tracking-widest font-bold">Winner Spirit</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
+            <div class="w-full lg:w-1/2">
+                <div class="w-full aspect-square glass-card rounded-3xl relative overflow-hidden flex items-center justify-center p-12">
+                    <img src="../../assets/images/spinotek-logo.png" alt="Spinotek" class="w-full opacity-20 logo-white animate-pulse">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-[200px] font-black text-white/5">VC</div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2">
+                <label class="text-primary font-bold uppercase tracking-[0.3em] text-xs mb-4 block">About the Event</label>
+                <h2 class="text-4xl md:text-5xl font-bold mb-8 tracking-tight">Level Up Your <span class="text-primary italic">Vibe</span> and Your <span class="text-secondary italic">Code</span>.</h2>
+                <div class="space-y-6 text-gray-400 leading-relaxed text-lg">
+                    <p>
+                        VibeCoding adalah inisiatif dari <span class="text-white font-bold">Spinotek Labs</span> untuk menciptakan ruang bagi para pengembang untuk mengeksplorasi ide gila tanpa tekanan, namun dengan tujuan yang jelas.
+                    </p>
+                    <p>
+                        Hackathon Volume 1 ini difokuskan pada pengembangan solusi digital yang relevan dengan kebutuhan lokal, menggunakan teknologi terkini dengan pendekatan yang kreatif.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-12">
+                    <div class="glass-card p-6 rounded-2xl">
+                        <h4 class="text-white font-bold mb-2">Innovative Tools</h4>
+                        <p class="text-sm text-gray-500">Akses ke resources premium dan API partner eksklusif.</p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl">
+                        <h4 class="text-white font-bold mb-2">Expert Mentors</h4>
+                        <p class="text-sm text-gray-500">Bimbingan dari praktisi industri berpengalaman.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline" class="py-32 px-6 bg-white/[0.01]">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-bold mb-4">Event Timeline</h2>
+                <p class="text-gray-500 uppercase tracking-widest text-xs font-bold">The Journey to the Champion</p>
+            </div>
+            
+            <div class="space-y-12">
+                <div class="flex gap-8 items-start group">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center font-bold text-white group-hover:scale-110 transition-transform">01</div>
+                        <div class="w-[2px] h-20 bg-gradient-to-b from-primary to-transparent mt-4 opacity-30"></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Open Registration</h3>
+                        <p class="text-gray-500 mb-1">1 - 15 Februari 2026</p>
+                        <p class="text-sm text-gray-400">Pendaftaran dibuka bagi tim yang terdiri dari 1-3 orang.</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-8 items-start group">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center font-bold text-white group-hover:border-primary transition-all">02</div>
+                        <div class="w-[2px] h-20 bg-white/10 mt-4"></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Technical Briefing</h3>
+                        <p class="text-gray-500 mb-1">16 Februari 2026</p>
+                        <p class="text-sm text-gray-400">Sesi penjelasan teknis dan penentuan tema khusus.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-8 items-start group">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center font-bold text-white group-hover:border-primary transition-all">03</div>
+                        <div class="w-[2px] h-20 bg-white/10 mt-4"></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">The Hackathon Day</h3>
+                        <p class="text-gray-500 mb-1">21 - 22 Februari 2026</p>
+                        <p class="text-sm text-gray-400 text-primary font-bold">24 Jam adu kreativitas secara hybrid.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-8 items-start group">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center font-bold text-white group-hover:border-primary transition-all text-secondary group-hover:text-primary">04</div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Final Pitching & Awarding</h3>
+                        <p class="text-gray-500 mb-1">22 Februari 2026, 16:00 WIB</p>
+                        <p class="text-sm text-gray-400">Presentasi di hadapan juri dan pengumuman pemenang.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="register" class="py-40 px-6 overflow-hidden relative">
+        <div class="absolute inset-0 bg-primary/10 blur-[150px] rounded-full translate-y-1/2"></div>
+        <div class="max-w-4xl mx-auto glass-card rounded-[40px] p-12 md:p-24 text-center relative z-10 border-primary/20">
+            <h2 class="text-4xl md:text-6xl font-black mb-8">Ready to Build Something <span class="gradient-text">Awesome?</span></h2>
+            <p class="text-gray-400 text-lg mb-12 max-w-xl mx-auto">
+                Jangan lewatkan kesempatan untuk menjadi bagian dari sejarah Volume 1 ini. Slot terbatas untuk 20 tim terpilih.
+            </p>
+            <a href="https://forms.gle/your-form-id" target="_blank" class="inline-block px-12 py-6 bg-primary text-white font-black uppercase tracking-widest hover:bg-primary/80 transition-all rounded-xl glow text-lg">
+                Daftar Sekarang
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+            <div class="flex flex-col items-center md:items-start gap-6">
+                <img src="../../assets/images/spinotek-logo.png" alt="Spinotek" class="h-10 logo-white">
+                <p class="text-gray-600 text-sm max-w-xs text-center md:text-left">
+                    Spinotek Labs adalah wadah eksplorasi kreatif dan pengembangan teknologi untuk masa depan digital.
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-12">
+                <div class="flex flex-col gap-4">
+                    <h5 class="font-bold text-sm uppercase tracking-widest">Connect</h5>
+                    <a href="#" class="text-gray-500 hover:text-primary text-sm">Instagram</a>
+                    <a href="#" class="text-gray-500 hover:text-primary text-sm">LinkedIn</a>
+                    <a href="#" class="text-gray-500 hover:text-primary text-sm">GitHub</a>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <h5 class="font-bold text-sm uppercase tracking-widest">Other Links</h5>
+                    <a href="../../index.html" class="text-gray-500 hover:text-primary text-sm">Spinotek Labs</a>
+                    <a href="#" class="text-gray-500 hover:text-primary text-sm">Community</a>
+                    <a href="#" class="text-gray-500 hover:text-primary text-sm">Contact</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-gray-600">
+            <p>© 2026 SPINOTEK LABS. ALL RIGHTS RESERVED.</p>
+            <div class="flex gap-8">
+                <a href="#">PRIVACY POLICY</a>
+                <a href="#">TERMS OF SERVICE</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

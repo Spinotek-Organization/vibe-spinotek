@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#0033CC',
+                        'brand-black': '#080C10',
+                        'brand-white': '#FFFFFF',
+                        'brand-gray': '#F1F5F9',
+                        'brand-cyan': '#00F0FF',
+                        'brand-pink': '#FF00FF',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #0033CC;
+            --brand-black: #080C10;
+            --brand-white: #FFFFFF;
+            --brand-gray: #F1F5F9;
+            --brand-cyan: #00F0FF;
+            --brand-pink: #FF00FF;
+        }
+        * { cursor: default; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--brand-white); 
+            color: var(--brand-black); 
+            line-height: 1.4;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(var(--brand-gray) 1px, transparent 1px),
+                linear-gradient(90deg, var(--brand-gray) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .serif-italic { font-family: 'Instrument Serif', serif; font-style: italic; }
+        
+        .title-slanted { 
+            font-weight: 950; 
+            font-style: italic; 
+            text-transform: uppercase; 
+            transform: skewX(-5deg);
+            display: inline-block;
+        }
+
+        .pill-tag { 
+            display: inline-block; 
+            padding: 8px 24px; 
+            background: var(--brand-blue); 
+            color: white;
+            border-radius: 9999px; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 0.2em;
+            box-shadow: 4px 4px 0px var(--brand-cyan);
+        }
+
+        .card-creative {
+            background: var(--brand-white);
+            border: 4px solid var(--brand-black);
+            border-radius: 24px;
+            padding: 40px;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .card-creative:hover {
+            transform: translate(-8px, -8px);
+            box-shadow: 12px 12px 0px var(--brand-blue);
+        }
+
+        .watermark-text {
+            position: absolute;
+            font-size: 15vw;
+            font-weight: 1000;
+            line-height: 1.1;
+            color: var(--brand-blue);
+            opacity: 0.08;
+            z-index: -1;
+            white-space: nowrap;
+            pointer-events: none;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+    </style>
+    <title>Berita - Progressive</title>
+</head>
+<body>
+
+    <nav class="flex justify-between items-center px-10 py-8 border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-md z-50">
+        <a href="index.html" class="font-black text-2xl tracking-tighter title-slanted text-brand-blue">PROGRESSIVE<span class="text-brand-pink">!</span></a>
+        <div class="hidden md:flex gap-12 font-bold text-xs uppercase tracking-[0.2em]">
+            <a href="index.html#about" class="hover:text-brand-blue transition-colors">Tentang</a>
+            <a href="index.html#program" class="hover:text-brand-blue transition-colors">Program</a>
+            <a href="index.html#principles" class="hover:text-brand-blue transition-colors">Peserta</a>
+            <a href="events.html" class="hover:text-brand-blue transition-colors">Event</a>
+        </div>
+        <button class="bg-brand-blue text-white px-10 py-3 rounded-full font-black text-xs uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-brand-blue/20">
+            JOIN NOW
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative px-10 py-32 bg-white overflow-hidden">
+        <div class="watermark-text top-10 -left-20">LATEST NEWS</div>
+        <div class="max-w-7xl mx-auto relative z-10 text-center">
+            <span class="pill-tag mb-10">Daily Trends</span>
+            <h1 class="text-6xl md:text-[90px] font-black tracking-tighter leading-[0.85] text-brand-black title-slanted mb-12">
+                BERITA <br>
+                <span class="text-brand-pink">TERKINI.</span>
+            </h1>
+            <p class="text-2xl font-bold text-slate-700 leading-tight mb-16 max-w-2xl mx-auto">
+                Update terbaru seputar dunia kerja, mindset, dan tantangan karir masa kini.
+            </p>
+        </div>
+    </section>
+
+    <!-- NEWS FEED -->
+    <section class="py-20 px-10 bg-brand-gray/30">
+        <div class="max-w-4xl mx-auto space-y-12">
+            
+            <!-- Article 1 -->
+            <article class="card-creative">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3">
+                        <div class="bg-brand-blue aspect-video rounded-xl flex items-center justify-center text-white font-black text-4xl italic">CNBC</div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <span class="text-brand-blue font-black text-xs uppercase tracking-widest block mb-4">8 Februari 2026 • CNBC Indonesia</span>
+                        <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter leading-tight italic">Gen Z Prioritaskan Kebebasan Waktu Dibanding Gaji Besar di 2026.</h2>
+                        <p class="font-bold text-slate-600 mb-8">Sebuah studi terbaru menunjukkan pergeseran prioritas yang signifikan di kalangan Gen Z, di mana work-life balance menjadi faktor utama dalam memilih pekerjaan...</p>
+                        <button class="text-brand-blue font-black uppercase text-xs tracking-widest hover:translate-x-2 transition-transform">Baca Selengkapnya →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 2 -->
+            <article class="card-creative border-brand-pink">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3">
+                        <div class="bg-brand-pink aspect-video rounded-xl flex items-center justify-center text-white font-black text-4xl italic">KOMPAS</div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <span class="text-brand-pink font-black text-xs uppercase tracking-widest block mb-4">7 Februari 2026 • Kompas Business</span>
+                        <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter leading-tight italic">Sertifikasi Keahlian Khusus Lebih Diminati Perusahaan Multinasional.</h2>
+                        <p class="font-bold text-slate-600 mb-8">Ijazah formal kini mulai bersaing ketat dengan sertifikasi keahlian yang lebih spesifik dan aplikatif di dunia industri kreatif dan teknologi...</p>
+                        <button class="text-brand-pink font-black uppercase text-xs tracking-widest hover:translate-x-2 transition-transform">Baca Selengkapnya →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 3 -->
+            <article class="card-creative">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="md:w-1/3">
+                        <div class="bg-brand-cyan aspect-video rounded-xl flex items-center justify-center text-brand-black font-black text-4xl italic">DETIK</div>
+                    </div>
+                    <div class="md:w-2/3">
+                        <span class="text-brand-blue font-black text-xs uppercase tracking-widest block mb-4">6 Februari 2026 • Detik Finance</span>
+                        <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter leading-tight italic">Trend 'Work-Life Harmony' Geser Konsep 'Workaholic' di Ibukota.</h2>
+                        <p class="font-bold text-slate-600 mb-8">Bekerja keras tetap penting, namun bekerja dengan kesadaran penuh akan kesehatan mental menjadi tren baru yang diadopsi banyak startup...</p>
+                        <button class="text-brand-blue font-black uppercase text-xs tracking-widest hover:translate-x-2 transition-transform">Baca Selengkapnya →</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION -->
+    <section class="py-32 px-10 bg-brand-black text-white text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, var(--brand-blue) 1px, transparent 0); background-size: 24px 24px;"></div>
+        <div class="relative z-10">
+            <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase title-slanted mb-12">
+                TETAP UPDATE DENGAN <br> <span class="bg-brand-blue px-4 inline-block">PROGRESSIVE.</span>
+            </h2>
+            <button class="bg-white text-brand-black px-12 py-4 rounded-full font-black text-sm uppercase tracking-[0.2em] hover:bg-brand-cyan transition-colors shadow-xl">
+                Subscribe Newsletter
+            </button>
+        </div>
+    </section>
+
+    <footer class="p-20 bg-white flex flex-col md:flex-row justify-between items-center gap-12 border-t border-gray-100">
+        <a href="index.html" class="font-black text-4xl tracking-tighter title-slanted text-brand-blue">PROGRESSIVE<span class="text-brand-pink">!</span></a>
+        <div class="text-xs font-black text-slate-500 uppercase tracking-[0.5em] text-center md:text-right">
+            © 2026 PROGRESSIVE. ALL RIGHTS RESERVED. <br>
+            <span class="opacity-30 text-[10px]">Mindset-Driven Career Community.</span>
+        </div>
+    </footer>
+
+</body>
+</html>

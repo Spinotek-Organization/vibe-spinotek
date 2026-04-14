@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinotek | Program Februari untuk Coffeeshop</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-dark': '#0F172A',
+                        'bg-card': '#1E293B',
+                        'primary-blue': '#006BFF',
+                        'secondary-cyan': '#00CBFF',
+                        'accent-cyan': '#6EE7B7',
+                        'text-muted': '#94A3B8',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'main-gradient': 'linear-gradient(135deg, #006BFF 0%, #00CBFF 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-gradient {
+                @apply bg-main-gradient bg-clip-text text-transparent;
+            }
+            .reveal-hidden {
+                @apply opacity-0 translate-y-[30px] transition-all duration-1000 ease-out;
+            }
+            .reveal-visible {
+                @apply opacity-100 translate-y-0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-bg-dark text-white font-sans leading-relaxed overflow-x-hidden">
+
+    <!-- NAVIGATION -->
+    <nav class="py-5 fixed w-full top-0 z-[1000] bg-bg-dark/80 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-[1200px] mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3">
+                <img src="../../assets/images/spinotek-logo.png" alt="Spinotek Logo" class="h-8 md:h-10 brightness-0 invert">
+            </a>
+            <a href="#daftar" class="bg-main-gradient text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,107,255,0.3)] transition-all duration-300">Join Program</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="pt-[200px] pb-[100px] text-center bg-[radial-gradient(circle_at_50%_30%,rgba(0,107,255,0.15)_0%,transparent_50%)]">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <span class="inline-block px-4 py-1.5 bg-primary-blue/10 border border-primary-blue/20 text-secondary-cyan rounded-full text-sm font-semibold mb-6">Februari Special Campaign</span>
+            <h1 class="text-[clamp(2.5rem,8vw,4.5rem)] font-extrabold leading-[1.1] mb-6 tracking-[-2px]">
+                Elevate Your Brand with <span class="text-gradient">Spinotek.</span>
+            </h1>
+            <p class="text-text-muted text-xl max-w-[700px] mx-auto mb-10">
+                Membantu 3 coffeeshop terpilih membangun identitas digital yang kuat, profesional, dan berkelas secara gratis.
+            </p>
+            <a href="#daftar" class="bg-main-gradient text-white px-9 py-4 rounded-xl font-bold text-lg hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,107,255,0.3)] transition-all duration-300 inline-block">Ajukan Bisnis Saya</a>
+        </div>
+    </section>
+
+    <!-- PROBLEM SECTION -->
+    <section class="bg-gradient-to-b from-bg-dark to-[#0F172A] py-20">
+        <div class="max-w-[1200px] mx-auto px-6 reveal-hidden" data-reveal>
+            <div class="text-center mb-[60px]">
+                <span class="text-primary-blue font-bold uppercase text-[0.8rem] tracking-wider text-sm">The Challenges</span>
+                <h2 class="text-[clamp(2rem,5vw,2.8rem)] font-extrabold tracking-tight mt-2">Sering Mengalami Ini?</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-primary-blue/5 border border-primary-blue/10 p-[30px] rounded-[20px] relative hover:border-primary-blue/30 transition-all">
+                    <h3 class="text-secondary-cyan text-xl font-bold mb-3 flex items-center gap-2.5">
+                        <span>⚠️</span> Invisible on Google
+                    </h3>
+                    <p class="text-text-muted">Pelanggan sulit menemukan lokasi dan jam buka karena tidak ada landing page resmi.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-primary-blue/5 border border-primary-blue/10 p-[30px] rounded-[20px] relative hover:border-primary-blue/30 transition-all">
+                    <h3 class="text-secondary-cyan text-xl font-bold mb-3 flex items-center gap-2.5">
+                        <span>⚠️</span> Menu Ambiguity
+                    </h3>
+                    <p class="text-text-muted">Hanya mengandalkan Highlight Instagram yang berantakan untuk menampilkan menu.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-primary-blue/5 border border-primary-blue/10 p-[30px] rounded-[20px] relative hover:border-primary-blue/30 transition-all">
+                    <h3 class="text-secondary-cyan text-xl font-bold mb-3 flex items-center gap-2.5">
+                        <span>⚠️</span> Low Trust
+                    </h3>
+                    <p class="text-text-muted">Bisnis terlihat "amatir" tanpa website, membuat partner atau supplier ragu untuk bekerja sama.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTION SECTION -->
+    <section class="pb-[150px] pt-20">
+        <div class="max-w-[1200px] mx-auto px-6 reveal-hidden" data-reveal>
+            <div class="text-center mb-[60px]">
+                <span class="text-primary-blue font-bold uppercase text-[0.8rem] tracking-wider text-sm">The Solution</span>
+                <h2 class="text-[clamp(2rem,5vw,2.8rem)] font-extrabold tracking-tight mt-2">How We Help You Grow.</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-bg-card border border-white/10 p-10 rounded-[24px] transition-all duration-400 ease-out hover:-translate-y-2.5 hover:border-primary-blue hover:shadow-[0_20px_40px_rgba(0,107,255,0.1)] group">
+                    <span class="text-[2rem] mb-5 block">💎</span>
+                    <h3 class="text-secondary-cyan text-xl font-bold mb-4">Premium UI Design</h3>
+                    <p class="text-text-muted">Website dengan estetika tinggi yang setara dengan brand kopi internasional.</p>
+                </div>
+                <div class="bg-bg-card border border-white/10 p-10 rounded-[24px] transition-all duration-400 ease-out hover:-translate-y-2.5 hover:border-primary-blue hover:shadow-[0_20px_40px_rgba(0,107,255,0.1)] group">
+                    <span class="text-[2rem] mb-5 block">📱</span>
+                    <h3 class="text-secondary-cyan text-xl font-bold mb-4">Mobile Seamless</h3>
+                    <p class="text-text-muted">Navigasi menu digital yang sangat ringan dibuka dari smartphone pelanggan.</p>
+                </div>
+                <div class="bg-bg-card border border-white/10 p-10 rounded-[24px] transition-all duration-400 ease-out hover:-translate-y-2.5 hover:border-primary-blue hover:shadow-[0_20px_40px_rgba(0,107,255,0.1)] group">
+                    <span class="text-[2rem] mb-5 block">🚀</span>
+                    <h3 class="text-secondary-cyan text-xl font-bold mb-4">SEO Optimized</h3>
+                    <p class="text-text-muted">Bisnis Anda lebih mudah muncul di pencarian Google saat orang mencari tempat kopi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section id="daftar" class="max-w-[1200px] mx-auto px-6 mb-20 reveal-hidden" data-reveal>
+        <div class="bg-bg-card border border-white/10 rounded-[32px] p-8 md:p-[60px] max-w-[800px] mx-auto shadow-2xl">
+            <div class="text-center mb-10">
+                <span class="inline-block px-4 py-1.5 bg-primary-blue/10 border border-primary-blue/20 text-secondary-cyan rounded-full text-sm font-semibold mb-6">Application Form</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-white">Apply for Free Website.</h2>
+                <p class="text-text-muted">Jawab beberapa pertanyaan singkat tentang coffeeshop Anda.</p>
+            </div>
+            <form id="spinotekForm" class="space-y-6">
+                <div>
+                    <label class="block mb-2 font-semibold text-white">Nama Bisnis</label>
+                    <input type="text" placeholder="Contoh: Senja Coffee Roastery" required 
+                           class="w-full p-4 bg-bg-dark border border-white/10 rounded-xl text-white focus:outline-none focus:border-primary-blue transition-colors">
+                </div>
+                <div>
+                    <label class="block mb-2 font-semibold text-white">Nama Owner</label>
+                    <input type="text" placeholder="Masukkan nama lengkap Anda" required 
+                           class="w-full p-4 bg-bg-dark border border-white/10 rounded-xl text-white focus:outline-none focus:border-primary-blue transition-colors">
+                </div>
+                <div>
+                    <label class="block mb-2 font-semibold text-white">Instagram / Google Maps Link</label>
+                    <input type="url" placeholder="https://instagram.com/..." required 
+                           class="w-full p-4 bg-bg-dark border border-white/10 rounded-xl text-white focus:outline-none focus:border-primary-blue transition-colors">
+                </div>
+                <div>
+                    <label class="block mb-2 font-semibold text-white">Kenapa kami harus memilih coffeeshop Anda?</label>
+                    <textarea rows="4" placeholder="Ceritakan tantangan bisnis Anda saat ini..." 
+                              class="w-full p-4 bg-bg-dark border border-white/10 rounded-xl text-white focus:outline-none focus:border-primary-blue transition-colors"></textarea>
+                </div>
+                <button type="submit" class="submit-btn w-full bg-main-gradient text-white py-4 rounded-xl font-bold text-lg hover:scale-[1.02] hover:shadow-[0_10px_30px_rgba(0,107,255,0.4)] transition-all duration-300">
+                    Submit Application
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-20 border-t border-white/10 text-center">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="flex justify-center mb-6">
+                <img src="../../assets/images/spinotek-logo.png" alt="Spinotek Logo" class="h-8 brightness-0 invert opacity-80">
+            </div>
+            <p class="text-text-muted">Building digital systems that make business clearer.</p>
+            <div class="mt-10 text-white/20 text-[0.8rem]">
+                &copy; 2026 Spinotek Studio. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+
+        // Form Logic
+        document.getElementById('spinotekForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('.submit-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Sending Data...";
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert("Aplikasi Anda telah kami terima! Kami akan melakukan kurasi dan menghubungi Anda jika terpilih.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+                this.reset();
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

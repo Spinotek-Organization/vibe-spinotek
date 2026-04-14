@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinotek Pricing Engine | Advanced Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .row-item:hover .delete-btn { opacity: 1; }
+        .row-item input:focus { background: rgba(255,255,255,0.8); }
+        .tab-active { @apply border-blue-600 text-blue-600 bg-blue-50; }
+        .tab-inactive { @apply border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50; }
+        
+        /* Custom Tab Transitions */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans pb-20">
+
+    <div class="max-w-6xl mx-auto py-10 px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">SPINOTEK <span class="text-blue-600">BUILDER</span></h1>
+                <p class="text-slate-500">Pricelist & HPP Workshop (Fully Customizable)</p>
+            </div>
+        </div>
+
+        <!-- Sticky Header for Total Result -->
+        <div class="sticky top-4 z-50 mb-8">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 text-white p-6 rounded-3xl shadow-2xl border border-white/10 backdrop-blur-md">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+                    <div class="text-center lg:text-left">
+                        <p class="text-blue-200 text-[10px] font-black uppercase tracking-[0.2em] mb-1 opacity-70">Suggested Quote (Nett)</p>
+                        <h2 id="displayPrice" class="text-4xl md:text-6xl font-black tracking-tighter">Rp 0</h2>
+                    </div>
+                    
+                    <div class="flex flex-wrap justify-center lg:justify-end gap-x-12 gap-y-4 border-t lg:border-t-0 lg:border-l border-white/10 pt-4 lg:pt-0 lg:pl-12">
+                        <div class="text-center">
+                            <p class="text-blue-200 text-[10px] font-bold uppercase mb-0.5 opacity-60">Total HPP</p>
+                            <p id="displayTotalHPP" class="text-xl font-bold">Rp 0</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-emerald-300 text-[10px] font-bold uppercase mb-0.5 opacity-60">Nominal Profit</p>
+                            <p id="displayProfit" class="text-xl font-bold text-emerald-400">Rp 0</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-blue-200 text-[10px] font-bold uppercase mb-0.5 opacity-60">Actual Margin</p>
+                            <p id="displayMargin" class="text-xl font-black italic text-blue-300">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Category Tabs & Content (Left Side) -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                    <!-- Tab Navigation -->
+                    <div class="flex border-b border-slate-100 bg-slate-50/50">
+                        <button onclick="switchTab('sdm')" id="tab-sdm" class="tab-btn flex-1 py-4 text-xs font-black uppercase tracking-widest border-b-2 transition-all flex items-center justify-center gap-2">
+                             <i class="fa-solid fa-users"></i> <span class="hidden md:inline">SDM</span>
+                        </button>
+                        <button onclick="switchTab('infra')" id="tab-infra" class="tab-btn flex-1 py-4 text-xs font-black uppercase tracking-widest border-b-2 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-microchip"></i> <span class="hidden md:inline">Infra</span>
+                        </button>
+                        <button onclick="switchTab('thirdparty')" id="tab-thirdparty" class="tab-btn flex-1 py-4 text-xs font-black uppercase tracking-widest border-b-2 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-handshake"></i> <span class="hidden md:inline">Third Party</span>
+                        </button>
+                        <button onclick="switchTab('commission')" id="tab-commission" class="tab-btn flex-1 py-4 text-xs font-black uppercase tracking-widest border-b-2 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-percent"></i> <span class="hidden md:inline">Komisi</span>
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="p-6">
+                        <!-- SDM Content -->
+                        <div id="content-sdm" class="tab-content transition-all">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-bold text-slate-800">Biaya SDM (Internal)</h3>
+                                <button onclick="addItem('sdm')" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 transition flex items-center gap-1 shadow-md shadow-blue-100">
+                                    <i class="fa-solid fa-plus"></i> Tambah Role
+                                </button>
+                            </div>
+                            <div id="sdmList" class="space-y-3 mb-6"></div>
+                            <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
+                                <div>
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Subtotal SDM</span>
+                                    <p id="subtotalSDM" class="text-xl text-blue-600 font-black">Rp 0</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Complexity Badge</span>
+                                    <p id="multiplierBadge" class="text-sm font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">1.0x</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Infra Content -->
+                        <div id="content-infra" class="tab-content">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-bold text-slate-800">Infrastructure & Fixed Costs</h3>
+                                <button onclick="addItem('infra')" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-indigo-700 transition flex items-center gap-1 shadow-md shadow-indigo-100">
+                                    <i class="fa-solid fa-plus"></i> Tambah Item
+                                </button>
+                            </div>
+                            <div id="infraList" class="space-y-3 mb-6"></div>
+                            <div class="pt-4 border-t border-slate-100">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Subtotal Infra</span>
+                                <p id="subtotalInfra" class="text-xl text-indigo-600 font-black">Rp 0</p>
+                            </div>
+                        </div>
+
+                        <!-- Third Party Content -->
+                        <div id="content-thirdparty" class="tab-content">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-bold text-slate-800">Third Party / Pihak Ketiga</h3>
+                                <button onclick="addItem('thirdparty')" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-700 transition flex items-center gap-1 shadow-md shadow-emerald-100">
+                                    <i class="fa-solid fa-plus"></i> Tambah Item
+                                </button>
+                            </div>
+                            <div id="thirdpartyList" class="space-y-3 mb-6"></div>
+                            <div class="pt-4 border-t border-slate-100">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Subtotal Third Party</span>
+                                <p id="subtotalThirdParty" class="text-xl text-emerald-600 font-black">Rp 0</p>
+                            </div>
+                        </div>
+
+                        <!-- Commission Content -->
+                        <div id="content-commission" class="tab-content">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-bold text-slate-800">Komisi & Fee</h3>
+                                <button onclick="addItem('commission')" class="bg-orange-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-orange-700 transition flex items-center gap-1 shadow-md shadow-orange-100">
+                                    <i class="fa-solid fa-plus"></i> Tambah Item
+                                </button>
+                            </div>
+                            <div id="commissionList" class="space-y-3 mb-6"></div>
+                            <div class="pt-4 border-t border-slate-100">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Subtotal Komisi</span>
+                                <p id="subtotalCommission" class="text-xl text-orange-600 font-black">Rp 0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Controls (Right Side) -->
+            <div class="lg:col-span-4 space-y-6">
+                <!-- Complexity Factor -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 shrink-0">
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Complexity Factor</h4>
+                    </div>
+                    <div class="space-y-4">
+                         <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-slate-400">MULTIPLIER</span>
+                            <span id="complexityLabel" class="text-lg font-black text-blue-600 underline decoration-blue-200 underline-offset-4">1.0x</span>
+                        </div>
+                        <input type="range" id="complexity" min="1" max="4" step="0.1" value="1" oninput="calculatePricing()" class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                        <div class="flex justify-between text-[9px] text-slate-300 font-black uppercase">
+                            <span>Standard</span>
+                            <span>Enterprise</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Margin Selection -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Target Margin (%)</h4>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 mb-6 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <input type="number" id="customMarginInput" value="45" oninput="calculatePricing()" class="text-3xl font-black text-slate-800 bg-transparent outline-none w-20">
+                        <span class="text-xl font-bold text-slate-300">%</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="updateMasterMargin(20)" class="p-2 rounded-xl border border-slate-100 bg-white text-[10px] font-bold text-slate-500 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-600 transition">Eco (20%)</button>
+                        <button onclick="updateMasterMargin(35)" class="p-2 rounded-xl border border-slate-100 bg-white text-[10px] font-bold text-slate-500 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-600 transition">Std (35%)</button>
+                        <button onclick="updateMasterMargin(45)" class="p-2 rounded-xl border border-slate-100 bg-white text-[10px] font-bold text-slate-500 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-600 transition">Prm (45%)</button>
+                        <button onclick="updateMasterMargin(60)" class="p-2 rounded-xl border border-slate-100 bg-white text-[10px] font-bold text-slate-500 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-600 transition">High (60%)</button>
+                    </div>
+                </div>
+
+                <!-- Tax Settings -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center text-red-500 shrink-0">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wider">PPN (11%)</h4>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="taxToggle" class="sr-only peer" onchange="calculatePricing()">
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500"></div>
+                        </label>
+                    </div>
+
+                    <div id="taxDisplayWrapper" class="hidden space-y-3 bg-red-50/50 p-4 rounded-2xl border border-red-100">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-red-400">ESTIMASI PAJAK</span>
+                            <span id="taxAmount" class="font-black text-red-600">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-red-100 pt-2">
+                            <span class="text-[10px] font-black text-red-400">TOTAL AKHIR</span>
+                            <span id="totalWithTax" class="text-xl font-black text-red-700">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3">
+                    <button onclick="window.print()" class="flex-1 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 h-12 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 group transition">
+                        <i class="fa-solid fa-print text-slate-400 group-hover:text-slate-600"></i> Print
+                    </button>
+                    <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-200 transition">
+                        <i class="fa-solid fa-file-export"></i> PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row Template (Helper for addItem) -->
+    <template id="rowTemplate">
+        <div class="row-item grid grid-cols-12 gap-2 items-center p-3 bg-slate-50 rounded-2xl border border-transparent hover:border-slate-200 transition group mb-2">
+            <!-- Item Name -->
+            <div class="col-span-12 md:col-span-5">
+                <input type="text" class="item-name bg-white border border-slate-100 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-700 w-full outline-none focus:border-blue-200 transition" placeholder="Nama item...">
+            </div>
+            
+            <!-- Quantity / Month -->
+            <div class="col-span-4 md:col-span-2 flex items-center bg-white rounded-lg px-2 py-1.5 shadow-sm border border-slate-100 group-focus-within:border-blue-200 transition qty-wrapper">
+                <input type="number" class="item-qty bg-transparent border-none outline-none text-xs font-black text-slate-800 w-full text-center focus:ring-0" value="1" min="1" placeholder="Qty">
+                <span class="text-[9px] text-slate-400 font-bold ml-1 uppercase unit-label">Mo</span>
+            </div>
+
+            <!-- Price -->
+            <div class="col-span-7 md:col-span-4 flex items-center bg-white rounded-lg px-3 py-1.5 shadow-sm border border-slate-100 group-focus-within:border-blue-200 transition">
+                <span class="text-[9px] text-slate-400 font-black mr-2 uppercase">Rp</span>
+                <input type="number" class="item-price bg-transparent border-none outline-none text-xs font-black text-slate-800 w-full text-right focus:ring-0" placeholder="0">
+            </div>
+
+            <!-- Delete -->
+            <div class="col-span-1 text-right">
+                <button class="delete-btn opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all transform hover:scale-110" onclick="this.closest('.row-item').remove(); calculatePricing();">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Initial Default Data
+        const defaultSDM = [
+            { name: "Project Manager / Analyst", price: 6000000, qty: 3 },
+            { name: "Fullstack Developer", price: 12000000, qty: 3 },
+            { name: "Quality Assurance", price: 2500000, qty: 1 }
+        ];
+
+        const defaultInfra = [
+            { name: "Server VPS Pro", price: 1500000, qty: 12 },
+            { name: "Operational & Other Cost", price: 1000000, qty: 1 }
+        ];
+
+        const defaultThirdParty = [
+            { name: "API / Paid Services", price: 500000, qty: 12 }
+        ];
+
+        const defaultCommission = [];
+
+        function switchTab(tab) {
+            // Update Buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-blue-600', 'text-blue-600', 'bg-blue-50');
+                btn.classList.add('border-transparent', 'text-slate-400');
+            });
+            document.getElementById('tab-' + tab).classList.add('border-blue-600', 'text-blue-600', 'bg-blue-50');
+            document.getElementById('tab-' + tab).classList.remove('border-transparent', 'text-slate-400');
+
+            // Update Content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('content-' + tab).classList.add('active');
+        }
+
+        function updateMasterMargin(val) {
+            document.getElementById('customMarginInput').value = val;
+            calculatePricing();
+        }
+
+        function addItem(type, name = "", price = 0, qty = 1) {
+            const listId = type + 'List';
+            const template = document.getElementById('rowTemplate');
+            const clone = template.content.cloneNode(true);
+            
+            const nameInput = clone.querySelector('.item-name');
+            const priceInput = clone.querySelector('.item-price');
+            const qtyInput = clone.querySelector('.item-qty');
+            const qtyWrapper = clone.querySelector('.qty-wrapper');
+            
+            if (name) nameInput.value = name;
+            if (price) priceInput.value = price;
+            if (qty) qtyInput.value = qty;
+
+            // Hide Qty for Commission
+            if (type === 'commission') {
+                qtyWrapper.style.display = 'none';
+                qtyInput.value = 1;
+            }
+
+            // Auto-calculate on change
+            [nameInput, priceInput, qtyInput].forEach(inp => {
+                inp.addEventListener('input', calculatePricing);
+            });
+
+            document.getElementById(listId).appendChild(clone);
+            calculatePricing();
+        }
+
+        function calculatePricing() {
+            const complexity = parseFloat(document.getElementById('complexity').value);
+            document.getElementById('complexityLabel').innerText = complexity.toFixed(1) + "x";
+            document.getElementById('multiplierBadge').innerText = complexity.toFixed(1) + "x";
+
+            // Helper to sum by container ID
+            const sumItems = (id) => {
+                let sum = 0;
+                document.querySelectorAll(`#${id} .row-item`).forEach(item => {
+                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                    const qty = parseFloat(item.querySelector('.item-qty').value) || 1;
+                    sum += (price * qty);
+                });
+                return sum;
+            };
+
+            const rawSDM = sumItems('sdmList');
+            const subtotalSDM = rawSDM * complexity;
+            const subtotalInfra = sumItems('infraList');
+            const subtotalThirdParty = sumItems('thirdpartyList');
+            const subtotalCommission = sumItems('commissionList');
+
+            const totalHPP = subtotalSDM + subtotalInfra + subtotalThirdParty + subtotalCommission;
+            
+            // Suggested Price Calculation
+            const targetMarginPercent = (parseFloat(document.getElementById('customMarginInput').value) || 0) / 100;
+            let suggestedPrice = 0;
+            if (targetMarginPercent < 1) {
+                suggestedPrice = totalHPP / (1 - targetMarginPercent);
+            } else {
+                suggestedPrice = totalHPP * 2; // Safety fallback
+            }
+            
+            // Professional Rounding (Nearest 100k or 500k based on volume)
+            const roundingFactor = suggestedPrice > 10000000 ? 500000 : 100000;
+            suggestedPrice = Math.ceil(suggestedPrice / roundingFactor) * roundingFactor;
+            
+            const profit = suggestedPrice - totalHPP;
+            const actualMargin = (profit / suggestedPrice) * 100;
+
+            // Tax Logic
+            const isTaxActive = document.getElementById('taxToggle').checked;
+            const taxAmount = isTaxActive ? suggestedPrice * 0.11 : 0;
+            const totalPriceWithTax = suggestedPrice + taxAmount;
+
+            // Format Helper
+            const fmt = (num) => "Rp " + Math.round(num).toLocaleString('id-ID');
+
+            // Render to DOM
+            document.getElementById('displayPrice').innerText = fmt(suggestedPrice);
+            document.getElementById('displayTotalHPP').innerText = fmt(totalHPP);
+            document.getElementById('displayProfit').innerText = fmt(profit);
+            document.getElementById('displayMargin').innerText = (isNaN(actualMargin) ? 0 : actualMargin.toFixed(1)) + '%';
+            
+            document.getElementById('subtotalSDM').innerText = fmt(subtotalSDM);
+            document.getElementById('subtotalInfra').innerText = fmt(subtotalInfra);
+            document.getElementById('subtotalThirdParty').innerText = fmt(subtotalThirdParty);
+            document.getElementById('subtotalCommission').innerText = fmt(subtotalCommission);
+
+            // Tax Display
+            const taxWrapper = document.getElementById('taxDisplayWrapper');
+            if (isTaxActive) {
+                taxWrapper.classList.remove('hidden');
+                document.getElementById('taxAmount').innerText = fmt(taxAmount);
+                document.getElementById('totalWithTax').innerText = fmt(totalPriceWithTax);
+            } else {
+                taxWrapper.classList.add('hidden');
+            }
+        }
+
+        // Boot
+        window.onload = () => {
+            switchTab('sdm');
+            defaultSDM.forEach(item => addItem('sdm', item.name, item.price, item.qty));
+            defaultInfra.forEach(item => addItem('infra', item.name, item.price, item.qty));
+            defaultThirdParty.forEach(item => addItem('thirdparty', item.name, item.price, item.qty));
+            defaultCommission.forEach(item => addItem('commission', item.name, item.price, item.qty));
+            calculatePricing();
+        };
+    </script>
+</body>
+</html>

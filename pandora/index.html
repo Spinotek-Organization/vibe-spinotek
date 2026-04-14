@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PANDORA | Architects of Extraordinary Experiences</title>
+    <meta name="description" content="Pandora is a premium event organizer blending mythology with modern technology to create unforgettable, bespoke experiences.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Outfit:wght@100;300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F1D592;
+            --cyan: #00F2FF;
+            --deep-bg: #05070A;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--deep-bg); 
+            color: #E2E8F0;
+            overflow-x: hidden;
+        }
+
+        .cinzel { font-family: 'Cinzel', serif; }
+        .serif { font-family: 'Playfair Display', serif; }
+
+        /* Premium Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes shine {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        .gold-glow {
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .cyan-glow {
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 4s linear infinite;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--deep-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 px-8 py-6 flex justify-between items-center transition-all duration-500 bg-transparent" id="navbar">
+        <div class="flex items-center space-x-3 group cursor-pointer">
+            <div class="w-10 h-10 border-2 border-gold flex items-center justify-center rotate-45 group-hover:rotate-180 transition-transform duration-700">
+                <span class="rotate-[-45deg] group-hover:rotate-[-180deg] transition-transform duration-700 cinzel font-bold text-gold">P</span>
+            </div>
+            <span class="cinzel text-2xl font-black tracking-[0.3em] text-white">PANDORA</span>
+        </div>
+        
+        <div class="hidden lg:flex space-x-12 text-[11px] tracking-[0.3em] uppercase font-bold text-gray-400">
+            <a href="#manifesto" class="hover:text-gold transition-colors">Manifesto</a>
+            <a href="#spheres" class="hover:text-gold transition-colors">Spheres</a>
+            <a href="#gallery" class="hover:text-gold transition-colors">Archive</a>
+            <a href="#collections" class="hover:text-gold transition-colors">The Vault</a>
+            <a href="#alchemy" class="hover:text-gold transition-colors">The Alchemy</a>
+            <a href="#contact" class="hover:text-gold transition-colors border-b border-gold pb-1 text-gold">Engage</a>
+        </div>
+
+        <button class="lg:hidden text-white">
+            <i data-lucide="menu"></i>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-black">
+            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=2070" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity scale-105" alt="Event Atmosphere">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#05070A]"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-6 max-w-5xl">
+            <div class="mb-8 inline-block px-4 py-1 border border-gold/30 rounded-full bg-gold/5 backdrop-blur-sm">
+                <span class="text-[10px] tracking-[0.5em] uppercase text-gold-light font-bold">Unlocking the Extraordinary</span>
+            </div>
+            <h1 class="cinzel text-5xl md:text-9xl font-black leading-tight text-white mb-8">
+                EVENT <span class="gold-gradient-bg">ALCHEMY</span>
+            </h1>
+            <p class="text-lg md:text-2xl font-light text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed">
+                We don't just plan events; we architect narratives. Pandora is the last element of hope transformed into immersive reality.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                <a href="#collections" class="w-full md:w-auto px-10 py-5 bg-gold text-black cinzel font-bold tracking-widest hover:bg-white transition-all transform hover:scale-105">
+                    VIEW COLLECTIONS
+                </a>
+                <a href="#manifesto" class="w-full md:w-auto px-10 py-5 border border-white/20 hover:border-gold transition-all cinzel font-bold tracking-widest text-white group">
+                    THE MANIFESTO <i data-lucide="arrow-right" class="inline-block ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-gray-500">
+            <span class="text-[10px] tracking-[0.4em] uppercase">Scroll to Explore</span>
+            <div class="w-px h-16 bg-gradient-to-b from-gold to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Manifesto Section -->
+    <section id="manifesto" class="py-32 px-6 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
+            <div class="reveal-on-scroll">
+                <h2 class="text-gold text-xs font-bold tracking-[0.5em] uppercase mb-6">The Pandora Manifesto</h2>
+                <h3 class="serif text-4xl md:text-6xl text-white mb-10 leading-tight italic">
+                    Where Myth Meets <span class="text-gold">Modernity.</span>
+                </h3>
+                <div class="space-y-6 text-gray-400 text-lg leading-relaxed font-light">
+                    <p>
+                        In the depths of the Box, past the chaos and the noise, remains one singular element: <span class="text-white font-semibold">Hope</span>. 
+                    </p>
+                    <p>
+                        At Pandora, we believe every event is a vessel for that hope. Our philosophy is rooted in <span class="text-gold">Event Alchemy</span>—the precise blending of logistics, technology, and pure human emotion to create moments that defy the ordinary.
+                    </p>
+                    <p>
+                        We discarded the template long ago. Every project is a bespoke masterpiece, curated with an obsession for detail and a flair for the dramatic.
+                    </p>
+                </div>
+                <div class="mt-12 grid grid-cols-2 gap-8">
+                    <div>
+                        <div class="text-4xl text-white font-bold cinzel mb-2">150+</div>
+                        <div class="text-[10px] text-gold tracking-widest uppercase">Revelations Completed</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl text-white font-bold cinzel mb-2">0%</div>
+                        <div class="text-[10px] text-gold tracking-widest uppercase">Stress Tolerance</div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative reveal-on-scroll">
+                <div class="absolute -inset-4 border border-gold/20 animate-float"></div>
+                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070" class="relative z-10 rounded-none grayscale hover:grayscale-0 transition-all duration-1000" alt="Pandora Vision">
+                <div class="absolute -bottom-10 -left-10 bg-gold p-10 hidden md:block z-20">
+                    <i data-lucide="sparkles" class="w-12 h-12 text-black mb-4"></i>
+                    <p class="serif italic text-2xl text-black">"We don't follow trends. We ignite them."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Spheres of Influence (Detailed Services) -->
+    <section id="spheres" class="py-32 bg-[#080A0F]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-24 reveal-on-scroll">
+                <h2 class="cinzel text-4xl md:text-6xl text-white mb-6">SPHERES OF <span class="text-gold">INFLUENCE</span></h2>
+                <div class="w-24 h-1 bg-gold mx-auto mb-8"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto uppercase tracking-[0.2em] text-xs">A comprehensive ecosystem for your most significant moments.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-1px bg-white/5">
+                <!-- Sphere 1 -->
+                <div class="bg-[#080A0F] p-16 hover:bg-gold group transition-all duration-500">
+                    <div class="w-16 h-16 border border-gold group-hover:border-black flex items-center justify-center mb-10 transition-colors">
+                        <i data-lucide="infinity" class="text-gold group-hover:text-black w-8 h-8"></i>
+                    </div>
+                    <h4 class="cinzel text-2xl text-white group-hover:text-black mb-6">Celestial Unions</h4>
+                    <p class="text-gray-500 group-hover:text-black/70 mb-8 leading-relaxed">
+                        Beyond the traditional wedding. We create immersive romantic narratives where every detail is a piece of your personal mythology.
+                    </p>
+                    <ul class="text-[10px] tracking-[0.2em] uppercase font-bold text-gold group-hover:text-black space-y-3">
+                        <li>• Surreal Set Designs</li>
+                        <li>• Culinary Curations</li>
+                        <li>• Multi-sensory Reveals</li>
+                    </ul>
+                </div>
+
+                <!-- Sphere 2 -->
+                <div class="bg-[#080A0F] p-16 hover:bg-gold group transition-all duration-500">
+                    <div class="w-16 h-16 border border-gold group-hover:border-black flex items-center justify-center mb-10 transition-colors">
+                        <i data-lucide="zap" class="text-gold group-hover:text-black w-8 h-8"></i>
+                    </div>
+                    <h4 class="cinzel text-2xl text-white group-hover:text-black mb-6">Corporate Alchemy</h4>
+                    <p class="text-gray-500 group-hover:text-black/70 mb-8 leading-relaxed">
+                        Transforming standard corporate gatherings into high-impact catalysts for culture, branding, and strategic innovation.
+                    </p>
+                    <ul class="text-[10px] tracking-[0.2em] uppercase font-bold text-gold group-hover:text-black space-y-3">
+                        <li>• Narrative Keynotes</li>
+                        <li>• Tech-Integrated Spaces</li>
+                        <li>• Elite Logistics</li>
+                    </ul>
+                </div>
+
+                <!-- Sphere 3 -->
+                <div class="bg-[#080A0F] p-16 hover:bg-gold group transition-all duration-500">
+                    <div class="w-16 h-16 border border-gold group-hover:border-black flex items-center justify-center mb-10 transition-colors">
+                        <i data-lucide="layers" class="text-gold group-hover:text-black w-8 h-8"></i>
+                    </div>
+                    <h4 class="cinzel text-2xl text-white group-hover:text-black mb-6">The Grand Unveiling</h4>
+                    <p class="text-gray-500 group-hover:text-black/70 mb-8 leading-relaxed">
+                        Product launches and gallery openings designed to disrupt industries. We create the "Box" that everyone talks about.
+                    </p>
+                    <ul class="text-[10px] tracking-[0.2em] uppercase font-bold text-gold group-hover:text-black space-y-3">
+                        <li>• Hybrid Integration</li>
+                        <li>• Global PR Coordination</li>
+                        <li>• Interactive Artistry</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Recent Revelations (Portfolio Gallery) -->
+    <section id="gallery" class="py-32 bg-black overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-24 reveal-on-scroll">
+                <h2 class="text-gold text-xs font-bold tracking-[0.5em] uppercase mb-6">Past Revelations</h2>
+                <h3 class="cinzel text-4xl md:text-5xl text-white">THE ARCHIVE OF <span class="text-gold">WONDERS</span></h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 reveal-on-scroll">
+                <!-- Large Feature -->
+                <div class="md:col-span-8 relative group overflow-hidden h-[500px]">
+                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" alt="Gala Revelations">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                    <div class="absolute bottom-10 left-10">
+                        <span class="text-gold text-[10px] tracking-widest font-bold uppercase mb-2 block">Celestial Union</span>
+                        <h4 class="cinzel text-3xl text-white">The Midnight Orchid Gala</h4>
+                        <p class="text-gray-400 text-xs mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Jakarta, 2025 • 500 Guests • Immersive Botanical Architecture</p>
+                    </div>
+                </div>
+                
+                <!-- Side Features -->
+                <div class="md:col-span-4 space-y-6">
+                    <div class="relative group overflow-hidden h-[238px]">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" alt="Tech Launch">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6">
+                            <span class="text-cyan text-[10px] tracking-widest font-bold uppercase mb-1 block">Corporate Alchemy</span>
+                            <h5 class="cinzel text-xl text-white">Neura Core Launch</h5>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden h-[238px]">
+                        <img src="https://images.unsplash.com/photo-1514525253361-bee8a81f40bc?q=80&w=1964" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" alt="Private Experience">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6">
+                            <span class="text-gold text-[10px] tracking-widest font-bold uppercase mb-1 block">The Grand Unveiling</span>
+                            <h5 class="cinzel text-xl text-white">Aurelius Private Concert</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center reveal-on-scroll">
+                <a href="#contact" class="inline-block border-b border-gold/30 pb-2 text-gold text-xs tracking-[0.3em] font-bold hover:text-white hover:border-white transition-all">VIEW FULL ARCHIVE</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Vault (The Packages) -->
+    <section id="collections" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8 reveal-on-scroll">
+                <div class="max-w-xl">
+                    <h2 class="text-gold text-xs font-bold tracking-[0.5em] uppercase mb-6">Bespoke Investments</h2>
+                    <h3 class="cinzel text-4xl md:text-5xl text-white uppercase italic">THE INVESTMENT <span class="text-gold">VAULT</span></h3>
+                </div>
+                <p class="text-gray-500 text-sm max-w-md">Our frameworks are baseline architectures. Every experience is further refined to meet your specific ambitions and scale.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-24">
+                <!-- Package 01 -->
+                <div class="glass-card p-12 flex flex-col h-full reveal-on-scroll">
+                    <div class="flex justify-between items-start mb-12">
+                        <div>
+                            <span class="text-gold text-xs font-black tracking-widest cinzel">ARCHETYPE 01</span>
+                            <h4 class="cinzel text-3xl text-white mt-2">ESSENCE</h4>
+                        </div>
+                        <div class="text-gold border border-gold/30 px-3 py-1 text-[10px] font-bold tracking-widest whitespace-nowrap uppercase">Start from IDR 75M</div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-10 leading-loose italic">
+                        "The precise foundation for significant moments."
+                    </p>
+                    <div class="space-y-4 mb-16 flex-grow">
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>End-to-End Project Architecture & Management</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="map" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Curated Venue Scouting & Strategic Booking</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="users" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>A-List Vendor Selection & Contract Logistics</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="clock" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>12-Hour On-Site "Zero-Friction" Coordination</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="cpu" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Technical Foundation (Standard AV & Lighting)</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/6281123456789?text=I'm%20interested%20in%20the%20ESSENCE%20package" class="w-full py-4 border border-gold/50 text-gold text-center cinzel font-bold text-xs tracking-widest hover:bg-gold hover:text-black transition-all">RESERVE ARCHETYPE 01</a>
+                </div>
+
+                <!-- Package 02 -->
+                <div class="glass-card p-12 border-gold/50 bg-gold/5 flex flex-col h-full reveal-on-scroll animate-float" style="animation-delay: -3s;">
+                    <div class="flex justify-between items-start mb-12">
+                        <div>
+                            <span class="text-white text-xs font-black tracking-widest cinzel">ARCHETYPE 02</span>
+                            <h4 class="cinzel text-3xl text-gold mt-2">ODYSSEY</h4>
+                        </div>
+                        <div class="bg-gold text-black px-3 py-1 text-[10px] font-bold tracking-widest whitespace-nowrap">RECOMMENDED</div>
+                    </div>
+                    <p class="text-gray-200 text-sm mb-10 leading-loose italic">
+                        "Where narrative transforms into reality."
+                    </p>
+                    <div class="space-y-4 mb-16 flex-grow">
+                        <div class="flex items-start gap-4 text-xs text-white">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Everything in Essence archetype</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-white">
+                            <i data-lucide="palette" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Bespoke Concept Storyboarding & Art Direction</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-white">
+                            <i data-lucide="layers" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Custom Scenography & Immersive Decor Design</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-white">
+                            <i data-lucide="music" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Curation of Performance & Multi-Sensory Elements</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-white">
+                            <i data-lucide="smartphone" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Digital Narrative (Custom Landing Page & Invites)</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-white">
+                            <i data-lucide="video" class="w-5 h-5 text-gold shrink-0"></i>
+                            <span>Cinematic Content Capture & Direction</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/6281123456789?text=I'm%20interested%20in%20the%20ODYSSEY%20package" class="w-full py-4 bg-gold text-black text-center cinzel font-bold text-xs tracking-widest hover:bg-white transition-all">COMMISSION ODYSSEY</a>
+                </div>
+
+                <!-- Package 03 -->
+                <div class="glass-card p-12 flex flex-col h-full border-cyan/30 reveal-on-scroll">
+                    <div class="flex justify-between items-start mb-12">
+                        <div>
+                            <span class="text-cyan text-xs font-black tracking-widest cinzel">ARCHETYPE 03</span>
+                            <h4 class="cinzel text-3xl text-white mt-2">MULTIVERSE</h4>
+                        </div>
+                        <div class="text-cyan border border-cyan/30 px-3 py-1 text-[10px] font-bold tracking-widest whitespace-nowrap italic">LIMITLESS</div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-10 leading-loose italic">
+                        "The absolute pinnacle of event alchemy."
+                    </p>
+                    <div class="space-y-4 mb-16 flex-grow">
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="plus-circle" class="w-5 h-5 text-cyan shrink-0"></i>
+                            <span>Everything in Odyssey archetype</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="bot" class="w-5 h-5 text-cyan shrink-0"></i>
+                            <span>Cutting-edge AR/VR & High-Tech Integration</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="globe" class="w-5 h-5 text-cyan shrink-0"></i>
+                            <span>Global Talent Sourcing & Celebrity Management</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="gem" class="w-5 h-5 text-cyan shrink-0"></i>
+                            <span>Luxury Logistics (Private Jets, Concierge Services)</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="camera" class="w-5 h-5 text-cyan shrink-0"></i>
+                            <span>National/International PR & Media Blitz</span>
+                        </div>
+                        <div class="flex items-start gap-4 text-xs text-gray-300">
+                            <i data-lucide="tv" class="w-5 h-5 text-cyan shrink-0"></i>
+                            <span>24/7 Dedicated "Guardian" Project Team</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/6281123456789?text=I'm%20interested%20in%20the%20MULTIVERSE%20package" class="w-full py-4 border border-cyan text-cyan text-center cinzel font-bold text-xs tracking-widest hover:bg-cyan hover:text-black transition-all">UNLOCK MULTIVERSE</a>
+                </div>
+            </div>
+
+            <!-- Add-on Services -->
+            <div class="reveal-on-scroll">
+                <div class="text-center mb-16">
+                    <h4 class="cinzel text-xl text-white tracking-[0.3em] uppercase mb-4">Add-on Alchemies</h4>
+                    <p class="text-gray-500 text-xs">Enhance your chosen archetype with specific augmentations</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="border border-white/5 p-8 hover:border-gold/30 transition-all group">
+                        <h5 class="cinzel text-gold text-xs font-bold mb-4 group-hover:tracking-widest transition-all">IMMORTAL RECAP</h5>
+                        <p class="text-gray-400 text-[10px] leading-relaxed">Full cinema-grade documentary of the entire revelation process and event.</p>
+                    </div>
+                    <div class="border border-white/5 p-8 hover:border-gold/30 transition-all group">
+                        <h5 class="cinzel text-gold text-xs font-bold mb-4 group-hover:tracking-widest transition-all">ORACLE CONCIERGE</h5>
+                        <p class="text-gray-400 text-[10px] leading-relaxed">VVIP guest management, gift curation, and personalized door-to-door logistics.</p>
+                    </div>
+                    <div class="border border-white/5 p-8 hover:border-gold/30 transition-all group">
+                        <h5 class="cinzel text-gold text-xs font-bold mb-4 group-hover:tracking-widest transition-all">MYTHIC DECOR</h5>
+                        <p class="text-gray-400 text-[10px] leading-relaxed">Art-gallery level custom installations and structural builds for your venue.</p>
+                    </div>
+                    <div class="border border-white/5 p-8 hover:border-gold/30 transition-all group">
+                        <h5 class="cinzel text-gold text-xs font-bold mb-4 group-hover:tracking-widest transition-all">CYBER INTEGRATION</h5>
+                        <p class="text-gray-400 text-[10px] leading-relaxed">Interactive apps, digital walls, and holographic displays for guest interaction.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Alchemy Process -->
+    <section id="alchemy" class="py-32 bg-black border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-24 items-center">
+                <div class="reveal-on-scroll">
+                    <h2 class="text-gold text-xs font-bold tracking-[0.5em] uppercase mb-6">Execution Protocol</h2>
+                    <h3 class="cinzel text-4xl text-white mb-16">THE STAGES OF <span class="text-gold">REVELATION</span></h3>
+                    
+                    <div class="space-y-16">
+                        <div class="flex gap-10 group">
+                            <div class="relative">
+                                <span class="cinzel text-5xl font-black text-white/5 group-hover:text-gold/20 transition-colors">01</span>
+                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-gold rounded-full"></div>
+                                <div class="w-px h-24 bg-gold/20 absolute top-full left-1/2 -translate-x-1/2 mt-4"></div>
+                            </div>
+                            <div>
+                                <h4 class="cinzel text-xl text-white mb-4">THE SPARK (CONCEPT)</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">We strip away the noise to find the "Heart Element". Brainstorming isn't enough; we map your desires into a visual and narrative logic.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-10 group">
+                            <div class="relative">
+                                <span class="cinzel text-5xl font-black text-white/5 group-hover:text-gold/20 transition-colors">02</span>
+                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-gold rounded-full"></div>
+                                <div class="w-px h-24 bg-gold/20 absolute top-full left-1/2 -translate-x-1/2 mt-4"></div>
+                            </div>
+                            <div>
+                                <h4 class="cinzel text-xl text-white mb-4">THE FORMULA (PRE-FLIGHT)</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">The logistics engine starts. Vendor vetting, 3D spatial renders, and precise budgeting. $1 looks like $10 through our curation.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-10 group">
+                            <div class="relative">
+                                <span class="cinzel text-5xl font-black text-white/5 group-hover:text-gold/20 transition-colors">03</span>
+                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-gold rounded-full"></div>
+                            </div>
+                            <div>
+                                <h4 class="cinzel text-xl text-white mb-4">THE CATALYST (EXECUTION)</h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">The Box is opened. On-site command, zero-stress coordination, and the final reveal that leaves guests breathless.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative reveal-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=2070" class="w-full rounded-sm opacity-60 mix-blend-screen" alt="Process Representation">
+                    <div class="absolute inset-0 bg-gold/10 pointer-events-none"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / Oracle -->
+    <section id="contact" class="py-32 bg-[#05070A]">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal-on-scroll">
+            <h2 class="cinzel text-4xl md:text-7xl text-white mb-12">OPEN THE <span class="gold-gradient-bg">BOX</span></h2>
+            <p class="text-gray-400 text-lg mb-16 leading-relaxed">
+                Ready to transform your vision into an extraordinary revelation? Our oracles are waiting to guide you through the process.
+            </p>
+            
+            <div class="grid md:grid-cols-2 gap-12 text-left mb-20">
+                <div class="glass-card p-10">
+                    <h5 class="cinzel text-gold text-lg mb-6">DIRECT ENQUIRY</h5>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <i data-lucide="phone" class="w-5 h-5 text-gold"></i> +62 811 2345 6789
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <i data-lucide="mail" class="w-5 h-5 text-gold"></i> oracle@pandora.agency
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i> Spino Center, Level 12, Jakarta
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-10 flex flex-col justify-between">
+                    <h5 class="cinzel text-cyan text-lg mb-6">INSTANT AUDIT</h5>
+                    <p class="text-gray-500 text-sm mb-6">Get a preliminary concept breakdown via WhatsApp within 24 hours.</p>
+                    <a href="#" class="inline-flex items-center justify-center gap-3 w-full py-4 bg-cyan text-black cinzel font-bold text-xs tracking-widest hover:bg-white transition-all">
+                        WHATSAPP NOW <i data-lucide="message-square" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-white/5 bg-black">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
+            <div class="text-center md:text-left">
+                <div class="cinzel text-3xl font-black tracking-[0.4em] mb-4 text-white">PANDORA</div>
+                <p class="text-gray-500 text-xs tracking-[0.2em] uppercase">Architects of Extraordinary Experiences</p>
+            </div>
+
+            <div class="flex space-x-8">
+                <a href="#" class="text-gray-500 hover:text-gold transition-colors"><i data-lucide="instagram"></i></a>
+                <a href="#" class="text-gray-500 hover:text-gold transition-colors"><i data-lucide="twitter"></i></a>
+                <a href="#" class="text-gray-500 hover:text-gold transition-colors"><i data-lucide="linkedin"></i></a>
+            </div>
+
+            <div class="text-center md:text-right">
+                <p class="text-[10px] text-gray-600 uppercase tracking-widest">&copy; 2026 PANDORA AGENCY. MEMBER OF SPINOTEK VIBE.</p>
+                <div class="mt-2 flex justify-center md:justify-end gap-4 text-[9px] text-gray-700 tracking-tighter hover:text-gray-400">
+                    <a href="#">PRIVACY PROTOCOL</a>
+                    <a href="#">LEGAL TERMS</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-[#05070A]/80', 'backdrop-blur-lg', 'py-4', 'border-b', 'border-white/5');
+                nav.classList.remove('py-6');
+            } else {
+                nav.classList.remove('bg-[#05070A]/80', 'backdrop-blur-lg', 'py-4', 'border-b', 'border-white/5');
+                nav.classList.add('py-6');
+            }
+        });
+
+        // Reveal on Scroll Logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+        // Smooth Scroll (Native behavior assisted by CSS)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

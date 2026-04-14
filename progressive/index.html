@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#0033CC',
+                        'brand-black': '#080C10',
+                        'brand-white': '#FFFFFF',
+                        'brand-gray': '#F1F5F9',
+                        'brand-cyan': '#00F0FF',
+                        'brand-pink': '#FF00FF',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #0033CC;
+            --brand-black: #080C10;
+            --brand-white: #FFFFFF;
+            --brand-gray: #F1F5F9;
+            --brand-cyan: #00F0FF;
+            --brand-pink: #FF00FF;
+        }
+        * { cursor: default; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--brand-white); 
+            color: var(--brand-black); 
+            line-height: 1.4;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(var(--brand-gray) 1px, transparent 1px),
+                linear-gradient(90deg, var(--brand-gray) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .serif-italic { font-family: 'Instrument Serif', serif; font-style: italic; }
+        
+        .title-slanted { 
+            font-weight: 950; 
+            font-style: italic; 
+            text-transform: uppercase; 
+            transform: skewX(-5deg);
+            display: inline-block;
+        }
+
+        .pill-tag { 
+            display: inline-block; 
+            padding: 8px 24px; 
+            background: var(--brand-blue); 
+            color: white;
+            border-radius: 9999px; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 0.2em;
+            box-shadow: 4px 4px 0px var(--brand-cyan);
+        }
+
+        /* Decorative Elements */
+        .sparkle {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--brand-pink);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: bounce-rotate 4s infinite ease-in-out;
+        }
+        @keyframes bounce-rotate {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+        }
+
+        .card-creative {
+            background: var(--brand-white);
+            border: 4px solid var(--brand-black);
+            border-radius: 24px;
+            padding: 40px;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .card-creative:hover {
+            transform: translate(-8px, -8px);
+            box-shadow: 12px 12px 0px var(--brand-blue);
+        }
+
+        .btn-creative {
+            background: var(--brand-black);
+            color: white;
+            padding: 20px 40px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border: none;
+            position: relative;
+            transition: all 0.2s;
+            clip-path: polygon(0% 0%, 95% 0%, 100% 50%, 95% 100%, 0% 100%);
+        }
+        .btn-creative:hover {
+            background: var(--brand-blue);
+            color: white;
+            padding-left: 50px;
+        }
+
+        .scribble-line {
+            position: absolute;
+            z-index: -1;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 2s forwards ease-in-out;
+        }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+
+        .scribble-float {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 0;
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.05));
+        }
+
+        .animate-wobble {
+            animation: wobble 3s infinite ease-in-out;
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-3deg) scale(1); }
+            50% { transform: rotate(3deg) scale(1.05); }
+        }
+
+        .watermark-text {
+            position: absolute;
+            font-size: 15vw;
+            font-weight: 1000;
+            line-height: 1.1;
+            color: var(--brand-blue);
+            opacity: 0.08;
+            z-index: -1;
+            white-space: nowrap;
+            pointer-events: none;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        .credits-scroll {
+            animation: scroll-up 20s linear infinite;
+        }
+        @keyframes scroll-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        .credits-scroll:hover {
+            animation-play-state: paused;
+        }
+    </style>
+    <title>Progressive - Mindset-Driven Career Community</title>
+</head>
+<body>
+
+    <nav class="flex justify-between items-center px-10 py-8 border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-md z-50">
+        <a href="index.html" class="font-black text-2xl tracking-tighter title-slanted text-brand-blue">PROGRESSIVE<span class="text-brand-pink">!</span></a>
+        <div class="hidden md:flex gap-12 font-bold text-xs uppercase tracking-[0.2em]">
+            <a href="#about" class="hover:text-brand-blue transition-colors">Tentang</a>
+            <a href="#program" class="hover:text-brand-blue transition-colors">Program</a>
+            <a href="#principles" class="hover:text-brand-blue transition-colors">Peserta</a>
+            <a href="events.html" class="hover:text-brand-blue transition-colors">Event</a>
+        </div>
+        <button class="bg-brand-blue text-white px-10 py-3 rounded-full font-black text-xs uppercase tracking-widest hover:opacity-90 transition-all shadow-lg shadow-brand-blue/20">
+            JOIN NOW
+        </button>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="about" class="relative px-10 py-32 md:py-48 bg-white overflow-hidden">
+        <!-- Background Scribbles -->
+        <svg class="scribble-float top-10 left-10 w-64 h-64 text-brand-blue animate-wobble" viewBox="0 0 200 200" fill="none">
+            <path d="M20 40C60 20 100 80 140 40C180 20 180 120 140 140C100 160 60 100 20 140" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <svg class="scribble-float bottom-20 right-1/4 w-80 h-40 text-brand-pink opacity-10" viewBox="0 0 400 100" fill="none">
+            <path d="M10 80Q50 10 100 80Q150 10 200 80Q250 10 300 80Q350 10 390 80" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <svg class="scribble-float top-1/2 left-0 w-32 h-32 text-brand-cyan hidden md:block" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="2" stroke-dasharray="10 5" fill="none"/>
+            <path d="M30 50L70 50M50 30L50 70" stroke="currentColor" stroke-width="2"/>
+        </svg>
+
+        <div class="sparkle top-20 right-40"></div>
+        <div class="sparkle bottom-40 left-20 bg-brand-blue" style="animation-delay: 1s"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                <div>
+                    <span class="pill-tag mb-10">Mindset First Community</span>
+                    <h1 class="text-6xl md:text-[85px] font-black tracking-tighter leading-[0.85] text-brand-black title-slanted mb-12">
+                        CAPEK KERJA, <br>
+                        <span class="text-brand-blue relative inline-block">
+                            GAK TAU KENAPA?
+                            <svg class="absolute -bottom-4 left-0 w-full scribble-line" viewBox="0 0 400 20" fill="none">
+                                <path d="M5 15C100 5 300 5 395 15" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                    </h1>
+                    <p class="text-2xl md:text-3xl font-bold text-slate-700 leading-tight mb-16 max-w-2xl">
+                        Banyak karyawan muda merasa lelah dan bingung—bukan karena lemah, tapi karena fase membangun karier memang tidak pernah mudah.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-6">
+                        <div class="bg-brand-gray px-6 py-3 rounded-xl border border-gray-200 font-bold text-sm uppercase tracking-widest">
+                            #WarasBekerja
+                        </div>
+                        <div class="bg-brand-gray px-6 py-3 rounded-xl border border-gray-200 font-bold text-sm uppercase tracking-widest">
+                            #MindsetFirst
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <!-- The Blue Box (News Updates) -->
+                    <div class="bg-brand-blue rounded-[50px] p-12 h-[600px] relative overflow-hidden flex flex-col justify-between shadow-[0_30px_60px_-15px_rgba(0,51,204,0.3)] group/card transition-transform hover:scale-[1.02] duration-500">
+                        <div class="text-white/40 font-black text-xs uppercase tracking-[0.4em]">National Career Stream</div>
+                        
+                        <div class="flex-grow overflow-hidden relative mt-12 mb-12">
+                            <div class="credits-scroll space-y-12 pb-12">
+                                <div class="news-item">
+                                    <span class="text-brand-cyan text-xs font-black uppercase tracking-widest block mb-2">CNBC Indonesia</span>
+                                    <h4 class="text-white font-black text-3xl uppercase tracking-tighter leading-tight italic">Gen Z Prioritaskan Kebebasan Waktu Dibanding Gaji Besar di 2026.</h4>
+                                </div>
+                                <div class="news-item">
+                                    <span class="text-brand-pink text-xs font-black uppercase tracking-widest block mb-2">Kompas Business</span>
+                                    <h4 class="text-white font-black text-3xl uppercase tracking-tighter leading-tight italic">Sertifikasi Keahlian Khusus Lebih Diminati Perusahaan Multinasional.</h4>
+                                </div>
+                                <div class="news-item">
+                                    <span class="text-brand-cyan text-xs font-black uppercase tracking-widest block mb-2">Detik Finance</span>
+                                    <h4 class="text-white font-black text-3xl uppercase tracking-tighter leading-tight italic">Trend 'Work-Life Harmony' Geser Konsep 'Workaholic' di Ibukota.</h4>
+                                </div>
+                                <div class="news-item">
+                                    <span class="text-brand-pink text-xs font-black uppercase tracking-widest block mb-2">CNN Indonesia</span>
+                                    <h4 class="text-white font-black text-3xl uppercase tracking-tighter leading-tight italic">Pemerintah Perketat Aturan Cuti Untuk Kesehatan Mental Karyawan.</h4>
+                                </div>
+                                <div class="news-item">
+                                    <span class="text-brand-cyan text-xs font-black uppercase tracking-widest block mb-2">Tempo Interaktif</span>
+                                    <h4 class="text-white font-black text-3xl uppercase tracking-tighter leading-tight italic">Digital Nomad Menjadi Pilihan Utama Pekerja Kreatif Indonesia.</h4>
+                                </div>
+                                <!-- Loop Duplication for Seamless Scroll -->
+                                <div class="news-item">
+                                    <span class="text-brand-cyan text-xs font-black uppercase tracking-widest block mb-2">CNBC Indonesia</span>
+                                    <h4 class="text-white font-black text-3xl uppercase tracking-tighter leading-tight italic">Gen Z Prioritaskan Kebebasan Waktu Dibanding Gaji Besar di 2026.</h4>
+                                </div>
+                                <div class="news-item">
+                                    <span class="text-brand-pink text-xs font-black uppercase tracking-widest block mb-2">Kompas Business</span>
+                                    <h4 class="text-white font-black text-3xl uppercase tracking-tighter leading-tight italic">Sertifikasi Keahlian Khusus Lebih Diminati Perusahaan Multinasional.</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative z-10">
+                            <div class="font-black text-5xl text-white tracking-tighter italic border-t border-white/10 pt-8 uppercase">
+                                DAILY <br><span class="text-brand-cyan">TRENDS.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Circular CTA Button -->
+                    <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white rounded-full border-[6px] border-brand-black flex items-center justify-center shadow-2xl cursor-pointer hover:rotate-12 hover:scale-110 transition-all group/btn z-20">
+                        <svg class="w-12 h-12 text-brand-blue group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M17 7H7M17 7V17" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mt-32 border-t border-gray-100 pt-20">
+                <div class="bg-white p-8 rounded-3xl hover:bg-brand-blue hover:text-white transition-all group">
+                     <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Cara Bekerja</h3>
+                     <p class="font-bold opacity-70">Memahami cara bekerja, bukan hanya apa pekerjaannya.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl hover:bg-brand-blue hover:text-white transition-all group">
+                     <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Pondasi Mental</h3>
+                     <p class="font-bold opacity-70">Menguatkan pondasi mental karir jangka panjang.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl hover:bg-brand-blue hover:text-white transition-all group">
+                     <h3 class="font-black text-xl mb-4 uppercase tracking-tighter">Ruang Tumbuh</h3>
+                     <p class="font-bold opacity-70">Ruang tumbuh yang waras dan berkesadaran.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROBLEM & VALUE SECTION -->
+    <section class="py-32 px-10 bg-brand-gray/50 relative overflow-hidden">
+        <!-- Problem Section Scribbles -->
+        <svg class="scribble-float -top-10 left-1/2 w-96 h-20 text-brand-black rotate-12" viewBox="0 0 500 100" fill="none">
+            <path d="M0 50C100 50 150 10 250 10C350 10 400 90 500 90" stroke="currentColor" stroke-width="8" stroke-dasharray="20 10" opacity="0.1"/>
+        </svg>
+        <svg class="absolute top-1/4 right-10 w-24 h-24 text-brand-pink opacity-20 animate-pulse" viewBox="0 0 100 100">
+            <path d="M10 10L90 90M90 10L10 90" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+        </svg>
+
+        <div class="watermark-text top-10 -right-20">PROGRESSIVE</div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h2 class="text-5xl font-black mb-12 tracking-tighter uppercase title-slanted text-brand-black">
+                        MASALAH YANG <br>INGIN <span class="text-brand-pink">DIPECAHKAN.</span>
+                    </h2>
+                    <ul class="space-y-8">
+                        <li class="flex items-center gap-6">
+                            <span class="w-12 h-12 rounded-full border-4 border-brand-blue flex items-center justify-center font-black">1</span>
+                            <span class="text-xl font-black uppercase tracking-tighter">Kebingungan setelah mulai bekerja.</span>
+                        </li>
+                        <li class="flex items-center gap-6">
+                            <span class="w-12 h-12 rounded-full border-4 border-brand-blue flex items-center justify-center font-black">2</span>
+                            <span class="text-xl font-black uppercase tracking-tighter">Karir stagnan meski sudah kerja keras.</span>
+                        </li>
+                        <li class="flex items-center gap-6">
+                            <span class="w-12 h-12 rounded-full border-4 border-brand-blue flex items-center justify-center font-black">3</span>
+                            <span class="text-xl font-black uppercase tracking-tighter">Kurang pondasi mindset (fokus tools).</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card-creative bg-brand-black text-white border-brand-blue">
+                    <span class="pill-tag bg-brand-blue mb-8">Value Proposition</span>
+                    <h3 class="text-4xl font-black mb-8 uppercase tracking-tighter title-slanted">DNA KAMI.</h3>
+                    <p class="text-xl font-bold leading-snug mb-8 opacity-90">
+                        Membangun pola pikir kerja yang sehat, strategis, dan maju melalui diskusi intim dan program mendalam.
+                    </p>
+                    <div class="border-t border-white/20 pt-8 italic font-black text-brand-cyan tracking-widest uppercase text-sm">
+                        Focus: Mindset, Self-Awareness, High Reflection.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- PROGRAMS SECTION -->
+    <section id="program" class="py-32 px-10 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10 text-center mb-24">
+            <span class="pill-tag mb-8">Our Programs</span>
+            <h2 class="text-6xl md:text-8xl font-black tracking-tighter uppercase title-slanted">
+                PRODUK <span class="text-brand-blue">INTI.</span>
+            </h2>
+        </div>
+        
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
+            <!-- Talk -->
+            <a href="talk.html" class="card-creative group border-brand-blue block cursor-pointer">
+                <span class="text-xs font-black uppercase tracking-[0.3em] text-brand-blue mb-4 block">Soft Launch</span>
+                <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter">Progressive Talk</h3>
+                <p class="font-bold opacity-70 mb-10">Diskusi kecil untuk membangun awareness dan networking.</p>
+                <div class="w-full h-1 bg-brand-blue/10 rounded-full overflow-hidden">
+                    <div class="w-1/3 h-full bg-brand-blue"></div>
+                </div>
+            </a>
+            
+            <!-- Circle -->
+            <a href="circle.html" class="card-creative group border-brand-black bg-brand-black text-white transform md:-translate-y-8 block cursor-pointer">
+                <span class="text-xs font-black uppercase tracking-[0.3em] text-brand-cyan mb-4 block">Regular</span>
+                <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter">Progressive Circle</h3>
+                <p class="font-bold opacity-70 mb-10 text-white/80">Kelompok kecil yang punya jadwal bertemu secara rutin.</p>
+                <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div class="w-2/3 h-full bg-brand-cyan"></div>
+                </div>
+            </a>
+            
+            <!-- Session -->
+            <a href="session.html" class="card-creative group border-brand-pink block cursor-pointer">
+                <span class="text-xs font-black uppercase tracking-[0.3em] text-brand-pink mb-4 block">Special Program</span>
+                <h3 class="text-3xl font-black mb-6 uppercase tracking-tighter">Progressive Session</h3>
+                <p class="font-bold opacity-70 mb-10">Sesi mendalam dengan fasilitator ahli tentang internal growth framework.</p>
+                <div class="w-full h-1 bg-brand-pink/10 rounded-full overflow-hidden">
+                    <div class="w-full h-full bg-brand-pink"></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- UPCOMING EVENTS SECTION -->
+    <section id="upcoming-events" class="py-32 px-10 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+            <div class="max-w-2xl">
+                <span class="pill-tag mb-8">Mark Your Calendar</span>
+                <h2 class="text-5xl md:text-7xl font-black tracking-tighter uppercase title-slanted">
+                    EVENT <span class="text-brand-pink">TERDEKAT.</span>
+                </h2>
+            </div>
+            <a href="events.html" class="bg-brand-black text-white px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-brand-blue transition-all shadow-xl">
+                LIHAT LEBIH BANYAK EVENT →
+            </a>
+        </div>
+
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-24 text-center">
+                <span class="px-6 py-2 bg-brand-pink/10 text-brand-pink font-black text-xs uppercase tracking-[0.3em] rounded-full mb-8 inline-block">Event Mendatang</span>
+                <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tighter italic mb-6 leading-tight">"Kamu Lagi Capek Kerja, <br>atau Capek Bangun Karier?"</h3>
+                <p class="text-xl md:text-2xl font-black text-brand-blue mb-4 uppercase tracking-widest">Progressive Talk: Vol. 01</p>
+                <p class="text-lg font-bold text-slate-500 max-w-2xl mx-auto italic">Ruang refleksi untuk memahami fase hidup, bukan sekadar keluhan di meja kerja.</p>
+            </div>
+
+            <!-- Why this session? -->
+            <div class="mb-32">
+                <div class="text-center mb-16">
+                    <h4 class="text-brand-blue font-black text-sm uppercase tracking-[0.4em] mb-4 border-b-4 border-brand-blue inline-block pb-2">Kenapa Sesi Ini Hadir?</h4>
+                    <p class="text-2xl font-bold text-slate-800 mt-8 max-w-3xl mx-auto">Banyak karyawan muda hari ini tidak sedang malas. <span class="text-brand-blue uppercase">Mereka sedang lelah.</span></p>
+                    <p class="text-slate-500 font-bold mt-6 max-w-2xl mx-auto">Berdasarkan berbagai pemberitaan, kesehatan mental menjadi isu terbesar di dunia kerja saat ini. Tekanan untuk cepat berhasil, adaptasi, dan ekspektasi sosial seringkali datang tiba-tiba.</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-brand-gray p-10 rounded-[32px] border-2 border-dashed border-gray-300">
+                        <div class="text-brand-blue font-black text-5xl mb-2">84%</div>
+                        <div class="text-brand-black font-black uppercase text-xs tracking-widest">Gen-Z Burnout</div>
+                    </div>
+                    <div class="bg-brand-gray p-10 rounded-[32px] border-2 border-dashed border-gray-300">
+                        <div class="text-brand-pink font-black text-5xl mb-2">20–35</div>
+                        <div class="text-brand-black font-black uppercase text-xs tracking-widest">Usia Paling Rentan</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-24">
+                <!-- Session 1: Online -->
+                <div class="card-creative border-brand-blue bg-brand-white flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="px-4 py-1 bg-brand-blue text-white text-[10px] font-black uppercase tracking-widest rounded-full">Online Session</span>
+                            <span class="text-brand-blue font-black text-[10px] uppercase tracking-widest italic">Interactive Talk</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-black mb-4 uppercase tracking-tighter italic">Progressive Talk: <br>The Reflection</h3>
+                    <p class="text-slate-600 font-bold mb-8">Membahas pola burnout dan pemahaman fase karier melalui kacamata reflektif.</p>
+                    
+                    <div class="mt-auto space-y-4 pt-8 border-t border-gray-100">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="font-bold text-slate-700">Sabtu, 21 Februari 2026</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="font-bold text-slate-700">19:30 – 21:00 WIB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session 2: Offline -->
+                <div class="card-creative border-brand-pink bg-brand-white flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="px-4 py-1 bg-brand-pink text-white text-[10px] font-black uppercase tracking-widest rounded-full">Offline Experience</span>
+                            <span class="text-brand-pink font-black text-[10px] uppercase tracking-widest italic">"Setelah Sadar, Terus Ngapain?"</span>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-black mb-4 uppercase tracking-tighter italic">Progressive Talk: <br>The Action</h3>
+                    <p class="text-slate-600 font-bold mb-8">Ruang aman untuk berbagi langkah nyata dan navigasi fase karier secara kolektif.</p>
+                    
+                    <div class="mt-auto space-y-4 pt-8 border-t border-gray-100">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-brand-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="font-bold text-slate-700">Minggu, 22 Februari 2026</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-brand-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="font-bold text-slate-700">Jakarta Selatan (Private Venue)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quote & Social Proof -->
+            <div class="bg-brand-black rounded-[40px] p-20 text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, var(--brand-blue) 1px, transparent 0); background-size: 32px 32px;"></div>
+                <div class="relative z-10">
+                    <p class="text-2xl md:text-4xl font-black text-white italic mb-12 uppercase tracking-tighter leading-tight">
+                        "Masalahnya bukan karena kamu lemah. Masalahnya karena kamu <span class="text-brand-cyan">belum diajak memahami fasenya.</span>"
+                    </p>
+                    <p class="text-brand-blue font-black uppercase text-xs tracking-[0.4em] mb-16">Disinilah Progressive Talk hadir untuk membantumu bernavigasi.</p>
+                    
+                    <div class="flex flex-col items-center gap-10">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="flex -space-x-4">
+                                <div class="w-12 h-12 rounded-full border-4 border-brand-black bg-brand-blue overflow-hidden flex items-center justify-center font-black text-xs text-white">AS</div>
+                                <div class="w-12 h-12 rounded-full border-4 border-brand-black bg-brand-pink overflow-hidden flex items-center justify-center font-black text-xs text-white">RN</div>
+                                <div class="w-12 h-12 rounded-full border-4 border-brand-black bg-brand-cyan overflow-hidden flex items-center justify-center font-black text-xs text-brand-black">BK</div>
+                                <div class="w-12 h-12 rounded-full border-4 border-brand-black bg-white/20 backdrop-blur-md flex items-center justify-center font-black text-xs text-white">+250</div>
+                            </div>
+                            <p class="text-white/60 font-bold text-sm">Sudah mendaftar untuk sesi refleksi ini.</p>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row gap-6 w-full max-w-xl mx-auto">
+                            <button class="flex-grow bg-brand-blue text-white py-5 px-10 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-xl">
+                                Daftar Sesi <span class="opacity-50 ml-2">(Sisa 12 Kursi)</span>
+                            </button>
+                            <button class="flex-grow bg-white text-brand-black py-5 px-10 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all">
+                                Detail Jadwal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRINCIPLES SECTION -->
+    <section id="principles" class="py-32 px-10 bg-brand-black text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, var(--brand-blue) 1px, transparent 0); background-size: 24px 24px;"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-24">
+                <h3 class="text-brand-cyan font-black text-sm uppercase tracking-[0.5em] mb-8">Experience Principle (DNA)</h3>
+                <h2 class="text-5xl md:text-7xl font-black tracking-tighter uppercase title-slanted">BAGAIMANA KITA <span class="bg-brand-blue px-4 inline-block">BEKERJA?</span></h2>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-6">
+                <div class="px-10 py-5 bg-white/5 border border-white/20 rounded-full font-black uppercase text-xl tracking-tighter hover:bg-brand-blue hover:border-brand-blue transition-all cursor-pointer">
+                    Intimate
+                </div>
+                <div class="px-10 py-5 bg-white/5 border border-white/20 rounded-full font-black uppercase text-xl tracking-tighter hover:bg-brand-blue hover:border-brand-blue transition-all cursor-pointer">
+                    Mindset-first
+                </div>
+                <div class="px-10 py-5 bg-white/5 border border-white/20 rounded-full font-black uppercase text-xl tracking-tighter hover:bg-brand-blue hover:border-brand-blue transition-all cursor-pointer">
+                    Deep Reflection
+                </div>
+                <div class="px-10 py-5 bg-white/5 border border-white/20 rounded-full font-black uppercase text-xl tracking-tighter hover:bg-brand-blue hover:border-brand-blue transition-all cursor-pointer">
+                    Community Driven
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="p-20 bg-white flex flex-col md:flex-row justify-between items-center gap-12 border-t border-gray-100">
+        <a href="index.html" class="font-black text-4xl tracking-tighter title-slanted text-brand-blue">PROGRESSIVE<span class="text-brand-pink">!</span></a>
+        <div class="text-xs font-black text-slate-500 uppercase tracking-[0.5em] text-center md:text-right">
+            © 2026 PROGRESSIVE. ALL RIGHTS RESERVED. <br>
+            <span class="opacity-30 text-[10px]">Mindset-Driven Career Community.</span>
+        </div>
+    </footer>
+
+</body>
+</html>
