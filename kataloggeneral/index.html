@@ -136,6 +136,97 @@
             color: white;
         }
 
+        /* --- Download Button --- */
+        .download-btn {
+            background: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            background: var(--text-main);
+            box-shadow: 0 5px 15px var(--glow);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .download-btn span { display: none; }
+            .download-btn { padding: 10px; }
+        }
+
+        /* --- PDF Export Styles --- */
+        .no-pdf { display: none !important; }
+
+        #pdf-template {
+            display: none;
+            padding: 40px;
+            background: white;
+            color: #333;
+        }
+
+        .price-list-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .price-list-table th, .price-list-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .price-list-table th {
+            background-color: #f8fafc;
+            color: #0166F3;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .price-list-table tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #0166F3;
+            padding-bottom: 20px;
+        }
+
+        .pdf-header h1 {
+            color: #0166F3;
+            margin: 10px 0;
+            font-size: 24px;
+        }
+
+        .pdf-footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #64748b;
+            text-align: center;
+        }
+
         /* --- Navigation --- */
         .site-nav {
             margin-bottom: 60px;
@@ -435,9 +526,15 @@
             <a href="/">
                 <img src="../public/assets/images/spinotek-logo.png" alt="Spinotek Logo" class="logo-img">
             </a>
-            <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
-                <i class="fas fa-moon"></i>
-            </button>
+            <div class="header-actions">
+                <button class="download-btn" id="download-pdf" title="Download Price List">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Price List PDF</span>
+                </button>
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -577,6 +674,30 @@
         </div>
     </main>
 
+    <div id="pdf-template">
+        <div class="pdf-header">
+            <img src="../public/assets/images/spinotek-logo.png" alt="Spinotek" style="height: 40px; margin-bottom: 10px;">
+            <h1>DAFTAR HARGA LAYANAN</h1>
+            <p>PT Spektrum Inovasi Teknologi (Spinotek)</p>
+        </div>
+        <table class="price-list-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Nama Layanan</th>
+                    <th style="width: 20%;">Harga Mulai</th>
+                    <th style="width: 50%;">Fitur Utama</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-table-body">
+                <!-- Data will be populated here -->
+            </tbody>
+        </table>
+        <div class="pdf-footer">
+            <p>&copy; 2026 Spinotek Corp. Hubungi kami: info@spinotek.com | +62 821-6459-9911</p>
+            <p>Harga dapat berubah sewaktu-waktu sesuai kebutuhan kustomisasi.</p>
+        </div>
+    </div>
+
     <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
@@ -614,6 +735,7 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('i');
@@ -642,6 +764,65 @@
                 themeIcon.classList.add('fa-moon');
             }
         }
+
+        // PDF Generation Logic
+        const downloadBtn = document.getElementById('download-pdf');
+        downloadBtn.addEventListener('click', async () => {
+            // Add loading state
+            const originalContent = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Generating...</span>';
+            downloadBtn.disabled = true;
+
+            // Prepare data for the table
+            const tableBody = document.getElementById('pdf-table-body');
+            tableBody.innerHTML = ''; // Clear existing
+            
+            const cards = document.querySelectorAll('.sp-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText;
+                const price = card.querySelector('.price-box .val').innerText;
+                const features = Array.from(card.querySelectorAll('.feature-list li'))
+                                     .map(li => li.innerText)
+                                     .join(', ');
+                
+                const row = `
+                    <tr>
+                        <td><strong>${title}</strong></td>
+                        <td>${price}</td>
+                        <td>${features}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+
+            const element = document.getElementById('pdf-template');
+            element.style.display = 'block'; // Temporarily show for capture
+
+            const opt = {
+                margin: [0.5, 0.5],
+                filename: 'Spinotek-Price-List.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true,
+                    letterRendering: true
+                },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            try {
+                await html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+                    // Success
+                }).save();
+            } catch (error) {
+                console.error('PDF Generation failed:', error);
+                alert('Gagal membuat PDF. Silakan coba lagi.');
+            } finally {
+                element.style.display = 'none'; // Hide again
+                downloadBtn.innerHTML = originalContent;
+                downloadBtn.disabled = false;
+            }
+        });
     </script>
 
 </body>
