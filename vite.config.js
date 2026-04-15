@@ -1,6 +1,4 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import fs from 'fs';
 
@@ -14,7 +12,7 @@ function getHtmlEntries() {
 
   folders.forEach((dir) => {
     // Skip system folders and hidden folders
-    if (dir.isDirectory() && !['node_modules', '.git', 'dist', 'assets', 'public'].includes(dir.name) && !dir.name.startsWith('.')) {
+    if (dir.isDirectory() && !['node_modules', '.git', 'dist', 'assets', 'public', '_template-react', '_template-vue', 'system-flow'].includes(dir.name) && !dir.name.startsWith('.')) {
       const fullDirPath = resolve(__dirname, dir.name);
       const files = fs.readdirSync(fullDirPath);
 
@@ -34,8 +32,7 @@ function getHtmlEntries() {
 
 export default defineConfig({
   plugins: [
-    react(), 
-    vue(),
+
     // Custom plugin to handle clean URLs for subdirectories in dev
     {
       name: 'handle-clean-urls',
