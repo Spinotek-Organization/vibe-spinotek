@@ -10,10 +10,9 @@ Wadah buat pamer karya, prototipe, atau hasil eksperimen kamu. Di sini tempatnya
 
 Project ini dirancang sebagai **Monorepo / Workspace** yang efisien. Kamu tidak perlu instalasi berulang.
 
-- **Frontend**: [React 18](https://react.dev/), [Vue 3](https://vuejs.org/), HTML5
+- **Frontend**: HTML5, Vanilla JavaScript, Alpine.js (Opsional)
 - **Styling**: [Tailwind CSS 3](https://tailwindcss.com/) (Global Configuration)
 - **Build Tool**: [Vite 5](https://vitejs.dev/) (Super fast HMR)
-- **Backend as a Service**: [Supabase](https://supabase.com/) (Database & Auth)
 
 ---
 
@@ -27,32 +26,12 @@ Cukup jalankan satu perintah di _root folder_ untuk menginstall dependensi bagi 
 npm install
 ```
 
-### 2. Konfigurasi Backend (Supabase)
+### 2. Konfigurasi Environment
+Salin file contoh untuk konfigurasi lokal kamu.
 
-Setiap developer atau folder project bisa memiliki database sendiri.
-
-1.  **Duplicate Env File**:
-    Copy file `.env.example` dan ubah namanya menjadi `.env`.
-
-    ```bash
-    cp .env.example .env
-    ```
-
-2.  **Isi Kredensial**:
-    Buka file `.env` dan isi dengan kredensial dari project Supabase kamu masing-masing.
-
-    ```env
-    VITE_SUPABASE_URL=https://xyzpy.supabase.co
-    VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-    ```
-
-    > **💡 Tips Tim:** Kamu bebas menggunakan project Supabase pribadi (`my-dev-db`) di laptopmu untuk testing tanpa takut merusak database utama (`production-db`).
-
-3.  **Setup Database Table**:
-    Agar fitur seperti _Save to Cloud_ berjalan, kamu perlu membuat tabel di database Supabase kamu.
-    - Buka Dashboard Supabase > SQL Editor.
-    - Copy & Paste isi file `supabase_schema.sql` yang ada di root folder ini.
-    - Run query tersebut.
+```bash
+cp .env.example .env
+```
 
 ### 3. Jalankan Server
 
@@ -72,15 +51,12 @@ Kita menggunakan konsep _Workspace_, jadi satu `package.json` mengedalikan semua
 
 ```text
 / (root)
-├── .env                <-- Kredensial LOKAL kamu (JANGAN DICOMMIT!)
-├── .env.example        <-- Template kredensial buat tim
-├── supabase_schema.sql <-- Skema database untuk setup Supabase
+├── .env                <-- Config LOKAL kamu (JANGAN DICOMMIT!)
+├── .env.example        <-- Template config buat tim
 ├── package.json        <-- Config utama
 ├── vite.config.js      <-- Config build server
-├── lib/
-│   └── supabase.js     <-- Client koneksi database terpusat
-├── system-flow/        <-- [Contoh App] Diagram Builder (Vue + Supabase)
-├── aksa-coffee/        <-- [Contoh App] Landing Page
+├── main.js             <-- Entry point CSS Global
+├── aksa-coffee/        <-- [Contoh Proyek] Landing Page
 └── [proyek-kamu]/      <-- Buat folder barumu di sini
 ```
 
@@ -88,17 +64,10 @@ Kita menggunakan konsep _Workspace_, jadi satu `package.json` mengedalikan semua
 
 ## 🎨 Cara Membuat Project Baru
 
-### Opsi A: Project React/Vue (Disarankan)
-
-1. Copy folder `_template-react` atau `_template-vue`.
-2. Rename folder tersebut (misal: `dashboard-v1`).
-3. Mulai koding! Environment variables (`.env`) di root otomatis terbaca.
-
-### Opsi B: Project HTML Statis
-
-1. Buat folder baru.
-2. Buat `index.html`.
-3. Import Global CSS jika butuh Tailwind:
+1. Buat folder baru (misal: `my-awesome-lp`).
+2. Buat file `index.html` di dalamnya.
+3. Gunakan Template Standar atau Alpine.js.
+4. Import Global CSS/JS jika butuh Tailwind:
    ```html
    <script type="module" src="/main.js"></script>
    ```
@@ -142,9 +111,8 @@ Kita menggunakan konsep _Workspace_, jadi satu `package.json` mengedalikan semua
 
 ## 🤝 Kolaborasi Tim & Git
 
-- **.env Aman**: File `.env` sudah masuk `.gitignore`. Kredensial server kamu aman di laptop masing-masing.
-- **Database Terpisah**: Jangan takut bereksperimen. Selama kamu pakai URL Supabase kamu sendiri di `.env`, data teman setim tidak akan terganggu.
-- **Pull Request**: Selalu push kode kamu tanpa menyertakan kredensial asli.
+- **.env Aman**: File `.env` sudah masuk `.gitignore`.
+- **Pull Request**: Selalu push kode kamu tanpa menyertakan kredensial atau config sensitif.
 
 ---
 
