@@ -57,12 +57,6 @@
         },
       };
     </script>
-    <script type="module">
-      window.warungAssets = {
-        exterior: import.meta.env.PROD ? '../assets/images/warung_bu_baha_exterior.png' : '../public/assets/images/warung_bu_baha_exterior.png',
-        food: import.meta.env.PROD ? '../assets/images/javanese_bakmi_godog.png' : '../public/assets/images/javanese_bakmi_godog.png'
-      };
-    </script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
@@ -145,8 +139,8 @@
       activeActionTab: '30',
       activeProfileMenu: 'utama',
       activeGmapsDoc: 1,
-      profileImg: window.warungAssets ? window.warungAssets.exterior : '../public/assets/images/warung_bu_baha_exterior.png',
-      foodImg: window.warungAssets ? window.warungAssets.food : '../public/assets/images/javanese_bakmi_godog.png',
+      profileImg: 'assets/images/warung_bu_baha_exterior.png',
+      foodImg: 'assets/images/javanese_bakmi_godog.png',
       routes: [
         { name: 'Kotagede', distance: '±2–3 km', time: '5–10 menit', angle: 'Basis pelanggan lokal', note: 'Paling dekat dan paling mungkin menjadi sumber pelanggan rutin dari keluarga serta warga sekitar.', score: 96 },
         { name: 'Malioboro', distance: '±6–7 km', time: '20–30 menit', angle: 'Limpahan wisata', note: 'Bisa diisi sebagai alternatif kuliner khas Jogja yang lebih tenang dan tidak terlalu mainstream.', score: 78 },
