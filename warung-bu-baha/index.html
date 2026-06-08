@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Warung Bu BaHa | Spinotek Insight Market Analysis</title>
+    <meta
+      name="description"
+      content="Halaman interaktif market analysis Warung Bu BaHa berdasarkan framework Spinotek Insight MCG+."
+    />
+    <meta name="theme-color" content="#2a6cf0" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="../public/assets/images/favicon.png"
+    />
+    <link rel="apple-touch-icon" href="../public/assets/images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              spinoblue: {
+                50: "#f2f7ff",
+                100: "#dfeaff",
+                200: "#c6dbff",
+                300: "#9fc2ff",
+                400: "#6f9df3",
+                500: "#2a6cf0",
+                600: "#2057cf",
+                700: "#1f49a6",
+                800: "#203d83",
+                900: "#203461",
+              },
+              ink: "#1f2b47",
+              mist: "#f8fbff",
+              steel: "#657798",
+              sun: "#f2c94c",
+              coral: "#ef8a72",
+              teal: "#59b8b1",
+              lavender: "#8d8be8",
+            },
+            fontFamily: {
+              sans: ["Onest", "sans-serif"],
+              display: ["Source Serif 4", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Onest", sans-serif;
+        font-weight: 500;
+        background: #f8fbff;
+      }
+
+      .section-shell {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(18px);
+      }
+
+      .grid-fade {
+        background-image:
+          linear-gradient(rgba(42, 108, 240, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(42, 108, 240, 0.05) 1px, transparent 1px);
+        background-size: 24px 24px;
+      }
+
+      .font-display {
+        font-family: "Source Serif 4", serif;
+        letter-spacing: -0.03em;
+        font-weight: 600 !important;
+      }
+
+      .font-extrabold {
+        font-weight: 700 !important;
+      }
+
+      .font-bold {
+        font-weight: 600 !important;
+      }
+
+      .freehand {
+        position: relative;
+        display: inline;
+        z-index: 0;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        padding-inline: 0.06em;
+      }
+
+      .freehand::after {
+        content: "";
+        position: absolute;
+        left: -0.02em;
+        right: -0.02em;
+        bottom: 0.08em;
+        height: 0.22em;
+        background: rgba(242, 201, 76, 0.45);
+        border-radius: 999px 999px 10px 12px;
+        transform: rotate(-1.1deg);
+        z-index: -1;
+      }
+
+      .marker-coral::after {
+        background: rgba(239, 138, 114, 0.28);
+      }
+
+      .marker-teal::after {
+        background: rgba(89, 184, 177, 0.28);
+      }
+    </style>
+  </head>
+  <body
+    class="min-h-screen text-ink antialiased"
+    x-data="{
+      activeRoute: 0,
+      activeLens: 'market',
+      activeActionTab: '30',
+      routes: [
+        { name: 'Kotagede', distance: '±2–3 km', time: '5–10 menit', angle: 'Basis pelanggan lokal', note: 'Paling dekat dan paling mungkin menjadi sumber pelanggan rutin dari keluarga serta warga sekitar.', score: 96 },
+        { name: 'Malioboro', distance: '±6–7 km', time: '20–30 menit', angle: 'Limpahan wisata', note: 'Bisa diisi sebagai alternatif kuliner khas Jogja yang lebih tenang dan tidak terlalu mainstream.', score: 78 },
+        { name: 'Prambanan', distance: '±14–16 km', time: '30–45 menit', angle: 'Transit rombongan', note: 'Sangat cocok untuk paket makan siang atau makan malam sebelum atau sesudah jalur wisata timur.', score: 85 },
+        { name: 'Bukit Bintang', distance: '±9–12 km', time: '20–35 menit', angle: 'Koridor makan malam', note: 'Punya potensi kuat sebagai stop sebelum atau setelah aktivitas malam.', score: 82 },
+        { name: 'Parangtritis', distance: '±29–31 km', time: '55–75 menit', angle: 'Peluang mitra perjalanan', note: 'Perlu kerja sama driver dan agen perjalanan agar Bu BaHa masuk ke rekomendasi rute selatan.', score: 64 }
+      ],
+      heroMenus: [
+        { name: 'Sop Sapi Bu BaHa', tag: 'Menu utama', price: 'Rp18.000+', score: 96 },
+        { name: 'Bakmi Godog / Goreng', tag: 'Bakmi andalan', price: 'Rp18.000', score: 92 },
+        { name: 'Wedang Seruni', tag: 'Minuman andalan', price: 'Minuman populer', score: 84 },
+        { name: 'Tempe Mendoan', tag: 'Camilan andalan', price: 'Pendamping favorit', score: 79 },
+        { name: 'Rice Bowl Katsu', tag: 'Jembatan menu modern', price: 'Rp15.000', score: 72 }
+      ],
+      marketSegments: [
+        { label: 'Warga lokal', score: 94, note: 'Kunjungan berulang' },
+        { label: 'Wisatawan', score: 83, note: 'Kuliner khas Jogja' },
+        { label: 'Rombongan keluarga', score: 88, note: 'Tempat luas' },
+        { label: 'Komunitas', score: 74, note: 'Kumpul bersama' },
+        { label: 'Mahasiswa / karyawan', score: 76, note: 'Harga masuk' },
+        { label: 'Driver wisata / travel', score: 81, note: 'Reservasi singgah makan' }
+      ],
+      comfortDrivers: [
+        { label: 'Menu khas Jogja', score: 94 },
+        { label: 'Tempat lapang', score: 90 },
+        { label: 'Parkir mudah', score: 87 },
+        { label: 'Mushola & toilet', score: 85 },
+        { label: 'Layanan ramah', score: 83 },
+        { label: 'Harga terjangkau', score: 88 }
+      ],
+      competitorPressure: [
+        { label: 'Mbah Gito', score: 95, tone: 'bg-red-500' },
+        { label: 'Bakmi legendaris lokal', score: 82, tone: 'bg-amber-500' },
+        { label: 'Warmindo / burjo', score: 61, tone: 'bg-sky-500' },
+        { label: 'Coffee shop', score: 58, tone: 'bg-blue-500' },
+        { label: 'Delivery food', score: 73, tone: 'bg-indigo-500' }
+      ],
+      growthLevers: [
+        { label: 'Google Maps', score: 96 },
+        { label: 'Partnership', score: 88 },
+        { label: 'Konten hero menu', score: 84 },
+        { label: 'Paket rombongan', score: 91 },
+        { label: 'Bundling delivery', score: 73 }
+      ]
+    }"
+  >
+    <div
+      class="fixed inset-x-0 top-0 z-50 border-b border-spinoblue-200/60 bg-white/84 backdrop-blur-xl"
+    >
+      <div
+        class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8"
+      >
+        <a href="#top" class="flex items-center gap-3">
+          <img
+            src="../public/assets/images/spinotek-logo.png"
+            alt="Spinotek"
+            class="h-8 w-auto md:h-9"
+          />
+          <div class="leading-tight">
+            <div
+              class="text-[11px] font-bold uppercase tracking-[0.24em] text-spinoblue-700"
+            >
+              Spinotek Insight
+            </div>
+            <div class="text-xs text-steel">Ringkasan Insight Bisnis</div>
+          </div>
+        </a>
+
+        <div
+          class="hidden items-center gap-6 text-sm font-semibold text-steel md:flex"
+        >
+          <a href="#snapshot" class="transition hover:text-spinoblue-700"
+            >Ringkasan</a
+          >
+          <a href="#market-map" class="transition hover:text-spinoblue-700"
+            >Peluang Pasar</a
+          >
+          <a href="#insight-lens" class="transition hover:text-spinoblue-700"
+            >Insight Bisnis</a
+          >
+          <a href="#growth-plan" class="transition hover:text-spinoblue-700"
+            >Arah Tumbuh</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <main id="top" class="pb-20 pt-24 md:pt-28">
+      <section class="px-5 pb-12 pt-6 md:px-8 md:pb-16">
+        <div class="mx-auto max-w-7xl">
+          <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+            <div>
+              <div
+                class="mb-5 inline-flex items-center gap-2 rounded-full border border-spinoblue-200 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em] text-spinoblue-700 shadow-sm"
+              >
+                <span class="h-2 w-2 rounded-full bg-coral"></span>
+                Powered by Spinotek Insight
+              </div>
+              <h1
+                class="max-w-4xl font-display text-5xl leading-[1] text-ink sm:text-6xl lg:text-7xl"
+              >
+                Warung Bu BaHa punya modal kuat untuk tumbuh jadi
+                <span class="freehand marker-teal text-spinoblue-700"
+                  >pit stop kuliner khas Jogja</span
+                >
+                yang mudah diingat.
+              </h1>
+              <p class="mt-6 max-w-2xl text-lg leading-8 text-steel">
+                Analisis ini merangkum potensi Warung Bu BaHa dari sisi pasar,
+                pelanggan, kompetitor, produk, dan arah pertumbuhan dalam format
+                yang lebih mudah dibaca, dipresentasikan, dan ditindaklanjuti.
+              </p>
+
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="#snapshot"
+                  class="rounded-full bg-spinoblue-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-spinoblue-700"
+                >
+                  Lihat Ringkasan Utama
+                </a>
+                <a
+                  href="#insight-lens"
+                  class="rounded-full border border-spinoblue-200 bg-white px-6 py-3 text-sm font-bold text-spinoblue-700 transition hover:border-spinoblue-300 hover:bg-spinoblue-50"
+                >
+                  Lihat Insight Bisnis
+                </a>
+              </div>
+            </div>
+
+            <div
+              class="section-shell grid-fade rounded-[32px] border border-white/80 p-6 shadow-sm md:p-8"
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.28em] text-coral"
+                  >
+                    Ringkasan Utama
+                  </p>
+                  <p
+                    class="mt-3 font-display text-[2rem] leading-tight text-ink"
+                  >
+                    Fondasi bisnis kuat, peluang penguatan terbesar ada di
+                    kehadiran digital.
+                  </p>
+                </div>
+                <div
+                  class="rounded-3xl bg-sun px-5 py-4 text-right text-amber-950 shadow-sm ring-1 ring-amber-200"
+                >
+                  <div class="text-3xl font-bold">4.6</div>
+                  <div
+                    class="text-xs uppercase tracking-[0.2em] text-amber-900/75"
+                  >
+                    Rating
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                <div
+                  class="rounded-[26px] bg-white p-5 ring-1 ring-spinoblue-100"
+                >
+                  <p class="text-sm font-semibold text-steel">Jumlah review</p>
+                  <p class="mt-2 text-3xl font-bold text-ink">749</p>
+                  <p class="mt-2 text-sm leading-6 text-steel">
+                    Validasi sosial sudah tinggi dan bisa dipakai sebagai mesin
+                    akuisisi utama dari Maps.
+                  </p>
+                </div>
+                <div class="rounded-[26px] bg-teal/10 p-5 ring-1 ring-teal/20">
+                  <p class="text-sm font-semibold text-steel">Rentang harga</p>
+                  <p class="mt-2 text-2xl font-bold text-ink">
+                    Rp25.000-50.000
+                  </p>
+                  <p class="mt-2 text-sm leading-6 text-steel">
+                    Masuk untuk lokal, tetap relevan untuk wisatawan, keluarga,
+                    dan rombongan.
+                  </p>
+                </div>
+              </div>
+
+              <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                <div class="rounded-2xl bg-spinoblue-800 p-4 text-white">
+                  <p class="text-xs uppercase tracking-[0.2em] text-white/55">
+                    Daya tarik utama
+                  </p>
+                  <p class="mt-2 text-sm leading-6 text-white/84">
+                    Bakmi, sop, wedangan, kopi, ambience tradisional.
+                  </p>
+                </div>
+                <div class="rounded-2xl bg-white p-4 ring-1 ring-spinoblue-100">
+                  <p class="text-xs uppercase tracking-[0.2em] text-teal">
+                    Kekuatan operasional
+                  </p>
+                  <p class="mt-2 text-sm leading-6 text-steel">
+                    Tempat lapang, parkir mudah, mushola, toilet bersih.
+                  </p>
+                </div>
+                <div class="rounded-2xl bg-white p-4 ring-1 ring-spinoblue-100">
+                  <p class="text-xs uppercase tracking-[0.2em] text-coral">
+                    Celah utama
+                  </p>
+                  <p class="mt-2 text-sm leading-6 text-steel">
+                    Brand recall digital dan paket rombongan belum didorong
+                    maksimal.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-5 md:px-8">
+        <div
+          class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[260px_minmax(0,1fr)]"
+        >
+          <aside class="hidden lg:block">
+            <div class="sticky top-28 space-y-4">
+              <div
+                class="section-shell rounded-[28px] border border-white/80 p-4 shadow-sm"
+              >
+                <p
+                  class="px-2 text-[11px] font-bold uppercase tracking-[0.24em] text-coral"
+                >
+                  Navigasi Cepat
+                </p>
+                <div class="mt-3 space-y-2">
+                  <a
+                    href="#snapshot"
+                    class="block rounded-2xl px-3 py-3 text-sm font-semibold text-steel transition hover:bg-spinoblue-50 hover:text-spinoblue-700"
+                    >Ringkasan Utama</a
+                  >
+                  <a
+                    href="#market-map"
+                    class="block rounded-2xl px-3 py-3 text-sm font-semibold text-steel transition hover:bg-spinoblue-50 hover:text-spinoblue-700"
+                    >Peluang Pasar & Rute</a
+                  >
+                  <a
+                    href="#insight-lens"
+                    class="block rounded-2xl px-3 py-3 text-sm font-semibold text-steel transition hover:bg-spinoblue-50 hover:text-spinoblue-700"
+                    >Insight Bisnis</a
+                  >
+                  <a
+                    href="#growth-plan"
+                    class="block rounded-2xl px-3 py-3 text-sm font-semibold text-steel transition hover:bg-spinoblue-50 hover:text-spinoblue-700"
+                    >Fokus Pertumbuhan</a
+                  >
+                </div>
+              </div>
+
+              <div
+                class="section-shell rounded-[28px] border border-white/80 p-4 shadow-sm"
+              >
+                <p
+                  class="px-2 text-[11px] font-bold uppercase tracking-[0.24em] text-teal"
+                >
+                  Sudut Pandang
+                </p>
+                <div class="mt-3 space-y-2">
+                  <button
+                    type="button"
+                    @click="activeLens = 'market'; document.getElementById('insight-lens').scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                    class="w-full rounded-2xl px-3 py-3 text-left text-sm font-semibold transition"
+                    :class="activeLens === 'market' ? 'bg-spinoblue-600 text-white shadow-sm' : 'bg-white text-steel hover:bg-spinoblue-50 hover:text-spinoblue-700'"
+                  >
+                    Pasar
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeLens = 'competitor'; document.getElementById('insight-lens').scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                    class="w-full rounded-2xl px-3 py-3 text-left text-sm font-semibold transition"
+                    :class="activeLens === 'competitor' ? 'bg-spinoblue-600 text-white shadow-sm' : 'bg-white text-steel hover:bg-spinoblue-50 hover:text-spinoblue-700'"
+                  >
+                    Kompetitor
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeLens = 'customer'; document.getElementById('insight-lens').scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                    class="w-full rounded-2xl px-3 py-3 text-left text-sm font-semibold transition"
+                    :class="activeLens === 'customer' ? 'bg-spinoblue-600 text-white shadow-sm' : 'bg-white text-steel hover:bg-spinoblue-50 hover:text-spinoblue-700'"
+                  >
+                    Pelanggan
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeLens = 'product'; document.getElementById('insight-lens').scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                    class="w-full rounded-2xl px-3 py-3 text-left text-sm font-semibold transition"
+                    :class="activeLens === 'product' ? 'bg-spinoblue-600 text-white shadow-sm' : 'bg-white text-steel hover:bg-spinoblue-50 hover:text-spinoblue-700'"
+                  >
+                    Produk
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="section-shell rounded-[28px] border border-white/80 p-4 shadow-sm"
+              >
+                <p
+                  class="px-2 text-[11px] font-bold uppercase tracking-[0.24em] text-lavender"
+                >
+                  Fokus Waktu
+                </p>
+                <div class="mt-3 space-y-2">
+                  <button
+                    type="button"
+                    @click="activeActionTab = '30'; document.getElementById('growth-plan').scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                    class="w-full rounded-2xl px-3 py-3 text-left text-sm font-semibold transition"
+                    :class="activeActionTab === '30' ? 'bg-spinoblue-600 text-white shadow-sm' : 'bg-white text-steel hover:bg-spinoblue-50 hover:text-spinoblue-700'"
+                  >
+                    Fokus 30 Hari
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeActionTab = '90'; document.getElementById('growth-plan').scrollIntoView({ behavior: 'smooth', block: 'start' })"
+                    class="w-full rounded-2xl px-3 py-3 text-left text-sm font-semibold transition"
+                    :class="activeActionTab === '90' ? 'bg-spinoblue-600 text-white shadow-sm' : 'bg-white text-steel hover:bg-spinoblue-50 hover:text-spinoblue-700'"
+                  >
+                    Fokus 90 Hari
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <div class="space-y-12 md:space-y-16">
+            <section id="snapshot">
+              <div class="mb-7">
+                <p
+                  class="text-xs font-bold uppercase tracking-[0.28em] text-coral"
+                >
+                  Ringkasan
+                </p>
+                <h2 class="mt-3 font-display text-4xl text-ink md:text-5xl">
+                  Enam pilar yang membuat Bu BaHa layak diprioritaskan untuk
+                  penguatan bisnis.
+                </h2>
+              </div>
+
+              <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                <div
+                  class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-sm font-bold uppercase tracking-[0.18em] text-coral"
+                  >
+                    01
+                  </p>
+                  <h3 class="mt-3 text-2xl font-bold text-ink">
+                    Trust pasar sudah terbukti
+                  </h3>
+                  <p class="mt-3 text-sm leading-7 text-steel">
+                    Rating 4.6 dan 749 review adalah modal reputasi yang sulit
+                    ditiru cepat oleh pemain baru.
+                  </p>
+                </div>
+                <div
+                  class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-sm font-bold uppercase tracking-[0.18em] text-teal"
+                  >
+                    02
+                  </p>
+                  <h3 class="mt-3 text-2xl font-bold text-ink">
+                    Experience jadi pembeda
+                  </h3>
+                  <p class="mt-3 text-sm leading-7 text-steel">
+                    Ambience, ruang lapang, dan fasilitas membuat Bu BaHa lebih
+                    kuat dari sekadar menu bakmi.
+                  </p>
+                </div>
+                <div
+                  class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-sm font-bold uppercase tracking-[0.18em] text-lavender"
+                  >
+                    03
+                  </p>
+                  <h3 class="mt-3 text-2xl font-bold text-ink">
+                    Lokasi terhubung ke rute wisata
+                  </h3>
+                  <p class="mt-3 text-sm leading-7 text-steel">
+                    Kotagede, Prambanan, Bukit Bintang, dan selatan Jogja
+                    membuka konteks singgah yang kuat.
+                  </p>
+                </div>
+                <div
+                  class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-sm font-bold uppercase tracking-[0.18em] text-sun"
+                  >
+                    04
+                  </p>
+                  <h3 class="mt-3 text-2xl font-bold text-ink">
+                    Menu lebar perlu anchor
+                  </h3>
+                  <p class="mt-3 text-sm leading-7 text-steel">
+                    Variasi bagus untuk keluarga, tapi brand recall baru kuat
+                    jika ada hero menu yang konsisten diulang.
+                  </p>
+                </div>
+                <div
+                  class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-sm font-bold uppercase tracking-[0.18em] text-teal"
+                  >
+                    05
+                  </p>
+                  <h3 class="mt-3 text-2xl font-bold text-ink">
+                    Segmentasi pasarnya luas
+                  </h3>
+                  <p class="mt-3 text-sm leading-7 text-steel">
+                    Lokal, mahasiswa, komunitas, hingga rombongan tour semua
+                    punya alasan yang masuk akal untuk datang.
+                  </p>
+                </div>
+                <div
+                  class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-sm font-bold uppercase tracking-[0.18em] text-coral"
+                  >
+                    06
+                  </p>
+                  <h3 class="mt-3 text-2xl font-bold text-ink">
+                    Growth utama ada di digital
+                  </h3>
+                  <p class="mt-3 text-sm leading-7 text-steel">
+                    Maps, konten, partnership, dan paket reservasi adalah tuas
+                    paling cepat dan realistis.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section id="market-map" class="grid gap-6">
+              <div>
+                <p
+                  class="text-xs font-bold uppercase tracking-[0.28em] text-teal"
+                >
+                  Peluang Pasar
+                </p>
+                <h2 class="mt-3 font-display text-4xl text-ink md:text-5xl">
+                  Rute wisata membuat Bu BaHa punya konteks singgah yang jauh
+                  lebih kaya.
+                </h2>
+              </div>
+
+              <div class="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
+                <div
+                  class="section-shell rounded-[32px] border border-white/80 p-6 shadow-sm md:p-8"
+                >
+                  <p
+                    class="text-sm font-extrabold uppercase tracking-[0.2em] text-spinoblue-500"
+                  >
+                    Rute Prioritas
+                  </p>
+                  <div class="mt-6 space-y-3">
+                    <template
+                      x-for="(route, index) in routes"
+                      :key="route.name"
+                    >
+                      <button
+                        type="button"
+                        @click="activeRoute = index"
+                        class="w-full rounded-[22px] border px-4 py-4 text-left transition"
+                        :class="activeRoute === index ? 'border-spinoblue-600 bg-spinoblue-600 text-white shadow-sm' : 'border-spinoblue-100 bg-white text-ink hover:border-spinoblue-300 hover:bg-spinoblue-50'"
+                      >
+                        <div class="flex items-center justify-between gap-4">
+                          <div>
+                            <div
+                              class="font-extrabold"
+                              x-text="route.name"
+                            ></div>
+                            <div
+                              class="mt-1 text-sm"
+                              :class="activeRoute === index ? 'text-white/70' : 'text-steel'"
+                              x-text="route.angle"
+                            ></div>
+                          </div>
+                          <div
+                            class="text-right text-sm font-bold"
+                            x-text="route.time"
+                          ></div>
+                        </div>
+                      </button>
+                    </template>
+                  </div>
+                </div>
+
+                <div
+                  class="section-shell rounded-[32px] border border-white/80 p-6 shadow-sm md:p-8"
+                >
+                  <div class="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <p
+                        class="text-xs font-extrabold uppercase tracking-[0.2em] text-spinoblue-500"
+                      >
+                        Ringkasan Rute
+                      </p>
+                      <h3
+                        class="mt-2 text-3xl font-extrabold text-ink"
+                        x-text="routes[activeRoute].name"
+                      ></h3>
+                    </div>
+                    <div
+                      class="rounded-3xl bg-spinoblue-50 px-5 py-4 text-right ring-1 ring-spinoblue-100"
+                    >
+                      <div
+                        class="text-xs uppercase tracking-[0.18em] text-steel"
+                      >
+                        Jarak estimasi
+                      </div>
+                      <div
+                        class="mt-1 text-xl font-extrabold text-ink"
+                        x-text="routes[activeRoute].distance"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                    <div
+                      class="rounded-[26px] bg-white p-5 ring-1 ring-spinoblue-100"
+                    >
+                      <p
+                        class="text-xs font-extrabold uppercase tracking-[0.2em] text-spinoblue-500"
+                      >
+                        Waktu tempuh
+                      </p>
+                      <p
+                        class="mt-3 text-3xl font-extrabold text-ink"
+                        x-text="routes[activeRoute].time"
+                      ></p>
+                    </div>
+                    <div
+                      class="rounded-[26px] bg-white p-5 ring-1 ring-spinoblue-100"
+                    >
+                      <p
+                        class="text-xs font-extrabold uppercase tracking-[0.2em] text-spinoblue-500"
+                      >
+                        Potensi route fit
+                      </p>
+                      <div class="mt-4 h-3 rounded-full bg-spinoblue-100">
+                        <div
+                          class="h-3 rounded-full bg-teal transition-all duration-500"
+                          :style="`width:${routes[activeRoute].score}%`"
+                        ></div>
+                      </div>
+                      <p
+                        class="mt-3 text-lg font-extrabold text-ink"
+                        x-text="`${routes[activeRoute].score}/100`"
+                      ></p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="mt-6 rounded-[28px] bg-white p-6 ring-1 ring-spinoblue-100"
+                  >
+                    <p
+                      class="text-sm leading-7 text-steel"
+                      x-text="routes[activeRoute].note"
+                    ></p>
+                  </div>
+
+                  <div class="mt-6 rounded-[28px] bg-mist p-6">
+                    <div class="flex items-center justify-between gap-4">
+                      <div>
+                        <p
+                          class="text-xs font-bold uppercase tracking-[0.22em] text-coral"
+                        >
+                          Perbandingan potensi rute
+                        </p>
+                        <p class="mt-2 text-sm text-steel">
+                          Semakin tinggi skornya, semakin mudah rute itu
+                          dikonversi jadi narasi singgah kuliner.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="mt-6 space-y-4">
+                      <template
+                        x-for="route in routes"
+                        :key="`${route.name}-bar`"
+                      >
+                        <div>
+                          <div
+                            class="mb-2 flex items-center justify-between gap-4 text-sm"
+                          >
+                            <span
+                              class="font-semibold text-ink"
+                              x-text="route.name"
+                            ></span>
+                            <span
+                              class="font-semibold text-steel"
+                              x-text="route.score"
+                            ></span>
+                          </div>
+                          <div class="h-3 rounded-full bg-white">
+                            <div
+                              class="h-3 rounded-full bg-coral"
+                              :style="`width:${route.score}%`"
+                            ></div>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="insight-lens">
+              <div class="mb-7">
+                <p
+                  class="text-xs font-bold uppercase tracking-[0.28em] text-lavender"
+                >
+                  Insight Bisnis
+                </p>
+                <h2 class="mt-3 font-display text-4xl text-ink md:text-5xl">
+                  Empat sudut pandang ini membantu melihat Bu BaHa dari sisi
+                  pasar, kompetitor, pelanggan, dan produk.
+                </h2>
+                <div class="mt-5 flex flex-wrap gap-2 lg:hidden">
+                  <button
+                    type="button"
+                    @click="activeLens = 'market'"
+                    class="rounded-full px-4 py-2 text-sm font-semibold transition"
+                    :class="activeLens === 'market' ? 'bg-spinoblue-600 text-white' : 'bg-white text-steel ring-1 ring-spinoblue-100'"
+                  >
+                    Pasar
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeLens = 'competitor'"
+                    class="rounded-full px-4 py-2 text-sm font-semibold transition"
+                    :class="activeLens === 'competitor' ? 'bg-spinoblue-600 text-white' : 'bg-white text-steel ring-1 ring-spinoblue-100'"
+                  >
+                    Kompetitor
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeLens = 'customer'"
+                    class="rounded-full px-4 py-2 text-sm font-semibold transition"
+                    :class="activeLens === 'customer' ? 'bg-spinoblue-600 text-white' : 'bg-white text-steel ring-1 ring-spinoblue-100'"
+                  >
+                    Pelanggan
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeLens = 'product'"
+                    class="rounded-full px-4 py-2 text-sm font-semibold transition"
+                    :class="activeLens === 'product' ? 'bg-spinoblue-600 text-white' : 'bg-white text-steel ring-1 ring-spinoblue-100'"
+                  >
+                    Produk
+                  </button>
+                </div>
+              </div>
+
+              <div
+                x-show="activeLens === 'market'"
+                x-transition.opacity.duration.300ms
+                class="grid gap-4 xl:grid-cols-[1.04fr_0.96fr]"
+              >
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <h3 class="text-3xl font-bold text-ink">
+                    Pasarnya luas, jadi strategi terbaik adalah
+                    <span class="freehand marker-teal">gabungan</span>.
+                  </h3>
+                  <p class="mt-4 text-sm leading-7 text-steel">
+                    Warga lokal penting untuk kunjungan berulang, sementara
+                    wisatawan dan rombongan lebih penting untuk mendorong nilai
+                    transaksi. Dokumen mengarah ke strategi gabungan, bukan strategi
+                    tunggal.
+                  </p>
+                  <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                    <div
+                      class="rounded-2xl bg-white p-4 ring-1 ring-spinoblue-100"
+                    >
+                      <p class="text-sm font-bold text-ink">
+                        Lokal Banguntapan-Kotagede
+                      </p>
+                      <p class="mt-2 text-sm leading-6 text-steel">
+                        Mesin frekuensi kunjungan dan dasar reputasi jangka
+                        panjang.
+                      </p>
+                    </div>
+                    <div
+                      class="rounded-2xl bg-spinoblue-50 p-4 ring-1 ring-spinoblue-100"
+                    >
+                      <p class="text-sm font-bold text-ink">
+                        Wisatawan & rombongan
+                      </p>
+                      <p class="mt-2 text-sm leading-6 text-steel">
+                        Mesin percepatan pertumbuhan lewat paket singgah dan
+                        partner rute.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.22em] text-teal"
+                  >
+                    Peluang per segmen
+                  </p>
+                  <div class="mt-6 space-y-4">
+                    <template
+                      x-for="segment in marketSegments"
+                      :key="segment.label"
+                    >
+                      <div>
+                        <div
+                          class="mb-2 flex items-center justify-between gap-4 text-sm"
+                        >
+                          <div>
+                            <div
+                              class="font-semibold text-ink"
+                              x-text="segment.label"
+                            ></div>
+                            <div class="text-steel" x-text="segment.note"></div>
+                          </div>
+                          <span
+                            class="font-semibold text-spinoblue-700"
+                            x-text="segment.score"
+                          ></span>
+                        </div>
+                        <div class="h-3 rounded-full bg-spinoblue-100">
+                          <div
+                            class="h-3 rounded-full bg-teal"
+                            :style="`width:${segment.score}%`"
+                          ></div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                x-show="activeLens === 'competitor'"
+                x-transition.opacity.duration.300ms
+                class="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]"
+              >
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.22em] text-coral"
+                  >
+                    Tekanan kompetitif
+                  </p>
+                  <div class="mt-6 space-y-4">
+                    <template
+                      x-for="row in competitorPressure"
+                      :key="row.label"
+                    >
+                      <div>
+                        <div
+                          class="mb-2 flex items-center justify-between gap-4 text-sm"
+                        >
+                          <span
+                            class="font-extrabold text-ink"
+                            x-text="row.label"
+                          ></span>
+                          <span
+                            class="font-extrabold text-steel"
+                            x-text="row.score"
+                          ></span>
+                        </div>
+                        <div class="h-3 rounded-full bg-slate-100">
+                          <div
+                            class="h-3 rounded-full transition-all duration-500"
+                            :class="row.tone"
+                            :style="`width:${row.score}%`"
+                          ></div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <h3 class="text-3xl font-bold text-ink">
+                    Bu BaHa harus menang di
+                    <span class="freehand marker-coral">pengalaman makan</span>, bukan
+                    hanya di kategori bakmi.
+                  </h3>
+                  <p class="mt-4 text-sm leading-7 text-steel">
+                    Tekanan tertinggi datang dari brand yang sudah menjadi
+                    destinasi. Karena itu, Bu BaHa tidak cukup tampil sebagai
+                    “tempat makan enak”. Ia harus tampil sebagai pilihan paling
+                    nyaman untuk keluarga, wisatawan, dan rombongan.
+                  </p>
+                  <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                    <div
+                      class="rounded-2xl border border-red-100 bg-red-50 p-4"
+                    >
+                      <p class="font-extrabold text-red-900">Ancaman tinggi</p>
+                      <p class="mt-2 text-sm leading-6 text-red-900/75">
+                        Brand destinasi seperti Mbah Gito punya awareness yang
+                        sudah mapan.
+                      </p>
+                    </div>
+                    <div
+                      class="rounded-2xl border border-amber-100 bg-amber-50 p-4"
+                    >
+                      <p class="font-extrabold text-amber-900">
+                        Ancaman sedang
+                      </p>
+                      <p class="mt-2 text-sm leading-6 text-amber-900/75">
+                        Bakmi legendaris lokal tetap kuat bila customer hanya
+                        membandingkan menu.
+                      </p>
+                    </div>
+                    <div
+                      class="rounded-2xl border border-spinoblue-100 bg-spinoblue-50 p-4"
+                    >
+                      <p class="font-extrabold text-spinoblue-800">
+                        Area menang
+                      </p>
+                      <p class="mt-2 text-sm leading-6 text-spinoblue-900/75">
+                        Paket rombongan, fasilitas, dan suasana nyaman lebih
+                        lebih sulit ditiru.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                x-show="activeLens === 'customer'"
+                x-transition.opacity.duration.300ms
+                class="grid gap-4 xl:grid-cols-[1.02fr_0.98fr]"
+              >
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <h3 class="text-3xl font-bold text-ink">
+                    Pelanggan menyukai Bu BaHa karena rasa dan kenyamanan hadir
+                    bersamaan.
+                  </h3>
+                  <p class="mt-4 text-sm leading-7 text-steel">
+                    Review positif banyak mengulang tema yang sama: menu khas
+                    Jogja, tempat lapang, parkir mudah, mushola, toilet bersih,
+                    layanan ramah, dan harga yang masuk akal.
+                  </p>
+                  <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                    <div
+                      class="rounded-2xl bg-white p-4 ring-1 ring-spinoblue-100"
+                    >
+                      <p class="font-bold text-ink">Yang paling disukai</p>
+                      <p class="mt-2 text-sm leading-6 text-steel">
+                        Bakmi godog, bakmi goreng, rica ayam, wedangan.
+                      </p>
+                    </div>
+                    <div
+                      class="rounded-2xl bg-white p-4 ring-1 ring-spinoblue-100"
+                    >
+                      <p class="font-bold text-ink">Pendorong kenyamanan</p>
+                      <p class="mt-2 text-sm leading-6 text-steel">
+                        Parkir, mushola, toilet, ruang keluarga, layanan.
+                      </p>
+                    </div>
+                    <div
+                      class="rounded-2xl bg-white p-4 ring-1 ring-spinoblue-100"
+                    >
+                      <p class="font-bold text-ink">Alasan kembali</p>
+                      <p class="mt-2 text-sm leading-6 text-steel">
+                        Pelanggan merasa puas dan nyaman untuk kembali.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.22em] text-lavender"
+                  >
+                    Faktor kenyamanan pelanggan
+                  </p>
+                  <div class="mt-6 space-y-4">
+                    <template
+                      x-for="driver in comfortDrivers"
+                      :key="driver.label"
+                    >
+                      <div>
+                        <div
+                          class="mb-2 flex items-center justify-between gap-4 text-sm"
+                        >
+                          <span
+                            class="font-semibold text-ink"
+                            x-text="driver.label"
+                          ></span>
+                          <span
+                            class="font-semibold text-spinoblue-700"
+                            x-text="driver.score"
+                          ></span>
+                        </div>
+                        <div class="h-3 rounded-full bg-spinoblue-100">
+                          <div
+                            class="h-3 rounded-full bg-lavender"
+                            :style="`width:${driver.score}%`"
+                          ></div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+
+                  <div class="mt-6 rounded-[26px] bg-mist p-5">
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-coral"
+                    >
+                      Hal yang perlu dijaga
+                    </p>
+                    <ul class="mt-4 space-y-3 text-sm leading-6 text-steel">
+                      <li>Layanan melambat saat jam ramai.</li>
+                      <li>Menu terlalu banyak membuat customer bingung.</li>
+                      <li>Area merokok dan non-merokok perlu lebih jelas.</li>
+                      <li>Jam buka harus konsisten di semua platform.</li>
+                      <li>Konten sosial media belum cukup rutin.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                x-show="activeLens === 'product'"
+                x-transition.opacity.duration.300ms
+                class="grid gap-4 xl:grid-cols-[1.02fr_0.98fr]"
+              >
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.22em] text-teal"
+                  >
+                    Prioritas menu unggulan
+                  </p>
+                  <div class="mt-6 space-y-4">
+                    <template x-for="menu in heroMenus" :key="menu.name">
+                      <div
+                        class="rounded-[24px] bg-white p-4 ring-1 ring-spinoblue-100"
+                      >
+                        <div class="flex items-center justify-between gap-4">
+                          <div>
+                            <div
+                              class="text-xs font-bold uppercase tracking-[0.18em] text-teal"
+                              x-text="menu.tag"
+                            ></div>
+                            <div
+                              class="mt-1 text-lg font-bold text-ink"
+                              x-text="menu.name"
+                            ></div>
+                          </div>
+                          <div class="text-right">
+                            <div
+                              class="text-sm font-bold text-spinoblue-700"
+                              x-text="menu.price"
+                            ></div>
+                            <div
+                              class="mt-1 text-xs font-bold text-steel"
+                              x-text="`${menu.score}/100`"
+                            ></div>
+                          </div>
+                        </div>
+                        <div class="mt-4 h-3 rounded-full bg-spinoblue-100">
+                          <div
+                            class="h-3 rounded-full bg-sun"
+                            :style="`width:${menu.score}%`"
+                          ></div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <h3 class="text-3xl font-bold text-ink">
+                    Menu luas bagus, tapi publik perlu satu
+                    <span class="freehand">memori utama</span>.
+                  </h3>
+                  <div class="mt-5 rounded-[28px] bg-ink p-6 text-white">
+                    <p class="font-display text-3xl leading-tight">
+                      “Makanan khas Jogja untuk keluarga” bertemu “warung nyaman
+                      untuk singgah wisata.”
+                    </p>
+                  </div>
+                  <p class="mt-5 text-sm leading-7 text-steel">
+                    Ini positioning paling logis dari dokumen. Menu unggulan
+                    membantu publik mengingat, sementara ambience dan fasilitas
+                    membantu publik memilih.
+                  </p>
+                  <div
+                    class="mt-6 rounded-[26px] bg-spinoblue-50 p-5 ring-1 ring-spinoblue-100"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-sun"
+                    >
+                      Rekomendasi fokus menu
+                    </p>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Dorong paling dulu: <strong>Sop Sapi Bu BaHa</strong>,
+                      <strong>Bakmi Godog / Goreng</strong>, dan
+                      <strong>Wedang Seruni</strong>. Tiga ini paling kuat untuk
+                      mewakili rasa, suasana, dan identitas.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id="growth-plan">
+              <div class="mb-7">
+                <p
+                  class="text-xs font-bold uppercase tracking-[0.28em] text-teal"
+                >
+                  Fokus Pertumbuhan
+                </p>
+                <h2 class="mt-3 font-display text-4xl text-ink md:text-5xl">
+                  Prioritas pertumbuhan terbaik tetap ada di Maps, partnership,
+                  konten, dan paket rombongan.
+                </h2>
+                <div class="mt-5 flex gap-2 lg:hidden">
+                  <button
+                    type="button"
+                    @click="activeActionTab = '30'"
+                    class="rounded-full px-4 py-2 text-sm font-semibold transition"
+                    :class="activeActionTab === '30' ? 'bg-spinoblue-600 text-white' : 'bg-white text-steel ring-1 ring-spinoblue-100'"
+                  >
+                    30 Hari
+                  </button>
+                  <button
+                    type="button"
+                    @click="activeActionTab = '90'"
+                    class="rounded-full px-4 py-2 text-sm font-semibold transition"
+                    :class="activeActionTab === '90' ? 'bg-spinoblue-600 text-white' : 'bg-white text-steel ring-1 ring-spinoblue-100'"
+                  >
+                    90 Hari
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+                <div
+                  class="section-shell rounded-[30px] border border-white/80 p-6 shadow-sm"
+                >
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.22em] text-coral"
+                  >
+                    Prioritas area pertumbuhan
+                  </p>
+                  <div class="mt-6 space-y-4">
+                    <template x-for="lever in growthLevers" :key="lever.label">
+                      <div>
+                        <div
+                          class="mb-2 flex items-center justify-between gap-4 text-sm"
+                        >
+                          <span
+                            class="font-semibold text-ink"
+                            x-text="lever.label"
+                          ></span>
+                          <span
+                            class="font-semibold text-spinoblue-700"
+                            x-text="lever.score"
+                          ></span>
+                        </div>
+                        <div class="h-3 rounded-full bg-spinoblue-100">
+                          <div
+                            class="h-3 rounded-full bg-coral"
+                            :style="`width:${lever.score}%`"
+                          ></div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+
+                <div
+                  x-show="activeActionTab === '30'"
+                  x-transition.opacity.duration.300ms
+                  class="grid gap-4 md:grid-cols-2"
+                >
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-coral"
+                    >
+                      Minggu 1
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      Rapikan aset digital
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Samakan data Google Maps, Instagram, Facebook, dan GoFood
+                      agar tidak ada friction saat calon pelanggan memeriksa
+                      info.
+                    </p>
+                  </div>
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-teal"
+                    >
+                      Minggu 2
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      Tetapkan 5 menu hero
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Pakai hero menu sebagai inti konten, rekomendasi staf, dan
+                      materi promosi lintas channel.
+                    </p>
+                  </div>
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-lavender"
+                    >
+                      Minggu 3
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      Outreach 20 mitra
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Mulai dari homestay, hotel, tour driver, dan agen lokal di
+                      koridor Kotagede sampai Prambanan.
+                    </p>
+                  </div>
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-sun"
+                    >
+                      Minggu 4
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      Uji promo rombongan
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Jalankan promo paket reservasi dan kolaborasi micro
+                      influencer untuk validasi respons pasar.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  x-show="activeActionTab === '90'"
+                  x-transition.opacity.duration.300ms
+                  class="grid gap-4 md:grid-cols-2"
+                >
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-sun"
+                    >
+                      Google Maps
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      Jaga rating 4.6+
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Tambah review baru, balas ulasan aktif, dan perbanyak foto
+                      ambience serta fasilitas.
+                    </p>
+                  </div>
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-teal"
+                    >
+                      Social media
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      3-5 konten per minggu
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Fokus pada menu unggulan, ulasan pelanggan, ambience Jogja,
+                      dan cerita singgah wisata.
+                    </p>
+                  </div>
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-coral"
+                    >
+                      Partnership
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      10 mitra aktif
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Buat skema referral sederhana untuk homestay, driver,
+                      travel agent, dan komunitas.
+                    </p>
+                  </div>
+                  <div
+                    class="section-shell rounded-[28px] border border-white/80 p-6 shadow-sm"
+                  >
+                    <p
+                      class="text-xs font-bold uppercase tracking-[0.22em] text-lavender"
+                    >
+                      Reservasi
+                    </p>
+                    <h3 class="mt-3 text-2xl font-bold text-ink">
+                      Paket 20-50 pax
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-steel">
+                      Kunci satu paket rombongan yang mudah dijual untuk
+                      keluarga besar, kantor, dan travel.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section
+              class="section-shell rounded-[36px] border border-white/80 p-8 shadow-sm md:p-10"
+            >
+              <div class="grid gap-8 xl:grid-cols-[1.08fr_0.92fr]">
+                <div>
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.28em] text-coral"
+                  >
+                    Final Positioning
+                  </p>
+                  <h2
+                    class="mt-4 font-display text-4xl leading-tight text-ink md:text-5xl"
+                  >
+                    Warung Bu BaHa paling efektif dijual sebagai
+                    <span class="freehand marker-coral text-spinoblue-700"
+                      >pengalaman khas Jogja yang nyaman</span
+                    >, bukan hanya sekadar tempat makan.
+                  </h2>
+                  <p class="mt-5 text-base leading-8 text-steel">
+                    Trust pasar, variasi menu, kenyamanan tempat, dan posisi di
+                    rute wisata adalah empat modal yang paling menonjol dari
+                    dokumen. Karena itu, narasi terbaiknya adalah menggabungkan
+                    hero menu dengan value keluarga, wisatawan, dan rombongan
+                    dalam satu cerita yang konsisten.
+                  </p>
+                </div>
+
+                <div class="rounded-[30px] bg-ink p-7 text-white">
+                  <p
+                    class="text-xs font-bold uppercase tracking-[0.24em] text-white/55"
+                  >
+                    Recommended statement
+                  </p>
+                  <p class="mt-4 font-display text-3xl leading-tight">
+                    “Warung Bu BaHa: tempat makan khas Jogja yang nyaman untuk
+                    keluarga, wisatawan, dan rombongan.”
+                  </p>
+                  <div class="mt-8 border-t border-white/10 pt-6">
+                    <div class="flex items-center gap-3">
+                      <img
+                        src="../public/assets/images/spinotek-logo.png"
+                        alt="Spinotek"
+                        class="h-8 w-auto brightness-0 invert"
+                      />
+                      <div>
+                        <div class="text-sm font-bold">
+                          Powered by Spinotek Insight
+                        </div>
+                        <div class="text-xs text-white/60">
+                          Structured from the MCG+ analysis document in this
+                          project.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
