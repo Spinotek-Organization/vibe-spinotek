@@ -31,6 +31,7 @@ function getHtmlEntries() {
 }
 
 export default defineConfig({
+  base: './',
   plugins: [
 
     // Custom plugin to handle clean URLs for subdirectories in dev

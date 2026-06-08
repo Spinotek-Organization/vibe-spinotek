@@ -131,7 +131,8 @@
     </style>
   </head>
   <body
-    class="min-h-screen text-ink antialiased bg-[#fdfbf7]"
+    class="min-h-screen text-ink antialiased transition-colors duration-300"
+    :class="currentTab === 'analysis' ? 'bg-white' : 'bg-[#fdfbf7]'"
     x-data="{
       currentTab: 'analysis',
       activeRoute: 0,
@@ -221,20 +222,20 @@
         { name: 'Hani Lestari', rating: 5, date: '1 bulan lalu', text: 'Sering kesini untuk acara arisan keluarga. Pelayanannya ramah dan harganya sangat terjangkau dibanding tempat lain.' }
       ],
       advantages: [
-        { title: 'Lokasi Strategis', desc: 'Dekat area Kotagede dan jalur wisata timur/selatan Jogja.', icon: 'M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-3 8.25C9.747 14.46 6 11.233 6 10.5a6 6 0 1 1 12 0c0 .733-3.747 3.96-6 8.25Z' },
-        { title: 'Suasana Jogja', desc: 'Tradisional, hangat, nyaman, dan Jogja banget dengan material kayu.', icon: 'm2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25' },
-        { title: 'Menu Variatif', desc: 'Pilihan lengkap mulai dari bakmi, sop, rice bowl, wedangan hingga kopi.', icon: 'M2.25 13.5h3.86a2.25 2.25 0 0 1 2.008 1.24l.885 1.77a2.25 2.25 0 0 0 2.007 1.24h1.98a2.25 2.25 0 0 0 2.007-1.24l.885-1.77a2.25 2.25 0 0 1 2.007-1.24h3.86m-18 0h18M2.25 13.5a2.25 2.25 0 0 0-2.25 2.25v3.75A2.25 2.25 0 0 0 2.25 21.75h19.5a2.25 2.25 0 0 0 2.25-2.25v-3.75a2.25 2.25 0 0 0-2.25-2.25M2.25 13.5v-3.375A2.25 2.25 0 0 1 4.5 7.75h15a2.25 2.25 0 0 1 2.25 2.375V13.5' },
-        { title: 'Harga Terjangkau', desc: 'Ramah untuk kantong lokal maupun wisatawan (Rp25k - Rp50k / orang).', icon: 'M12 6v12m-3-2.818.879-.659c1.171-.879 3.07-.879 4.242 0 1.172.879 1.172 2.303 0 3.182C13.536 22.219 12.768 22 12 22M9 5.818l.879-.659c1.171-.879 3.07-.879 4.242 0 1.172.879 1.172 2.303 0 3.182C13.536 9.219 12.768 9 12 9' },
-        { title: 'Fasilitas Lengkap', desc: 'Area makan luas, parkir mudah, toilet bersih, dan mushola yang nyaman.', icon: 'M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z' },
-        { title: 'Reputasi Teruji', desc: 'Rating tinggi 4.6 di Google Maps berdasarkan 749+ ulasan pelanggan.', icon: 'M11.48 3.499c.198-.59.83-.59 1.028 0l2.122 6.34 6.678.006c.62.001.878.802.38 1.2l-5.4 4.357 2.062 6.353c.198.61-.506 1.12-1.011.74l-5.4-3.973-5.4 3.973c-.504.38-1.21-.13-1.012-.74l2.062-6.353-5.4-4.357c-.498-.398-.24-1.199.38-1.2l6.678-.006 2.122-6.34Z' }
+        { title: 'Lokasi Strategis', desc: 'Mudah diakses dari Kotagede maupun jalur wisata Prambanan dan Bukit Bintang.', icon: 'M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-3 8.25C9.747 14.46 6 11.233 6 10.5a6 6 0 1 1 12 0c0 .733-3.747 3.96-6 8.25Z' },
+        { title: 'Suasana Jogja', desc: 'Kental nuansa pedesaan Jogja dengan pendopo Limasan dan Joglo kayu jati yang adem.', icon: 'm2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25' },
+        { title: 'Menu Variatif', desc: 'Menyajikan hidangan tradisional Jawa seperti Sop, Bakmi, Rica, hingga Wedangan rempah.', icon: 'M2.25 13.5h3.86a2.25 2.25 0 0 1 2.008 1.24l.885 1.77a2.25 2.25 0 0 0 2.007 1.24h1.98a2.25 2.25 0 0 0 2.007-1.24l.885-1.77a2.25 2.25 0 0 1 2.007-1.24h3.86m-18 0h18M2.25 13.5a2.25 2.25 0 0 0-2.25 2.25v3.75A2.25 2.25 0 0 0 2.25 21.75h19.5a2.25 2.25 0 0 0 2.25-2.25v-3.75a2.25 2.25 0 0 0-2.25-2.25M2.25 13.5v-3.375A2.25 2.25 0 0 1 4.5 7.75h15a2.25 2.25 0 0 1 2.25 2.375V13.5' },
+        { title: 'Harga Terjangkau', desc: 'Sangat bersahabat untuk warga lokal, rombongan keluarga, maupun wisatawan luar daerah.', icon: 'M12 6v12m-3-2.818.879-.659c1.171-.879 3.07-.879 4.242 0 1.172.879 1.172 2.303 0 3.182C13.536 22.219 12.768 22 12 22M9 5.818l.879-.659c1.171-.879 3.07-.879 4.242 0 1.172.879 1.172 2.303 0 3.182C13.536 9.219 12.768 9 12 9' },
+        { title: 'Fasilitas Lengkap', desc: 'Area makan luas, parkiran lapang untuk bus/mobil, toilet bersih, serta mushola yang nyaman.', icon: 'M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z' },
+        { title: 'Reputasi Teruji', desc: 'Mendapat rating stabil 4.6 di Google Maps dari total 740+ ulasan otentik pelanggan.', icon: 'M11.48 3.499c.198-.59.83-.59 1.028 0l2.122 6.34 6.678.006c.62.001.878.802.38 1.2l-5.4 4.357 2.062 6.353c.198.61-.506 1.12-1.011.74l-5.4-3.973-5.4 3.973c-.504.38-1.21-.13-1.012-.74l2.062-6.353-5.4-4.357c-.498-.398-.24-1.199.38-1.2l6.678-.006 2.122-6.34Z' }
       ],
       visitorProfiles: [
-        { type: 'Keluarga', needs: 'Makan santai di tempat luas', icon: '👨‍👩‍👧‍👦', desc: 'Membutuhkan area makan yang lapang dan aman untuk anak-anak, serta menu variatif yang disukai semua umur.' },
-        { type: 'Wisatawan', needs: 'Kuliner lokal autentik', icon: '🎒', desc: 'Mencari cita rasa khas Jogja seperti Bakmi Jawa dan Wedangan tradisional di luar area Malioboro yang ramai.' },
-        { type: 'Komunitas', needs: 'Tempat kumpul santai', icon: '🚴', desc: 'Tempat berkumpul yang luas, santai, dan parkir mudah untuk sepeda, motor, atau mobil.' },
-        { type: 'Mahasiswa / Karyawan', needs: 'Makan siang/malam hemat', icon: '🎓', desc: 'Mencari makan siang atau malam dengan harga ramah kantong (mulai Rp15rb) namun tetap nyaman.' },
-        { type: 'Driver Wisata / Travel', needs: 'Transit makan rombongan', icon: '🚐', desc: 'Mencari titik singgah makan untuk tamu wisata setelah berwisata di Prambanan atau Bukit Bintang.' },
-        { type: 'Reservasi Grup', needs: 'Gathering / rapat kecil', icon: '💼', desc: 'Membutuhkan paket menu rombongan (20-50 pax) yang mudah dikoordinasikan di area yang representatif.' }
+        { type: 'Keluarga', needs: 'Makan santai & ruang lapang', icon: '👨‍👩‍👧‍👦', desc: 'Menginginkan tempat makan yang lapang dan aman untuk anak-anak, dengan pilihan menu tradisional yang disukai semua usia.' },
+        { type: 'Wisatawan', needs: 'Kuliner lokal bernuansa otentik', icon: '🎒', desc: 'Mencari cita rasa legendaris khas Yogyakarta di luar kawasan wisata perkotaan yang padat.' },
+        { type: 'Komunitas', needs: 'Tempat arisan & kumpul santai', icon: '🚴', desc: 'Menginginkan suasana santai dengan parkiran yang memadai untuk rombongan sepeda, motor, maupun mobil.' },
+        { type: 'Mahasiswa / Karyawan', needs: 'Sajian lezat dengan porsi mantap', icon: '🎓', desc: 'Mencari pilihan menu makan siang atau malam yang mengenyangkan, enak, dan tetap ramah kantong.' },
+        { type: 'Driver Wisata / Travel', needs: 'Tempat singgah transit rombongan', icon: '🚐', desc: 'Mencari titik singgah makan malam terpercaya untuk wisatawan setelah trip dari Prambanan atau rute timur.' },
+        { type: 'Reservasi Grup', needs: 'Kapasitas besar & praktis', icon: '💼', desc: 'Memerlukan koordinasi menu paket yang mudah dan area makan yang sangat luas untuk reuni, gathering, atau arisan besar.' }
       ]
     }"
   >
@@ -315,13 +316,15 @@
             <a href="#profile-menu" class="transition hover:text-spinoblue-700"
               >Menu Board</a
             >
-            <a href="#profile-gmaps" class="transition hover:text-spinoblue-700"
-              >Footprint</a
+            <a
+              href="#profile-segments"
+              class="transition hover:text-spinoblue-700"
+              >Segmen Pasar</a
             >
             <a
-              href="#profile-proposal"
+              href="#profile-narrative"
               class="transition hover:text-spinoblue-700"
-              >Proposal</a
+              >Narasi Profil</a
             >
           </div>
         </div>
@@ -337,10 +340,22 @@
         x-transition:enter-end="opacity-100"
         class="relative"
       >
-        <!-- Subtle Javanese Joglo vector line-art watermark in the background extending behind the navbar -->
+        <!-- Subtle Javanese Joglo background watermark image extending behind the navbar to the top of the screen -->
         <div
-          class="absolute inset-x-0 top-[-96px] md:top-[-112px] h-[550px] md:h-[650px] w-full opacity-[0.04] pointer-events-none bg-no-repeat bg-center bg-contain z-0"
-          style="background-image: url('/warung-bu-baha/assets/images/warung_bu_baha_bg_watermark.png'); mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);"
+          class="absolute inset-x-0 top-[-96px] md:top-[-112px] h-[550px] md:h-[650px] w-full opacity-[0.12] pointer-events-none bg-no-repeat bg-center bg-cover z-0"
+          style="
+            background-image: url(&quot;assets/images/warung_bu_baha_bg_watermark.png&quot;);
+            mask-image: linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 1) 40%,
+              rgba(0, 0, 0, 0) 100%
+            );
+            -webkit-mask-image: linear-gradient(
+              to bottom,
+              rgba(0, 0, 0, 1) 40%,
+              rgba(0, 0, 0, 0) 100%
+            );
+          "
         ></div>
         <section class="px-5 pb-12 pt-6 md:px-8 md:pb-16 relative z-10">
           <div class="mx-auto max-w-7xl">
@@ -1654,7 +1669,7 @@
                 <span
                   class="h-2 w-2 rounded-full bg-amber-400 animate-pulse"
                 ></span>
-                Brief Business Profile
+                Profil Resmi Usaha
               </div>
               <h1
                 class="font-display text-5xl md:text-6xl lg:text-7xl leading-tight font-extrabold tracking-tight"
@@ -1664,8 +1679,9 @@
               <p
                 class="font-display text-xl md:text-2xl text-amber-100/90 max-w-xl italic leading-relaxed"
               >
-                “ngeSop, mBakmi, dan Ngopi — cita rasa lokal Jogja dengan
-                suasana hangat tradisional untuk kebersamaan keluarga.”
+                “ngeSop, mBakmi, dan Ngopi — Menikmati kuliner khas Jawa yang
+                otentik di bawah rindangnya atap Joglo kayu, menghadirkan
+                kehangatan rumah bagi keluarga.”
               </p>
 
               <!-- Quick Stats Grid -->
@@ -1760,27 +1776,28 @@
               <p
                 class="text-xs font-bold uppercase tracking-[0.28em] text-coral"
               >
-                Deskripsi Singkat
+                Tentang Kami
               </p>
               <h2
                 class="font-display text-3xl md:text-4xl text-ink leading-tight"
               >
-                Pengalaman makan tradisional dengan kenyamanan modern keluarga.
+                Kehangatan tradisi Jawa yang menyatukan keluarga.
               </h2>
               <p class="text-sm leading-8 text-steel">
-                Warung Bu BaHa adalah warung makan khas Yogyakarta yang
-                berlokasi di kawasan Banguntapan, dekat dengan area budaya
-                Kotagede. Dengan konsep **ngeSop, mBakmi, dan Ngopi**, kami
-                menghadirkan menu warisan khas Jawa seperti bakmi godog, bakmi
-                goreng, sop sapi, rica-rica ayam kampung, wedangan rempah, serta
-                kopi lokal pilihan.
+                Terletak di kawasan bersejarah Banguntapan, dekat dengan area
+                budaya Kotagede, Warung Bu BaHa hadir sebagai ruang ramah untuk
+                berkumpul. Mengusung konsep **ngeSop, mBakmi, dan Ngopi**, kami
+                menghidangkan resep turun-temurun khas Jawa—mulai dari Bakmi
+                Godog gurih beraroma telur bebek, Sop Sapi kuah bening yang
+                segar, hingga wedangan rempah tradisional hangat.
               </p>
               <p class="text-sm leading-8 text-steel">
-                Secara visual, Warung Bu BaHa menonjolkan arsitektur tradisional
-                bernuansa kayu yang kokoh, area makan yang luas dan lapang,
-                serta pencahayaan hangat. Ini menciptakan suasana santai dan
-                nyaman untuk makan siang keluarga, tempat berkumpul komunitas,
-                maupun peristirahatan wisatawan.
+                Bangunan kami didesain dengan struktur Limasan dan Joglo kayu
+                jati yang kokoh, berpadu dengan area pekarangan terbuka yang
+                luas dan asri. Suasana teduh di siang hari dan hangatnya
+                pancaran lampu gantung di sore hari menjadikannya tempat ideal
+                untuk bersantap santai bersama keluarga besar, reuni komunitas,
+                maupun persinggahan yang menenangkan bagi para wisatawan.
               </p>
             </div>
 
@@ -1791,12 +1808,12 @@
               <p
                 class="text-[11px] font-bold uppercase tracking-wider text-amber-800"
               >
-                Brand Positioning
+                Filosofi Pelayanan
               </p>
               <p class="text-sm font-bold text-ink mt-2 italic font-display">
-                “Warung Bu BaHa tidak hanya menjual makanan, tetapi juga
-                menawarkan pengalaman kuliner lokal yang santai, akrab, dan
-                kental dengan nilai budaya Yogyakarta.”
+                “Lebih dari sekadar tempat makan, Warung Bu BaHa adalah ruang
+                bernostalgia—di mana kelezatan hidangan tradisional berpadu
+                dengan keteduhan suasana khas Yogyakarta.”
               </p>
             </div>
           </div>
@@ -1833,14 +1850,42 @@
                   >Banguntapan – Kotagede, Yogyakarta</span
                 >
               </div>
-              <div class="py-3.5 flex justify-between gap-4">
+              <div class="py-3.5 flex flex-col md:flex-row md:justify-between md:items-start gap-2">
                 <span class="font-semibold text-steel shrink-0"
                   >Alamat Lengkap</span
                 >
-                <span class="text-right text-ink text-xs max-w-[280px]"
-                  >Jl. Garuda, Plumbon, Banguntapan, Kec. Banguntapan, Kabupaten
-                  Bantul, DIY 55198</span
-                >
+                <div class="flex flex-col items-end gap-2 text-right">
+                  <span class="text-ink text-xs max-w-[280px]"
+                    >Jl. Garuda, Plumbon, Banguntapan, Kec. Banguntapan, Kabupaten
+                    Bantul, DIY 55198</span
+                  >
+                  <a
+                    href="https://maps.app.goo.gl/ns6ipM5i7NprStcB6"
+                    target="_blank"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-[10px] md:text-xs font-bold text-emerald-700 transition border border-emerald-200/50 shadow-sm mt-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke="currentColor"
+                      class="w-3.5 h-3.5 text-emerald-600"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                      />
+                    </svg>
+                    <span>Buka di Google Maps</span>
+                  </a>
+                </div>
               </div>
               <div class="py-3.5 flex justify-between gap-4">
                 <span class="font-semibold text-steel shrink-0"
@@ -1963,8 +2008,8 @@
               Mengapa Warung Bu BaHa Spesial?
             </h2>
             <p class="text-sm text-steel">
-              Kombinasi 6 pilar keunggulan bisnis yang menempatkan kami sebagai
-              salah satu destinasi kuliner paling disukai pelanggan.
+              6 alasan mengapa Warung Bu BaHa selalu dirindukan dan menjadi
+              pilihan utama pelanggan untuk berkumpul.
             </p>
           </div>
 
@@ -2138,14 +2183,14 @@
               <p
                 class="text-xs font-bold uppercase tracking-[0.28em] text-coral"
               >
-                Bukti Sosial
+                Reputasi Digital
               </p>
               <h2 class="font-display text-3xl text-ink font-bold">
-                Digital Footprint
+                Jejak Digital di Google Maps
               </h2>
               <p class="text-xs text-steel">
-                Integrasi draf visual & data riil dari dashboard reputasi
-                digital Google Maps.
+                Kinerja reputasi nyata dan umpan balik langsung dari para
+                pelanggan setia di Google Maps.
               </p>
             </div>
 
@@ -2156,7 +2201,7 @@
                 class="w-full rounded-[22px] border px-4 py-4 text-left transition text-sm font-bold flex items-center justify-between"
                 :class="activeGmapsDoc === 1 ? 'border-coral bg-coral text-white shadow-sm' : 'border-slate-200/50 bg-white text-ink hover:bg-slate-50'"
               >
-                <span>1. Google Maps Listing</span>
+                <span>1. Profil Google Maps</span>
                 <span class="text-[10px] uppercase opacity-75">Gambar 1</span>
               </button>
               <button
@@ -2165,7 +2210,7 @@
                 class="w-full rounded-[22px] border px-4 py-4 text-left transition text-sm font-bold flex items-center justify-between"
                 :class="activeGmapsDoc === 2 ? 'border-coral bg-coral text-white shadow-sm' : 'border-slate-200/50 bg-white text-ink hover:bg-slate-50'"
               >
-                <span>2. Highlight Menu Populer</span>
+                <span>2. Menu Terpopuler</span>
                 <span class="text-[10px] uppercase opacity-75">Gambar 2</span>
               </button>
               <button
@@ -2174,7 +2219,7 @@
                 class="w-full rounded-[22px] border px-4 py-4 text-left transition text-sm font-bold flex items-center justify-between"
                 :class="activeGmapsDoc === 3 ? 'border-coral bg-coral text-white shadow-sm' : 'border-slate-200/50 bg-white text-ink hover:bg-slate-50'"
               >
-                <span>3. Menu Makan Malam</span>
+                <span>3. Daftar Harga Menu</span>
                 <span class="text-[10px] uppercase opacity-75">Gambar 3</span>
               </button>
               <button
@@ -2183,7 +2228,7 @@
                 class="w-full rounded-[22px] border px-4 py-4 text-left transition text-sm font-bold flex items-center justify-between"
                 :class="activeGmapsDoc === 4 ? 'border-coral bg-coral text-white shadow-sm' : 'border-slate-200/50 bg-white text-ink hover:bg-slate-50'"
               >
-                <span>4. Rating & Ulasan</span>
+                <span>4. Analisis Rating</span>
                 <span class="text-[10px] uppercase opacity-75">Gambar 4</span>
               </button>
               <button
@@ -2192,7 +2237,7 @@
                 class="w-full rounded-[22px] border px-4 py-4 text-left transition text-sm font-bold flex items-center justify-between"
                 :class="activeGmapsDoc === 5 ? 'border-coral bg-coral text-white shadow-sm' : 'border-slate-200/50 bg-white text-ink hover:bg-slate-50'"
               >
-                <span>5. Ulasan Pelanggan</span>
+                <span>5. Komentar Pelanggan</span>
                 <span class="text-[10px] uppercase opacity-75">Gambar 5</span>
               </button>
             </div>
@@ -2216,7 +2261,7 @@
               </div>
               <span
                 class="text-[11px] font-extrabold uppercase bg-red-50 text-red-600 px-3 py-1 rounded-full border border-red-100 tracking-wider"
-                >Social Proof</span
+                >Reputasi Nyata</span
               >
             </div>
 
@@ -2308,12 +2353,11 @@
             >
               <div class="space-y-3">
                 <h3 class="text-xl font-bold text-ink">
-                  Highlight Menu Teratas di Google Maps
+                  Menu Terfavorit Pilihan Pelanggan
                 </h3>
                 <p class="text-xs text-steel">
-                  Berikut adalah deretan menu populer yang secara otomatis
-                  didorong oleh algoritma ulasan Google Maps karena paling
-                  banyak disebut dan difoto oleh pengunjung.
+                  Berikut adalah hidangan yang paling sering direkomendasikan
+                  dan dibagikan oleh pengunjung dalam ulasan Google Maps.
                 </p>
               </div>
 
@@ -2379,9 +2423,8 @@
               <p
                 class="text-[11px] text-steel italic border-t border-slate-100 pt-3"
               >
-                *Analisis data: 3 menu teratas (Tempe Mendoan, Bakmi Godog,
-                Wedang Seruni) merupakan penarik lalu lintas digital utama ke
-                Warung Bu BaHa.
+                *Data Lapangan: Tiga menu utama ini menjadi daya tarik terkuat
+                yang paling sering mendatangkan pelanggan baru.
               </p>
             </div>
 
@@ -2397,8 +2440,9 @@
                   Daftar Menu & Estimasi Harga
                 </h3>
                 <p class="text-xs text-steel">
-                  Screenshot menu makan malam yang tercantum pada halaman Google
-                  Maps menunjukkan daya saing harga yang sangat kuat.
+                  Daftar harga menu makan malam yang tertera di Google Maps
+                  menunjukkan daya saing harga yang sangat baik untuk kuliner
+                  keluarga.
                 </p>
               </div>
 
@@ -2449,9 +2493,8 @@
               </div>
 
               <p class="text-[11px] text-steel italic">
-                Harga rata-rata makanan berat berada di kisaran Rp15.000 -
-                Rp24.000, sangat bersaing dengan warmindo dan warung bakmi
-                tradisional lainnya.
+                Dengan kisaran harga bersahabat, menu kami sangat terjangkau
+                bagi semua kalangan tanpa mengurangi kualitas rasa.
               </p>
             </div>
 
@@ -2464,11 +2507,11 @@
             >
               <div class="space-y-3">
                 <h3 class="text-xl font-bold text-ink">
-                  Ikhtisar Penilaian Pelanggan
+                  Tingkat Kepuasan Pelanggan
                 </h3>
                 <p class="text-xs text-steel">
-                  Skor kepuasan kumulatif yang sangat stabil dengan volume
-                  ulasan tinggi.
+                  Tingkat kepuasan kumulatif yang stabil berdasarkan ulasan
+                  nyata pengunjung.
                 </p>
               </div>
 
@@ -2542,9 +2585,8 @@
               </div>
 
               <p class="text-[11px] text-steel italic">
-                *Analisis statistik: Ulasan positif (bintang 4 & 5) mendominasi
-                lebih dari 93% dari total ulasan, menandakan kepuasan rasa dan
-                pelayanan yang konsisten.
+                *Catatan: Ulasan bintang 4 & 5 mendominasi lebih dari 93% total
+                ulasan, membuktikan konsistensi cita rasa dan kenyamanan tempat.
               </p>
             </div>
 
@@ -2557,10 +2599,11 @@
             >
               <div class="space-y-3">
                 <h3 class="text-xl font-bold text-ink">
-                  Umpan Balik & Testimoni Pelanggan
+                  Komentar Langsung Pengunjung
                 </h3>
                 <p class="text-xs text-steel">
-                  Apa yang paling sering diucapkan para pengunjung setia kami?
+                  Suara dan cerita langsung dari para pelanggan yang pernah
+                  singgah.
                 </p>
               </div>
 
@@ -2608,7 +2651,7 @@
         </section>
 
         <!-- 7. Profil Pengunjung Potensial -->
-        <section class="space-y-6">
+        <section id="profile-segments" class="space-y-6">
           <div class="text-center max-w-2xl mx-auto space-y-3">
             <p class="text-xs font-bold uppercase tracking-[0.28em] text-coral">
               Segmentasi Pasar
@@ -2651,9 +2694,9 @@
           </div>
         </section>
 
-        <!-- 10 & 11. Narasi Profil untuk Proposal & Kesimpulan -->
+        <!-- 10 & 11. Narasi Profil & Rencana Strategis -->
         <section
-          id="profile-proposal"
+          id="profile-strategy"
           class="section-shell rounded-[36px] border border-white/80 p-8 shadow-sm md:p-10"
         >
           <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
@@ -2661,7 +2704,7 @@
               <p
                 class="text-xs font-bold uppercase tracking-[0.28em] text-coral"
               >
-                Ringkasan Proposal
+                Ringkasan
               </p>
               <h2
                 class="font-display text-4xl leading-tight text-ink md:text-5xl font-bold"
@@ -2715,9 +2758,11 @@
                     class="h-8 w-auto brightness-0 invert"
                   />
                   <div>
-                    <div class="text-sm font-bold">Spinotek Lab Profile</div>
+                    <div class="text-sm font-bold">
+                      Dokumentasi Profil Usaha
+                    </div>
                     <div class="text-xs text-white/60">
-                      Dokumen Lampiran Profil Usaha Resmi.
+                      Dokumen lampiran analisis bisnis resmi.
                     </div>
                   </div>
                 </div>
