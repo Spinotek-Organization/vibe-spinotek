@@ -21,6 +21,8 @@ import {
   calculateMilestones,
   computeFullCalculation,
   generateFormattedSummaryText,
+  generateFormattedSummaryHTML,
+  copyFormattedSummary,
   copyTextToClipboard
 } from './calculator.js';
 
@@ -434,12 +436,11 @@ function initFormControls() {
   // Copy Live Summary Button
   document.getElementById('btn-copy-live-summary')?.addEventListener('click', async () => {
     const calc = getCurrentCalculatedData();
-    const formatted = generateFormattedSummaryText(calc);
-    const ok = await copyTextToClipboard(formatted);
+    const ok = await copyFormattedSummary(calc);
     if (ok) {
-      showToast('Format teks berhasil disalin! Siap dipaste ke Notion, GDocs, atau Word.', 'success');
+      showToast('Tabel & format dokumen berhasil disalin! Siap dipaste ke Google Docs, Notion, atau Word.', 'success');
     } else {
-      showToast('Gagal menyalin teks ke clipboard.', 'error');
+      showToast('Gagal menyalin ke clipboard.', 'error');
     }
   });
 
@@ -1089,12 +1090,11 @@ function bindCardActionButtons(container) {
       const id = btn.getAttribute('data-id');
       const item = getCalculationById(id);
       if (item) {
-        const formatted = generateFormattedSummaryText(item);
-        const ok = await copyTextToClipboard(formatted);
+        const ok = await copyFormattedSummary(item);
         if (ok) {
-          showToast(`Format teks untuk "${item.internName}" berhasil disalin! Siap dipaste ke Notion / Docs.`, 'success');
+          showToast(`Tabel & format dokumen "${item.internName}" berhasil disalin! Siap dipaste ke Docs / Notion.`, 'success');
         } else {
-          showToast('Gagal menyalin teks ke clipboard.', 'error');
+          showToast('Gagal menyalin ke clipboard.', 'error');
         }
       }
     });
@@ -1165,12 +1165,11 @@ function initModalListeners() {
   // Detail modal copy text
   document.getElementById('btn-modal-copy')?.addEventListener('click', async () => {
     if (state.detailModal.item) {
-      const formatted = generateFormattedSummaryText(state.detailModal.item);
-      const ok = await copyTextToClipboard(formatted);
+      const ok = await copyFormattedSummary(state.detailModal.item);
       if (ok) {
-        showToast('Format teks berhasil disalin! Siap dipaste ke Notion / Docs.', 'success');
+        showToast('Tabel & format dokumen berhasil disalin! Siap dipaste ke Docs / Notion.', 'success');
       } else {
-        showToast('Gagal menyalin teks.', 'error');
+        showToast('Gagal menyalin ke clipboard.', 'error');
       }
     }
   });

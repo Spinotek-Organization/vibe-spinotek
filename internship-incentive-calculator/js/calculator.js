@@ -241,17 +241,18 @@ export function computeFullCalculation(data) {
 }
 
 /**
- * Generate clean formatted text/markdown summary suitable for GDocs, MS Word, Notion
+ * Generate clean Markdown summary for plain text / markdown editors
  * @param {Object} item
  * @returns {string}
  */
 export function generateFormattedSummaryText(item) {
   const calc = computeFullCalculation(item);
+  const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
   
   const lines = [
-    `# SPINOTEK INTERNSHIP INCENTIVE STATEMENT`,
+    `# 📋 SPINOTEK INTERNSHIP INCENTIVE STATEMENT`,
     `PT Spinotek Inovasi Digital`,
-    `Ref: ${calc.id || 'Draft'} | Tanggal: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`,
+    `Ref ID: ${calc.id || 'Draft'} | Tanggal Dokumen: ${dateStr}`,
     ``,
     `--------------------------------------------------`,
     `📌 INFORMASI PEMAGANG & PROJECT`,
@@ -264,10 +265,10 @@ export function generateFormattedSummaryText(item) {
     ``,
     `--------------------------------------------------`,
     `📊 EVALUASI PERFORMA PEMAGANG`,
-    `1. Kecepatan & Ketepatan (25%)        : ${calc.performance?.speed ?? 0} (Skor Tertimbang: ${((calc.performance?.speed ?? 0) * 0.25).toFixed(2)})`,
-    `2. Kualitas Hasil (30%)               : ${calc.performance?.quality ?? 0} (Skor Tertimbang: ${((calc.performance?.quality ?? 0) * 0.30).toFixed(2)})`,
-    `3. Inisiatif & Problem Solving (25%)  : ${calc.performance?.initiative ?? 0} (Skor Tertimbang: ${((calc.performance?.initiative ?? 0) * 0.25).toFixed(2)})`,
-    `4. Responsibility (20%)               : ${calc.performance?.responsibility ?? 0} (Skor Tertimbang: ${((calc.performance?.responsibility ?? 0) * 0.20).toFixed(2)})`,
+    `1. Kecepatan & Ketepatan Kerja (25%)  : ${calc.performance?.speed ?? 0} (Skor: ${((calc.performance?.speed ?? 0) * 0.25).toFixed(2)})`,
+    `2. Kualitas & Kerapian Hasil (30%)    : ${calc.performance?.quality ?? 0} (Skor: ${((calc.performance?.quality ?? 0) * 0.30).toFixed(2)})`,
+    `3. Inisiatif & Problem Solving (25%) : ${calc.performance?.initiative ?? 0} (Skor: ${((calc.performance?.initiative ?? 0) * 0.25).toFixed(2)})`,
+    `4. Responsibility & Komunikasi (20%) : ${calc.performance?.responsibility ?? 0} (Skor: ${((calc.performance?.responsibility ?? 0) * 0.20).toFixed(2)})`,
     `• Total Skor Performa : ${calc.performanceScore.toFixed(2)} / 100`,
     `• Kategori Performa   : ${calc.performanceTier} (Multiplier ${(calc.performanceMultiplier * 100).toFixed(0)}%)`,
     ``,
@@ -277,28 +278,213 @@ export function generateFormattedSummaryText(item) {
       ? calc.outstandingContributions.map(c => `• ${c.name} : ${formatCurrency(c.amount)}`)
       : [`• (Tidak ada bonus kontribusi tambahan)`]
     ),
-    `• Total Bonus (Maks Rp500.000) : ${formatCurrency(calc.outstandingBonus)}`,
+    `• Total Bonus Kontribusi : ${formatCurrency(calc.outstandingBonus)} (Maks. Rp500.000)`,
     ``,
     `--------------------------------------------------`,
     `💰 RINCIAN KALKULASI INSENTIF`,
     `• Base Incentive       : ${formatCurrency(calc.baseIncentive)}`,
-    `• × Multiplier Performa: ${(calc.performanceMultiplier * 100).toFixed(0)}%`,
+    `• × Multiplier Performa: ${(calc.performanceMultiplier * 100).toFixed(0)}% (${calc.performanceTier})`,
     `• = Adjusted Incentive : ${formatCurrency(calc.performanceAdjusted)}`,
-    `• + Bonus Kontribusi   : ${formatCurrency(calc.outstandingBonus)}`,
+    `• + Bonus Kontribusi   : + ${formatCurrency(calc.outstandingBonus)}`,
     `--------------------------------------------------`,
-    `🏆 FINAL INCENTIVE     : ${formatCurrency(calc.finalIncentive)}`,
+    `🏆 TOTAL FINAL INCENTIVE : ${formatCurrency(calc.finalIncentive)}`,
     `--------------------------------------------------`,
     ``,
     `🗓️ JADWAL PENCAIRAN (MILESTONE)`,
     ...(calc.milestones && calc.milestones.length > 0
       ? calc.milestones.map((m, idx) => `${idx + 1}. ${m.name} (${m.percentage}%) : ${formatCurrency(m.amount)}${m.description ? ` — ${m.description}` : ''}`)
-      : [`• (Belum ada jadwal milestone)`]
+      : [`• (Belum ada jadwal pencairan milestone)`]
     ),
     `• Total Alokasi Milestone: ${calc.milestoneTotalPct}% (${formatCurrency(calc.finalIncentive)})`,
-    `--------------------------------------------------`
+    `--------------------------------------------------`,
+    `Dokumen digenerate otomatis oleh Spinotek Internship Incentive Calculator System.`
   ];
 
   return lines.join('\n');
+}
+
+/**
+ * Generate rich HTML summary formatted with real styled tables for Google Docs, Notion, Word & Gmail
+ * @param {Object} item
+ * @returns {string}
+ */
+export function generateFormattedSummaryHTML(item) {
+  const calc = computeFullCalculation(item);
+  const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  return `
+<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; max-width: 800px; line-height: 1.5; font-size: 13px;">
+  
+  <!-- Header Statement -->
+  <div style="margin-bottom: 20px;">
+    <h2 style="color: #0066ff; margin: 0 0 4px 0; font-size: 20px; font-weight: bold;">📋 Spinotek Internship Incentive Statement</h2>
+    <div style="color: #64748b; font-size: 12px;">
+      <strong>PT Spinotek Inovasi Digital</strong> &bull; <em>Ref ID: ${calc.id || 'Draft'} &bull; Tanggal: ${dateStr}</em>
+    </div>
+  </div>
+
+  <hr style="border: none; border-top: 1.5px solid #cbd5e1; margin: 16px 0 24px 0;" />
+
+  <!-- SECTION 1: Informasi Pemagang & Project -->
+  <div style="margin-bottom: 28px;">
+    <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 15px; font-weight: bold; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">📌 Informasi Pemagang &amp; Project</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
+      <tbody>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; width: 35%; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Nama Pemagang</td><td style="padding: 8px 12px; font-weight: bold;">${calc.internName || '-'}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Nama Project</td><td style="padding: 8px 12px;">${calc.projectName || '-'}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Client</td><td style="padding: 8px 12px;">${calc.clientName || 'Internal Spinotek'}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Nilai Project</td><td style="padding: 8px 12px; font-weight: bold; color: #0066ff;">${formatCurrency(calc.projectValue)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Durasi Project</td><td style="padding: 8px 12px;">${calc.startDate || '-'} s/d ${calc.endDate || '-'} (${calc.durationFormatted || '-'})</td></tr>
+        <tr><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Kompleksitas</td><td style="padding: 8px 12px;"><span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 11px;">${(calc.complexity || 'MEDIUM').toUpperCase()}</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin: 0; font-size: 6px; line-height: 6px;">&nbsp;</p>
+
+  <!-- SECTION 2: Evaluasi Performa Pemagang -->
+  <div style="margin-bottom: 28px;">
+    <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 15px; font-weight: bold; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">📊 Evaluasi Performa Pemagang</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 13px; border: 1px solid #cbd5e1;">
+      <thead>
+        <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
+          <th style="padding: 8px 10px; text-align: center; width: 40px; border-right: 1px solid #cbd5e1;">No</th>
+          <th style="padding: 8px 12px; text-align: left; border-right: 1px solid #cbd5e1;">Kriteria Evaluasi</th>
+          <th style="padding: 8px 10px; text-align: center; width: 80px; border-right: 1px solid #cbd5e1;">Bobot</th>
+          <th style="padding: 8px 10px; text-align: center; width: 70px; border-right: 1px solid #cbd5e1;">Nilai</th>
+          <th style="padding: 8px 12px; text-align: right; width: 120px;">Skor Tertimbang</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">1</td><td style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Kecepatan &amp; Ketepatan Kerja</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">25%</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${calc.performance?.speed ?? 0}</td><td style="padding: 8px 12px; text-align: right;">${((calc.performance?.speed ?? 0) * 0.25).toFixed(2)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">2</td><td style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Kualitas &amp; Kerapian Hasil</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">30%</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${calc.performance?.quality ?? 0}</td><td style="padding: 8px 12px; text-align: right;">${((calc.performance?.quality ?? 0) * 0.30).toFixed(2)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">3</td><td style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Inisiatif &amp; Problem Solving</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">25%</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${calc.performance?.initiative ?? 0}</td><td style="padding: 8px 12px; text-align: right;">${((calc.performance?.initiative ?? 0) * 0.25).toFixed(2)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">4</td><td style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Responsibility &amp; Komunikasi</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">20%</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${calc.performance?.responsibility ?? 0}</td><td style="padding: 8px 12px; text-align: right;">${((calc.performance?.responsibility ?? 0) * 0.20).toFixed(2)}</td></tr>
+        <tr style="background: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;"><td colspan="2" style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Total Skor Performa</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">100%</td><td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">-</td><td style="padding: 8px 12px; text-align: right; color: #0066ff;">${calc.performanceScore.toFixed(2)} / 100</td></tr>
+      </tbody>
+    </table>
+
+    <div style="background: #eff6ff; border-left: 4px solid #0066ff; padding: 10px 14px; border-radius: 4px; font-size: 13px; margin-top: 8px;">
+      🏆 <strong>Kategori Performa:</strong> ${calc.performanceTier} &bull; <strong>Multiplier Insentif:</strong> ${(calc.performanceMultiplier * 100).toFixed(0)}%
+    </div>
+  </div>
+
+  <p style="margin: 0; font-size: 6px; line-height: 6px;">&nbsp;</p>
+
+  <!-- SECTION 3: Outstanding Contribution Bonus -->
+  <div style="margin-bottom: 28px;">
+    <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 15px; font-weight: bold; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">🌟 Outstanding Contribution Bonus</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
+      <tbody>
+        ${
+          calc.outstandingContributions && calc.outstandingContributions.length > 0
+            ? calc.outstandingContributions.map(c => `
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 8px 12px; width: 60%; background: #f8fafc; border-right: 1px solid #e2e8f0;"><strong>${c.name}</strong></td>
+                <td style="padding: 8px 12px; text-align: right; color: #047857; font-weight: bold;">+ ${formatCurrency(c.amount)}</td>
+              </tr>
+            `).join('')
+            : `<tr><td colspan="2" style="padding: 8px 12px; color: #64748b; font-style: italic; background: #ffffff;">(Tidak ada bonus kontribusi tambahan)</td></tr>`
+        }
+        <tr style="background: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;">
+          <td style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Total Bonus Kontribusi (Maks. Rp500.000)</td>
+          <td style="padding: 8px 12px; text-align: right; color: #0066ff;">${formatCurrency(calc.outstandingBonus)}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin: 0; font-size: 6px; line-height: 6px;">&nbsp;</p>
+
+  <!-- SECTION 4: Rincian Kalkulasi Insentif -->
+  <div style="margin-bottom: 28px;">
+    <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 15px; font-weight: bold; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">💰 Rincian Kalkulasi Insentif</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
+      <tbody>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; width: 40%; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Base Incentive</td><td style="padding: 8px 12px;">${formatCurrency(calc.baseIncentive)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Multiplier Performa</td><td style="padding: 8px 12px;">${(calc.performanceMultiplier * 100).toFixed(0)}% (${calc.performanceTier})</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Adjusted Incentive</td><td style="padding: 8px 12px;">${formatCurrency(calc.performanceAdjusted)}</td></tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 8px 12px; font-weight: bold; background: #f8fafc; border-right: 1px solid #e2e8f0;">Bonus Kontribusi</td><td style="padding: 8px 12px;">+ ${formatCurrency(calc.outstandingBonus)}</td></tr>
+        <tr style="background: #eff6ff; font-weight: bold; font-size: 14px; border-top: 2px solid #3b82f6;"><td style="padding: 10px 12px; color: #1d4ed8; border-right: 1px solid #93c5fd;">🎯 TOTAL FINAL INCENTIVE</td><td style="padding: 10px 12px; color: #1d4ed8;">${formatCurrency(calc.finalIncentive)}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin: 0; font-size: 6px; line-height: 6px;">&nbsp;</p>
+
+  <!-- SECTION 5: Jadwal Pencairan (Milestone) -->
+  <div style="margin-bottom: 28px;">
+    <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 15px; font-weight: bold; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">🗓️ Jadwal Pencairan (Milestone)</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
+      <thead>
+        <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
+          <th style="padding: 8px 10px; text-align: center; width: 50px; border-right: 1px solid #cbd5e1;">Tahap</th>
+          <th style="padding: 8px 12px; text-align: left; border-right: 1px solid #cbd5e1;">Nama Milestone</th>
+          <th style="padding: 8px 10px; text-align: center; width: 90px; border-right: 1px solid #cbd5e1;">Alokasi (%)</th>
+          <th style="padding: 8px 12px; text-align: right; width: 140px; border-right: 1px solid #cbd5e1;">Jumlah (Rp)</th>
+          <th style="padding: 8px 12px; text-align: left;">Keterangan</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${
+          calc.milestones && calc.milestones.length > 0
+            ? calc.milestones.map((m, idx) => `
+              <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${idx + 1}</td>
+                <td style="padding: 8px 12px; font-weight: bold; border-right: 1px solid #e2e8f0;">${m.name}</td>
+                <td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${m.percentage}%</td>
+                <td style="padding: 8px 12px; text-align: right; font-weight: bold; border-right: 1px solid #e2e8f0;">${formatCurrency(m.amount)}</td>
+                <td style="padding: 8px 12px; color: #64748b;">${m.description || '-'}</td>
+              </tr>
+            `).join('')
+            : `<tr><td colspan="5" style="padding: 8px 12px; text-align: center; color: #64748b;">(Belum ada jadwal milestone)</td></tr>`
+        }
+        <tr style="background: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;">
+          <td colspan="2" style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Total Alokasi Milestone</td>
+          <td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${calc.milestoneTotalPct}%</td>
+          <td style="padding: 8px 12px; text-align: right; color: #0066ff; border-right: 1px solid #e2e8f0;">${formatCurrency(calc.finalIncentive)}</td>
+          <td style="padding: 8px 12px; color: #047857;">100% Sesuai Total Insentif</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 12px 0;" />
+  <div style="font-size: 11px; color: #94a3b8; text-align: center;">
+    Generated automatically by Spinotek Internship Incentive Calculator System.
+  </div>
+</div>
+  `.trim();
+}
+
+/**
+ * Modern rich clipboard copy helper that injects BOTH text/html and text/plain
+ * Guarantees beautiful formatted tables in Google Docs, Notion, Word, and clean text in Notepad/Slack
+ * @param {Object} item
+ * @returns {Promise<boolean>}
+ */
+export async function copyFormattedSummary(item) {
+  const plainText = generateFormattedSummaryText(item);
+  const htmlContent = generateFormattedSummaryHTML(item);
+
+  if (navigator.clipboard && window.isSecureContext && typeof ClipboardItem !== 'undefined') {
+    try {
+      const blobText = new Blob([plainText], { type: 'text/plain' });
+      const blobHtml = new Blob([htmlContent], { type: 'text/html' });
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/plain': blobText,
+          'text/html': blobHtml
+        })
+      ]);
+      return true;
+    } catch (err) {
+      console.warn('Rich clipboard write failed, falling back to writeText:', err);
+    }
+  }
+
+  // Fallback to standard copy
+  return await copyTextToClipboard(plainText);
 }
 
 /**
