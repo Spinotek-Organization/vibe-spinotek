@@ -444,6 +444,12 @@ function initFormControls() {
     }
   });
 
+  // Print Live Summary Button
+  document.getElementById('btn-print-live-summary')?.addEventListener('click', () => {
+    const calc = getCurrentCalculatedData();
+    triggerPrintDocument(calc);
+  });
+
   document.getElementById('btn-reset-form').addEventListener('click', () => {
     if (confirm('Reset semua input form ke nilai default?')) {
       resetFormState();
@@ -1284,8 +1290,21 @@ function closeDetailModal() {
 // ----------------------------------------------------
 // Professional Print Layout Handler
 // ----------------------------------------------------
-function triggerPrintDocument(item) {
-  const printDoc = document.getElementById('print-document');
+function triggerPrintDocument(rawItem) {
+  if (!rawItem) {
+    showToast('Data perhitungan tidak ditemukan untuk dicetak.', 'error');
+    return;
+  }
+
+  const item = computeFullCalculation(rawItem);
+
+  let printDoc = document.getElementById('print-document');
+  if (!printDoc) {
+    printDoc = document.createElement('div');
+    printDoc.id = 'print-document';
+    document.body.appendChild(printDoc);
+  }
+
   const nowStr = new Date().toLocaleDateString('id-ID', {
     day: 'numeric',
     month: 'long',
@@ -1493,8 +1512,10 @@ function triggerPrintDocument(item) {
     </div>
   `;
 
-  // Trigger browser print
-  window.print();
+  // Trigger browser print with tick delay for DOM painting
+  setTimeout(() => {
+    window.print();
+  }, 100);
 }
 
 // ----------------------------------------------------
