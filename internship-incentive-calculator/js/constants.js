@@ -1,5 +1,5 @@
 /**
- * Spinotek Internship Incentive Calculator - Constants & Business Rules
+ * Spinotek Internship Incentive System - Constants & Business Rules
  */
 
 export const STORAGE_KEY = 'spinotek_internship_incentives';

@@ -1,5 +1,5 @@
 /**
- * Spinotek Internship Incentive Calculator - Main Application Controller
+ * Spinotek Internship Incentive System - Main Application Controller
  */
 
 import {
@@ -1318,8 +1318,8 @@ function triggerPrintDocument(rawItem) {
       <div>
         <div class="flex items-start justify-between mb-3">
           <div>
-            <h1 class="text-xl font-bold tracking-tight text-slate-900">PT SPINOTEK INOVASI DIGITAL</h1>
-            <p class="text-xs text-slate-500 mt-0.5">Internship Project Incentive &amp; Performance Statement</p>
+            <h1 class="text-xl font-bold tracking-tight text-slate-900">PT SPEKTRUM INOVASI TEKNOLOGI</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Spinotek Internship Incentive System</p>
           </div>
           <div class="text-right text-xs text-slate-600 space-y-0.5">
             <div>Ref: <strong class="text-slate-900">${item.id}</strong></div>
@@ -1506,6 +1506,20 @@ function triggerPrintDocument(rawItem) {
               `).join('')}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- Signature Section -->
+      <div class="flex justify-end pt-4 break-inside-avoid">
+        <div class="text-center w-56 space-y-1">
+          <p class="text-xs text-slate-700">Yogyakarta, ${nowStr}</p>
+          <div class="flex justify-center items-center py-1 h-20">
+            <img src="assets/signature.png" alt="Tanda Tangan" class="h-16 max-w-[130px] object-contain" />
+          </div>
+          <div class="space-y-0.5">
+            <p class="text-xs font-bold text-slate-900 underline decoration-slate-400 underline-offset-2">Junaidi Abdul Rahman</p>
+            <p class="text-[11px] text-slate-600 font-medium">Founder Spinotek</p>
+          </div>
         </div>
       </div>
 

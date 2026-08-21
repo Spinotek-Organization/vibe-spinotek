@@ -1,5 +1,5 @@
 /**
- * Spinotek Internship Incentive Calculator - LocalStorage & Data Layer
+ * Spinotek Internship Incentive System - LocalStorage & Data Layer
  */
 
 import { STORAGE_KEY } from './constants.js';

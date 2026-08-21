@@ -1,5 +1,5 @@
 /**
- * Spinotek Internship Incentive Calculator - Calculation & Helper Library
+ * Spinotek Internship Incentive System - Calculation & Helper Library
  */
 
 import {
@@ -251,7 +251,7 @@ export function generateFormattedSummaryText(item) {
   
   const lines = [
     `# 📋 SPINOTEK INTERNSHIP INCENTIVE STATEMENT`,
-    `PT Spinotek Inovasi Digital`,
+    `PT Spektrum Inovasi Teknologi`,
     `Ref ID: ${calc.id || 'Draft'} | Tanggal Dokumen: ${dateStr}`,
     ``,
     `--------------------------------------------------`,
@@ -297,7 +297,7 @@ export function generateFormattedSummaryText(item) {
     ),
     `• Total Alokasi Milestone: ${calc.milestoneTotalPct}% (${formatCurrency(calc.finalIncentive)})`,
     `--------------------------------------------------`,
-    `Dokumen digenerate otomatis oleh Spinotek Internship Incentive Calculator System.`
+    `Dokumen digenerate otomatis oleh Spinotek Internship Incentive System.`
   ];
 
   return lines.join('\n');
@@ -319,7 +319,7 @@ export function generateFormattedSummaryHTML(item) {
   <div style="margin-bottom: 20px;">
     <h2 style="color: #0066ff; margin: 0 0 4px 0; font-size: 20px; font-weight: bold;">📋 Spinotek Internship Incentive Statement</h2>
     <div style="color: #64748b; font-size: 12px;">
-      <strong>PT Spinotek Inovasi Digital</strong> &bull; <em>Ref ID: ${calc.id || 'Draft'} &bull; Tanggal: ${dateStr}</em>
+      <strong>PT Spektrum Inovasi Teknologi</strong> &bull; <em>Ref ID: ${calc.id || 'Draft'} &bull; Tanggal: ${dateStr}</em>
     </div>
   </div>
 
@@ -451,7 +451,7 @@ export function generateFormattedSummaryHTML(item) {
 
   <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 12px 0;" />
   <div style="font-size: 11px; color: #94a3b8; text-align: center;">
-    Generated automatically by Spinotek Internship Incentive Calculator System.
+    Generated automatically by Spinotek Internship Incentive System.
   </div>
 </div>
   `.trim();
