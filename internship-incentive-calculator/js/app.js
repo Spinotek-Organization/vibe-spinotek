@@ -444,10 +444,16 @@ function initFormControls() {
     }
   });
 
-  // Print Live Summary Button
+  // Print Live Summary (Internal)
   document.getElementById('btn-print-live-summary')?.addEventListener('click', () => {
     const calc = getCurrentCalculatedData();
-    triggerPrintDocument(calc);
+    triggerPrintDocument(calc, 'internal');
+  });
+
+  // Print Live Summary (Slip Pemagang)
+  document.getElementById('btn-print-live-intern')?.addEventListener('click', () => {
+    const calc = getCurrentCalculatedData();
+    triggerPrintDocument(calc, 'intern');
   });
 
   document.getElementById('btn-reset-form').addEventListener('click', () => {
@@ -731,12 +737,20 @@ function updateLivePreview() {
   }
 
   // Milestones mini summary in preview
+  const previewMilestonesTitle = document.getElementById('prev-milestones-title');
+  if (previewMilestonesTitle) {
+    previewMilestonesTitle.textContent = `Jadwal Pencairan Milestone ${calc.monthRangeFormatted ? `(${calc.monthRangeFormatted})` : ''}:`;
+  }
+
   const previewMilestonesContainer = document.getElementById('prev-milestones-summary');
   if (previewMilestonesContainer) {
-    previewMilestonesContainer.innerHTML = calc.milestones.map(m => `
-      <div class="flex items-center justify-between text-xs py-1 border-b border-slate-100 last:border-0">
-        <span class="text-slate-600 font-medium truncate max-w-[160px]">${m.name} (${m.percentage}%)</span>
-        <span class="font-semibold text-slate-800">${formatCurrency(m.amount)}</span>
+    previewMilestonesContainer.innerHTML = calc.milestones.map((m, idx) => `
+      <div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-100 last:border-0">
+        <div>
+          <span class="text-slate-700 font-semibold block truncate max-w-[170px]">${m.name} (${m.percentage}%)</span>
+          <span class="text-[10px] text-slate-500 font-medium">${m.periodLabel || `Bulan ke-${idx + 1}`}</span>
+        </div>
+        <span class="font-bold text-slate-900">${formatCurrency(m.amount)}</span>
       </div>
     `).join('');
   }
@@ -975,8 +989,11 @@ function renderHistory() {
             <button class="btn-action-duplicate p-1.5 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors" data-id="${item.id}" title="Duplikasi">
               <i data-lucide="copy" class="w-4 h-4"></i>
             </button>
-            <button class="btn-action-print p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" data-id="${item.id}" title="Cetak Dokumen">
+            <button class="btn-action-print p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" data-id="${item.id}" title="Cetak Dokumen Lengkap (Internal)">
               <i data-lucide="printer" class="w-4 h-4"></i>
+            </button>
+            <button class="btn-action-print-intern p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" data-id="${item.id}" title="Cetak Slip Pemagang (Tanpa Nilai Project)">
+              <i data-lucide="file-badge" class="w-4 h-4"></i>
             </button>
             <button class="btn-action-delete p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" data-id="${item.id}" data-name="${item.internName} — ${item.projectName}" title="Hapus">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -1058,8 +1075,11 @@ function createCalculationCardHTML(item, isFullActions = true) {
           <button class="btn-action-copy-text p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" data-id="${item.id}" title="Salin Teks Ringkasan (Notion/Doc)">
             <i data-lucide="clipboard-copy" class="w-4 h-4"></i>
           </button>
-          <button class="btn-action-print p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" data-id="${item.id}" title="Cetak Dokumen">
+          <button class="btn-action-print p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" data-id="${item.id}" title="Cetak Dokumen Lengkap (Internal)">
             <i data-lucide="printer" class="w-4 h-4"></i>
+          </button>
+          <button class="btn-action-print-intern p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" data-id="${item.id}" title="Cetak Slip Pemagang (Tanpa Nilai Project)">
+            <i data-lucide="file-badge" class="w-4 h-4"></i>
           </button>
           ${isFullActions ? `
             <button class="btn-action-edit p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors" data-id="${item.id}" title="Edit Perhitungan">
@@ -1133,12 +1153,21 @@ function bindCardActionButtons(container) {
     });
   });
 
-  // Print Document
+  // Print Document (Internal)
   container.querySelectorAll('.btn-action-print').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-id');
       const item = getCalculationById(id);
-      if (item) triggerPrintDocument(item);
+      if (item) triggerPrintDocument(item, 'internal');
+    });
+  });
+
+  // Print Slip Pemagang (Tanpa Nilai Project)
+  container.querySelectorAll('.btn-action-print-intern').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+      const item = getCalculationById(id);
+      if (item) triggerPrintDocument(item, 'intern');
     });
   });
 
@@ -1182,9 +1211,16 @@ function initModalListeners() {
 
   // Detail modal close
   document.getElementById('btn-close-detail').addEventListener('click', closeDetailModal);
-  document.getElementById('btn-modal-print').addEventListener('click', () => {
+  
+  // Print modal triggers
+  document.getElementById('btn-modal-print')?.addEventListener('click', () => {
     if (state.detailModal.item) {
-      triggerPrintDocument(state.detailModal.item);
+      triggerPrintDocument(state.detailModal.item, 'internal');
+    }
+  });
+  document.getElementById('btn-modal-print-intern')?.addEventListener('click', () => {
+    if (state.detailModal.item) {
+      triggerPrintDocument(state.detailModal.item, 'intern');
     }
   });
   document.getElementById('btn-modal-edit').addEventListener('click', () => {
@@ -1267,14 +1303,22 @@ function openDetailModal(item) {
     : '<span class="text-xs text-slate-400 italic">Tidak ada outstanding contribution</span>';
 
   // Milestones
+  const detailMilestonesTitle = document.getElementById('detail-milestones-title');
+  if (detailMilestonesTitle) {
+    detailMilestonesTitle.textContent = `Jadwal Pencairan Milestone ${item.monthRangeFormatted ? `(${item.monthRangeFormatted})` : ''}:`;
+  }
+
   const milestones = item.milestones || [];
-  document.getElementById('detail-milestones-list').innerHTML = milestones.map(m => `
-    <div class="flex justify-between items-center text-xs p-2 rounded-lg bg-slate-50">
+  document.getElementById('detail-milestones-list').innerHTML = milestones.map((m, idx) => `
+    <div class="flex justify-between items-center text-xs p-2.5 rounded-xl bg-slate-50 border border-slate-100">
       <div>
-        <span class="font-semibold text-slate-800">${m.name} (${m.percentage}%)</span>
-        <p class="text-[11px] text-slate-500">${m.description || '-'}</p>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-slate-900">${m.name} (${m.percentage}%)</span>
+          <span class="px-2 py-0.5 rounded-md bg-slate-200/70 text-slate-700 text-[10px] font-semibold">${m.periodLabel || `Bulan ke-${idx + 1}`}</span>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-0.5">${m.description || '-'}</p>
       </div>
-      <span class="font-bold text-blue-600">${formatCurrency(m.amount)}</span>
+      <span class="font-bold text-blue-600 text-sm">${formatCurrency(m.amount)}</span>
     </div>
   `).join('');
 
@@ -1290,13 +1334,14 @@ function closeDetailModal() {
 // ----------------------------------------------------
 // Professional Print Layout Handler
 // ----------------------------------------------------
-function triggerPrintDocument(rawItem) {
+function triggerPrintDocument(rawItem, mode = 'internal') {
   if (!rawItem) {
     showToast('Data perhitungan tidak ditemukan untuk dicetak.', 'error');
     return;
   }
 
   const item = computeFullCalculation(rawItem);
+  const isInternMode = mode === 'intern';
 
   let printDoc = document.getElementById('print-document');
   if (!printDoc) {
@@ -1333,7 +1378,7 @@ function triggerPrintDocument(rawItem) {
       <div class="grid grid-cols-2 gap-5">
         <!-- Informasi Pemagang & Project -->
         <div class="border border-slate-200 rounded-2xl p-5 bg-white space-y-3">
-          <h3 class="text-xs font-bold text-slate-800 tracking-wider uppercase">INFORMASI PEMAGANG &amp; PROJECT</h3>
+          <h3 class="text-xs font-bold text-slate-800 tracking-wider uppercase">${isInternMode ? 'INFORMASI PEMAGANG' : 'INFORMASI PEMAGANG &amp; PROJECT'}</h3>
           <table class="w-full text-xs">
             <tbody>
               <tr>
@@ -1344,12 +1389,14 @@ function triggerPrintDocument(rawItem) {
                 <td class="py-1 text-slate-500 border-0 pl-0 align-top">Nama Project</td>
                 <td class="py-1 font-bold text-slate-900 border-0">: ${item.projectName}</td>
               </tr>
+              ${!isInternMode ? `
               <tr>
                 <td class="py-1 text-slate-500 border-0 pl-0">Client</td>
                 <td class="py-1 text-slate-700 border-0">: ${item.clientName || 'Internal'}</td>
               </tr>
+              ` : ''}
               <tr>
-                <td class="py-1 text-slate-500 border-0 pl-0">Durasi Project</td>
+                <td class="py-1 text-slate-500 border-0 pl-0">Durasi Magang</td>
                 <td class="py-1 text-slate-700 border-0">: ${item.startDate} s/d ${item.endDate} (${item.durationFormatted})</td>
               </tr>
             </tbody>
@@ -1358,21 +1405,29 @@ function triggerPrintDocument(rawItem) {
 
         <!-- Penilaian Kompleksitas -->
         <div class="border border-slate-200 rounded-2xl p-5 bg-white space-y-3">
-          <h3 class="text-xs font-bold text-slate-800 tracking-wider uppercase">PENILAIAN KOMPLEKSITAS</h3>
+          <h3 class="text-xs font-bold text-slate-800 tracking-wider uppercase">${isInternMode ? 'PENETAPAN INSENTIF DASAR' : 'PENILAIAN KOMPLEKSITAS'}</h3>
           <table class="w-full text-xs">
             <tbody>
+              ${!isInternMode ? `
               <tr>
                 <td class="py-1 text-slate-500 w-28 border-0 pl-0">Nilai Project</td>
                 <td class="py-1 font-bold text-slate-900 border-0">: ${formatCurrency(item.projectValue)}</td>
               </tr>
+              ` : ''}
               <tr>
-                <td class="py-1 text-slate-500 border-0 pl-0">Kompleksitas</td>
+                <td class="py-1 text-slate-500 w-32 border-0 pl-0">Kompleksitas Project</td>
                 <td class="py-1 font-bold text-slate-900 border-0">: ${item.complexity.toUpperCase()}</td>
               </tr>
               <tr>
-                <td class="py-1 text-slate-500 border-0 pl-0">Base Incentive</td>
+                <td class="py-1 text-slate-500 border-0 pl-0">Insentif Dasar (Base)</td>
                 <td class="py-1 font-bold text-blue-600 border-0">: ${formatCurrency(item.baseIncentive)}</td>
               </tr>
+              ${isInternMode ? `
+              <tr>
+                <td class="py-1 text-slate-500 border-0 pl-0">Status Evaluasi</td>
+                <td class="py-1 font-bold text-emerald-600 border-0">: Selesai Dinilai</td>
+              </tr>
+              ` : ''}
             </tbody>
           </table>
         </div>
@@ -1484,27 +1539,40 @@ function triggerPrintDocument(rawItem) {
 
       <!-- Jadwal Pencairan Berdasarkan Milestone -->
       <div class="space-y-2">
-        <h3 class="text-xs font-bold text-slate-800 tracking-wider uppercase">JADWAL PENCAIRAN BERDASARKAN MILESTONE</h3>
-        <div class="border border-slate-200 rounded-xl overflow-hidden">
-          <table class="w-full text-xs">
+        <h3 class="text-xs font-bold text-slate-800 tracking-wider uppercase">
+          JADWAL PENCAIRAN BERDASARKAN MILESTONE ${item.monthRangeFormatted ? `(${item.monthRangeFormatted.toUpperCase()})` : ''}
+        </h3>
+        <div class="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
+          <table class="w-full text-xs border-collapse">
             <thead>
               <tr class="bg-slate-50 text-slate-700 border-b border-slate-200">
-                <th class="py-2.5 px-3.5 text-left font-bold w-1/4">Nama Milestone</th>
-                <th class="py-2.5 px-3.5 text-left font-bold">Deskripsi</th>
-                <th class="py-2.5 px-3 text-center font-bold w-24">Alokasi (%)</th>
-                <th class="py-2.5 px-3.5 text-right font-bold w-36">Nominal Pencairan</th>
+                <th class="py-3 px-3 text-center font-bold w-12 border-0">Tahap</th>
+                <th class="py-3 px-3.5 text-left font-bold w-48 border-0">Nama Milestone</th>
+                <th class="py-3 px-3 text-center font-bold w-28 border-0">Periode Cair</th>
+                <th class="py-3 px-3.5 text-left font-bold border-0">Keterangan / Target</th>
+                <th class="py-3 px-3 text-center font-bold w-20 border-0">Alokasi</th>
+                <th class="py-3 px-3.5 text-right font-bold w-32 border-0">Nominal (Rp)</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
-              ${(item.milestones || []).map(m => `
-                <tr>
-                  <td class="py-2.5 px-3.5 font-bold text-slate-900">${m.name}</td>
-                  <td class="py-2.5 px-3.5 text-slate-600">${m.description || '-'}</td>
-                  <td class="py-2.5 px-3 text-center font-bold text-slate-900">${m.percentage}%</td>
-                  <td class="py-2.5 px-3.5 text-right font-bold text-blue-600">${formatCurrency(m.amount)}</td>
+              ${(item.milestones || []).map((m, idx) => `
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                  <td class="py-3 px-3 text-center font-bold text-slate-700 align-middle border-0">${idx + 1}</td>
+                  <td class="py-3 px-3.5 font-bold text-slate-900 align-middle leading-snug border-0">${m.name}</td>
+                  <td class="py-3 px-3 text-center font-medium text-slate-700 align-middle border-0">${m.periodLabel || `Bulan ke-${idx + 1}`}</td>
+                  <td class="py-3 px-3.5 text-slate-600 align-middle leading-relaxed border-0">${m.description || '-'}</td>
+                  <td class="py-3 px-3 text-center font-bold text-slate-900 align-middle border-0">${m.percentage}%</td>
+                  <td class="py-3 px-3.5 text-right font-bold text-blue-600 align-middle border-0">${formatCurrency(m.amount)}</td>
                 </tr>
               `).join('')}
             </tbody>
+            <tfoot>
+              <tr class="bg-slate-50/90 font-bold border-t border-slate-200 text-slate-800">
+                <td colspan="4" class="py-2.5 px-3.5 border-0">Total Alokasi Milestone</td>
+                <td class="py-2.5 px-3 text-center border-0 text-slate-900">${item.milestoneTotalPct}%</td>
+                <td class="py-2.5 px-3.5 text-right border-0 text-blue-600 font-black">${formatCurrency(item.finalIncentive)}</td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>

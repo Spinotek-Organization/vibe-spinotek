@@ -89,6 +89,76 @@ export function calculateDuration(startStr, endStr) {
 }
 
 /**
+ * Format month/period range from start and end dates (e.g. "Agustus – September 2026" or "Agustus 2026")
+ * @param {string} startStr
+ * @param {string} endStr
+ * @returns {string}
+ */
+export function formatMonthRange(startStr, endStr) {
+  if (!startStr && !endStr) return '';
+
+  const monthNames = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
+  const start = startStr ? new Date(startStr) : null;
+  const end = endStr ? new Date(endStr) : null;
+
+  const validStart = start && !isNaN(start.getTime());
+  const validEnd = end && !isNaN(end.getTime());
+
+  if (validStart && validEnd) {
+    const startMonth = monthNames[start.getMonth()];
+    const startYear = start.getFullYear();
+    const endMonth = monthNames[end.getMonth()];
+    const endYear = end.getFullYear();
+
+    if (startYear === endYear) {
+      if (startMonth === endMonth) {
+        return `${startMonth} ${startYear}`;
+      }
+      return `${startMonth} – ${endMonth} ${startYear}`;
+    }
+    return `${startMonth} ${startYear} – ${endMonth} ${endYear}`;
+  } else if (validStart) {
+    return `${monthNames[start.getMonth()]} ${start.getFullYear()}`;
+  } else if (validEnd) {
+    return `${monthNames[end.getMonth()]} ${end.getFullYear()}`;
+  }
+
+  return '';
+}
+
+/**
+ * Get monthly payout period name for a milestone index based on start date
+ * @param {number} index 0-indexed milestone step
+ * @param {string} startDateStr
+ * @returns {string} e.g. "Agustus 2026" or "Bulan ke-1"
+ */
+export function getMilestonePeriodName(index, startDateStr) {
+  const monthNames = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
+  if (!startDateStr) {
+    return `Bulan ke-${index + 1}`;
+  }
+
+  const start = new Date(startDateStr);
+  if (isNaN(start.getTime())) {
+    return `Bulan ke-${index + 1}`;
+  }
+
+  const targetDate = new Date(start.getFullYear(), start.getMonth() + index, 1);
+  const targetMonth = monthNames[targetDate.getMonth()];
+  const targetYear = targetDate.getFullYear();
+
+  return `${targetMonth} ${targetYear}`;
+}
+
+/**
  * Calculate Performance Score based on the 4 weighted parameters
  * @param {{ speed: number, quality: number, initiative: number, responsibility: number }} performance
  * @returns {number} 0 - 100 rounded to 2 decimal places
@@ -216,7 +286,13 @@ export function computeFullCalculation(data) {
     finalIncentive
   );
 
+  const enrichedMilestones = computedMilestones.map((m, idx) => ({
+    ...m,
+    periodLabel: getMilestonePeriodName(idx, data.startDate)
+  }));
+
   const duration = calculateDuration(data.startDate, data.endDate);
+  const monthRangeFormatted = formatMonthRange(data.startDate, data.endDate);
 
   return {
     ...data,
@@ -232,11 +308,12 @@ export function computeFullCalculation(data) {
     isOutstandingCapped: isCapped,
     performanceAdjusted,
     finalIncentive,
-    milestones: computedMilestones,
+    milestones: enrichedMilestones,
     milestoneTotalPct,
     isMilestoneValid,
     durationFormatted: duration.formatted,
-    durationTotalDays: duration.totalDays
+    durationTotalDays: duration.totalDays,
+    monthRangeFormatted
   };
 }
 
@@ -290,9 +367,9 @@ export function generateFormattedSummaryText(item) {
     `🏆 TOTAL FINAL INCENTIVE : ${formatCurrency(calc.finalIncentive)}`,
     `--------------------------------------------------`,
     ``,
-    `🗓️ JADWAL PENCAIRAN (MILESTONE)`,
+    `🗓️ JADWAL PENCAIRAN (MILESTONE${calc.monthRangeFormatted ? ` — ${calc.monthRangeFormatted.toUpperCase()}` : ''})`,
     ...(calc.milestones && calc.milestones.length > 0
-      ? calc.milestones.map((m, idx) => `${idx + 1}. ${m.name} (${m.percentage}%) : ${formatCurrency(m.amount)}${m.description ? ` — ${m.description}` : ''}`)
+      ? calc.milestones.map((m, idx) => `${idx + 1}. ${m.name} [Periode: ${m.periodLabel || `Bulan ke-${idx + 1}`}] (${m.percentage}%) : ${formatCurrency(m.amount)}${m.description ? ` — ${m.description}` : ''}`)
       : [`• (Belum ada jadwal pencairan milestone)`]
     ),
     `• Total Alokasi Milestone: ${calc.milestoneTotalPct}% (${formatCurrency(calc.finalIncentive)})`,
@@ -414,14 +491,15 @@ export function generateFormattedSummaryHTML(item) {
 
   <!-- SECTION 5: Jadwal Pencairan (Milestone) -->
   <div style="margin-bottom: 28px;">
-    <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 15px; font-weight: bold; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">🗓️ Jadwal Pencairan (Milestone)</h3>
+    <h3 style="color: #0f172a; margin: 0 0 10px 0; font-size: 15px; font-weight: bold; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 6px;">🗓️ Jadwal Pencairan (Milestone${calc.monthRangeFormatted ? ` — ${calc.monthRangeFormatted}` : ''})</h3>
     <table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #cbd5e1;">
       <thead>
         <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
-          <th style="padding: 8px 10px; text-align: center; width: 50px; border-right: 1px solid #cbd5e1;">Tahap</th>
+          <th style="padding: 8px 10px; text-align: center; width: 40px; border-right: 1px solid #cbd5e1;">Tahap</th>
           <th style="padding: 8px 12px; text-align: left; border-right: 1px solid #cbd5e1;">Nama Milestone</th>
-          <th style="padding: 8px 10px; text-align: center; width: 90px; border-right: 1px solid #cbd5e1;">Alokasi (%)</th>
-          <th style="padding: 8px 12px; text-align: right; width: 140px; border-right: 1px solid #cbd5e1;">Jumlah (Rp)</th>
+          <th style="padding: 8px 10px; text-align: center; width: 110px; border-right: 1px solid #cbd5e1;">Periode Cair</th>
+          <th style="padding: 8px 10px; text-align: center; width: 70px; border-right: 1px solid #cbd5e1;">Alokasi</th>
+          <th style="padding: 8px 12px; text-align: right; width: 130px; border-right: 1px solid #cbd5e1;">Jumlah (Rp)</th>
           <th style="padding: 8px 12px; text-align: left;">Keterangan</th>
         </tr>
       </thead>
@@ -432,15 +510,16 @@ export function generateFormattedSummaryHTML(item) {
               <tr style="border-bottom: 1px solid #e2e8f0;">
                 <td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${idx + 1}</td>
                 <td style="padding: 8px 12px; font-weight: bold; border-right: 1px solid #e2e8f0;">${m.name}</td>
+                <td style="padding: 8px 10px; text-align: center; color: #334155; border-right: 1px solid #e2e8f0;">${m.periodLabel || `Bulan ke-${idx + 1}`}</td>
                 <td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${m.percentage}%</td>
-                <td style="padding: 8px 12px; text-align: right; font-weight: bold; border-right: 1px solid #e2e8f0;">${formatCurrency(m.amount)}</td>
+                <td style="padding: 8px 12px; text-align: right; font-weight: bold; color: #0066ff; border-right: 1px solid #e2e8f0;">${formatCurrency(m.amount)}</td>
                 <td style="padding: 8px 12px; color: #64748b;">${m.description || '-'}</td>
               </tr>
             `).join('')
-            : `<tr><td colspan="5" style="padding: 8px 12px; text-align: center; color: #64748b;">(Belum ada jadwal milestone)</td></tr>`
+            : `<tr><td colspan="6" style="padding: 8px 12px; text-align: center; color: #64748b;">(Belum ada jadwal milestone)</td></tr>`
         }
         <tr style="background: #f8fafc; font-weight: bold; border-top: 2px solid #cbd5e1;">
-          <td colspan="2" style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Total Alokasi Milestone</td>
+          <td colspan="3" style="padding: 8px 12px; border-right: 1px solid #e2e8f0;">Total Alokasi Milestone Bulanan</td>
           <td style="padding: 8px 10px; text-align: center; border-right: 1px solid #e2e8f0;">${calc.milestoneTotalPct}%</td>
           <td style="padding: 8px 12px; text-align: right; color: #0066ff; border-right: 1px solid #e2e8f0;">${formatCurrency(calc.finalIncentive)}</td>
           <td style="padding: 8px 12px; color: #047857;">100% Sesuai Total Insentif</td>
