@@ -114,9 +114,21 @@ function initNavigation() {
       if (target === 'calculator' && !state.editingId) {
         resetFormState();
       }
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
       navigateView(target);
     });
   });
+
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
 
   const loadDemoBtns = document.querySelectorAll('.btn-load-demo');
   loadDemoBtns.forEach(btn => {
@@ -132,14 +144,39 @@ function initNavigation() {
 export function navigateView(viewName) {
   state.currentView = viewName;
 
-  // Update navbar links
-  document.querySelectorAll('.nav-link').forEach(link => {
-    if (link.getAttribute('data-nav') === viewName) {
-      link.classList.add('text-blue-600', 'font-semibold', 'border-b-2', 'border-blue-600');
-      link.classList.remove('text-slate-600');
+  // Update desktop navbar links
+  document.querySelectorAll('.desktop-nav-link').forEach(link => {
+    const isTarget = link.getAttribute('data-nav') === viewName;
+    if (isTarget) {
+      link.classList.add('text-blue-600', 'font-semibold', 'bg-blue-50/80');
+      link.classList.remove('text-slate-600', 'hover:bg-slate-100');
     } else {
-      link.classList.remove('text-blue-600', 'font-semibold', 'border-b-2', 'border-blue-600');
-      link.classList.add('text-slate-600');
+      link.classList.remove('text-blue-600', 'font-semibold', 'bg-blue-50/80');
+      link.classList.add('text-slate-600', 'hover:bg-slate-100');
+    }
+  });
+
+  // Update mobile bottom nav links
+  document.querySelectorAll('.bottom-nav-link').forEach(link => {
+    const isTarget = link.getAttribute('data-nav') === viewName;
+    if (isTarget) {
+      link.classList.add('text-blue-600', 'font-bold');
+      link.classList.remove('text-slate-500');
+    } else {
+      link.classList.remove('text-blue-600', 'font-bold');
+      link.classList.add('text-slate-500');
+    }
+  });
+
+  // Update mobile dropdown links
+  document.querySelectorAll('.mobile-menu-link').forEach(link => {
+    const isTarget = link.getAttribute('data-nav') === viewName;
+    if (isTarget) {
+      link.classList.add('bg-blue-50', 'text-blue-600', 'font-semibold');
+      link.classList.remove('text-slate-700');
+    } else {
+      link.classList.remove('bg-blue-50', 'text-blue-600', 'font-semibold');
+      link.classList.add('text-slate-700');
     }
   });
 
