@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spinotek Internship Incentive Calculator</title>
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/favicon.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              blue: '#0066FF',
+              darkblue: '#004ECC',
+              cyan: '#00D2FF',
+              sky: '#0EA5E9',
+              dark: '#1E293B',
+              charcoal: '#333333',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-full flex flex-col bg-slate-50 text-slate-900 selection:bg-blue-500 selection:text-white">
+
+  <!-- Header / Navigation -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 spino-card-shadow no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Branding -->
+        <div class="flex items-center gap-3 cursor-pointer" data-nav="dashboard">
+          <img src="assets/spinotek-logo.png" alt="Spinotek" class="h-8 sm:h-9 object-contain">
+          <div class="hidden sm:block border-l border-slate-300 pl-3">
+            <span class="text-xs font-bold tracking-wider text-slate-500 uppercase block">Incentive System</span>
+            <span class="text-xs text-blue-600 font-semibold">Internship Calculator</span>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex items-center gap-1 sm:gap-6">
+          <button class="nav-link py-5 px-2 sm:px-3 text-sm font-medium transition-colors" data-nav="dashboard">
+            Dashboard
+          </button>
+          <button class="nav-link py-5 px-2 sm:px-3 text-sm font-medium transition-colors" data-nav="calculator">
+            Perhitungan Baru
+          </button>
+          <button class="nav-link py-5 px-2 sm:px-3 text-sm font-medium transition-colors" data-nav="history">
+            Riwayat
+          </button>
+        </nav>
+
+        <!-- CTA Button -->
+        <div class="hidden md:flex items-center gap-2">
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-sm shadow-blue-500/20 flex items-center gap-2" data-nav="calculator">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Perhitungan Baru</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main id="app-main-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+    <!-- ======================================================== -->
+    <!-- VIEW 1: DASHBOARD                                        -->
+    <!-- ======================================================== -->
+    <section id="view-dashboard" class="space-y-6">
+      
+      <!-- Welcome Banner -->
+      <div class="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 text-white shadow-xl shadow-blue-600/10">
+        <div class="relative z-10 max-w-2xl space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-cyan-200"></i>
+            <span>Internal Business Tool &bull; Spinotek</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Kalkulator Insentif Pemagang</h1>
+          <p class="text-blue-100 text-sm sm:text-base leading-relaxed">
+            Hitung insentif project secara transparan dan objektif berdasarkan bobot performa, kompleksitas tugas, dan kontribusi outstanding.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <button class="bg-white text-blue-700 hover:bg-blue-50 px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md flex items-center gap-2" data-nav="calculator">
+              <i data-lucide="plus-circle" class="w-4 h-4 text-blue-600"></i>
+              <span>Buat Perhitungan Baru</span>
+            </button>
+          </div>
+        </div>
+        <div class="absolute -right-8 -bottom-10 opacity-10 pointer-events-none hidden lg:block">
+          <i data-lucide="calculator" class="w-72 h-72 text-white"></i>
+        </div>
+      </div>
+
+      <!-- Statistics Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        
+        <!-- Total Projects -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 spino-card-shadow flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Project</span>
+            <div id="stat-total-projects" class="text-2xl sm:text-3xl font-black text-slate-900">0</div>
+            <span class="text-[11px] text-slate-400">Tersimpan di sistem</span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <i data-lucide="folder-kanban" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- Total Incentive -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 spino-card-shadow flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Insentif</span>
+            <div id="stat-total-incentive" class="text-2xl sm:text-3xl font-black text-blue-600">Rp0</div>
+            <span class="text-[11px] text-slate-400">Akumulasi insentif</span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="wallet" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- Average Performance Score -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 spino-card-shadow flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Rata-rata Skor</span>
+            <div id="stat-avg-score" class="text-2xl sm:text-3xl font-black text-slate-900">0.0</div>
+            <span class="text-[11px] text-slate-400">Skor performa intern</span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <i data-lucide="trending-up" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <!-- Total Outstanding Bonus -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 spino-card-shadow flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Bonus Kontribusi</span>
+            <div id="stat-total-outstanding" class="text-2xl sm:text-3xl font-black text-cyan-600">Rp0</div>
+            <span class="text-[11px] text-slate-400">Outstanding contribution</span>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+            <i data-lucide="award" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recent Calculations Section -->
+      <div id="dashboard-recent-section" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Perhitungan Terkini</h2>
+            <p class="text-xs text-slate-500">Daftar kalkulasi insentif terakhir yang disimpan</p>
+          </div>
+          <button class="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1" data-nav="history">
+            <span>Lihat Semua</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <div id="recent-calculations-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="dashboard-empty-state" class="hidden bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center max-w-lg mx-auto space-y-4">
+        <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto">
+          <i data-lucide="calculator" class="w-8 h-8"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Belum Ada Perhitungan</h3>
+          <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">
+            Mulai buat perhitungan insentif project pertama Anda untuk pemagang.
+          </p>
+        </div>
+        <div class="flex items-center justify-center pt-2">
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-500/20" data-nav="calculator">
+            <i data-lucide="plus" class="w-4 h-4"></i> Buat Perhitungan Baru
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 2: NEW / EDIT CALCULATION FORM                      -->
+    <!-- ======================================================== -->
+    <section id="view-calculator" class="hidden space-y-6">
+      
+      <!-- Top Title & Mode Badge -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-black text-slate-900">Kalkulator Insentif Magang</h1>
+            <span id="form-title-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+              Perhitungan Baru
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">Lengkapi parameter project dan evaluasi performa untuk kalkulasi otomatis.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btn-reset-form" type="button" class="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-colors flex items-center gap-1.5">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Form
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Form Grid (2 Columns on Desktop) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Left Column: Form Steps (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- STEP 1: INFORMASI PEMAGANG & PROJECT -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 spino-card-shadow space-y-4">
+            <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+              <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">1</div>
+              <h2 class="font-bold text-slate-900 text-base">Informasi Pemagang &amp; Project</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Intern Name -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-700 block">Nama Pemagang <span class="text-rose-500">*</span></label>
+                <input type="text" id="input-intern-name" placeholder="Nama lengkap pemagang (misal: Budi Santoso)" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+              </div>
+
+              <!-- Project Name -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-700 block">Nama Project <span class="text-rose-500">*</span></label>
+                <input type="text" id="input-project-name" placeholder="Nama project (misal: Portal Manajemen Inventory)" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+              </div>
+
+              <!-- Client Name -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-700 block">Nama Client</label>
+                <input type="text" id="input-client-name" placeholder="Nama client / instansi (misal: PT Maju Bersama)" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+              </div>
+
+              <!-- Project Value -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-700 block">Nilai Project (IDR) <span class="text-rose-500">*</span></label>
+                <input type="text" id="input-project-value" placeholder="Rp0" class="w-full px-3.5 py-2.5 text-sm font-semibold rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+                <span class="text-[11px] text-slate-400">Sebagai data konteks project (bukan pengali langsung).</span>
+              </div>
+
+              <!-- Start Date -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-700 block">Tanggal Mulai <span class="text-rose-500">*</span></label>
+                <input type="date" id="input-start-date" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+              </div>
+
+              <!-- End Date -->
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-700 block">Tanggal Selesai <span class="text-rose-500">*</span></label>
+                <input type="date" id="input-end-date" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+              </div>
+            </div>
+
+            <!-- Auto Duration Banner -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs">
+              <span class="text-slate-500 font-medium">Estimasi Durasi Project:</span>
+              <span id="duration-display" class="font-bold text-slate-900">-</span>
+            </div>
+            <div id="date-error-msg" class="hidden text-xs text-rose-600 font-semibold"></div>
+          </div>
+
+          <!-- STEP 2: PROJECT COMPLEXITY & BASE INCENTIVE -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 spino-card-shadow space-y-4">
+            <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+              <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">2</div>
+              <div>
+                <h2 class="font-bold text-slate-900 text-base">Kompleksitas &amp; Base Incentive</h2>
+                <p class="text-xs text-slate-500">Pilih skala project untuk menentukan rekomendasi nominal dasar insentif.</p>
+              </div>
+            </div>
+
+            <!-- Complexity Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <!-- Small -->
+              <label class="cursor-pointer">
+                <input type="radio" name="complexity-radio" value="small" class="peer sr-only">
+                <div class="p-3.5 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50/40 hover:border-slate-300 transition-all h-full flex flex-col justify-between space-y-2">
+                  <div>
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 text-sm">Small</span>
+                      <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">Rp400rb</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1 leading-snug">CRUD sederhana, landing page, modul kecil, form sederhana.</p>
+                  </div>
+                  <span class="text-[10px] font-medium text-slate-400">Rentang: 300rb – 500rb</span>
+                </div>
+              </label>
+
+              <!-- Medium -->
+              <label class="cursor-pointer">
+                <input type="radio" name="complexity-radio" value="medium" checked class="peer sr-only">
+                <div class="p-3.5 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50/40 hover:border-slate-300 transition-all h-full flex flex-col justify-between space-y-2">
+                  <div>
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 text-sm">Medium</span>
+                      <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-700">Rp1.000rb</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1 leading-snug">Auth, dashboard, REST API, database, role permission.</p>
+                  </div>
+                  <span class="text-[10px] font-medium text-slate-400">Rentang: 750rb – 1.25jt</span>
+                </div>
+              </label>
+
+              <!-- Large -->
+              <label class="cursor-pointer">
+                <input type="radio" name="complexity-radio" value="large" class="peer sr-only">
+                <div class="p-3.5 rounded-xl border-2 border-slate-200 peer-checked:border-blue-600 peer-checked:bg-blue-50/40 hover:border-slate-300 transition-all h-full flex flex-col justify-between space-y-2">
+                  <div>
+                    <div class="flex items-center justify-between">
+                      <span class="font-bold text-slate-900 text-sm">Large</span>
+                      <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">Rp2.000rb</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1 leading-snug">Multi-modul, integrasi API, deployment, UAT, maintenance.</p>
+                  </div>
+                  <span class="text-[10px] font-medium text-slate-400">Rentang: 1.5jt – 2.5jt</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Base Incentive Manual Edit -->
+            <div class="pt-2 border-t border-slate-100 space-y-2">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <label class="text-xs font-semibold text-slate-700">
+                  Nominal Base Incentive (Dapat Disesuaikan):
+                </label>
+                <span id="complexity-recommended-text" class="text-[11px] text-blue-600 font-medium">
+                  Rekomendasi Medium: Rp750.000 - Rp1.250.000
+                </span>
+              </div>
+              <div class="relative">
+                <input type="text" id="input-base-incentive" value="Rp1.000.000" class="w-full px-3.5 py-2.5 text-base font-bold text-blue-700 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+              </div>
+              <p class="text-[11px] text-slate-400 italic">
+                Base incentive merupakan nominal dasar sebelum memperhitungkan performa pemagang.
+              </p>
+            </div>
+          </div>
+
+          <!-- STEP 3: PERFORMANCE ASSESSMENT -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 spino-card-shadow space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">3</div>
+                <div>
+                  <h2 class="font-bold text-slate-900 text-base">Evaluasi Performa Pemagang</h2>
+                  <p class="text-xs text-slate-500">Beri nilai 0 - 100 untuk setiap indikator berbobot.</p>
+                </div>
+              </div>
+
+              <!-- Realtime Score Badge -->
+              <div class="text-right">
+                <div class="flex items-baseline gap-1 justify-end">
+                  <span id="display-perf-score" class="text-xl font-black text-slate-900">80.0</span>
+                  <span class="text-xs text-slate-400">/ 100</span>
+                </div>
+                <span id="display-perf-tier-badge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-50 text-blue-700">
+                  Very Good (90%)
+                </span>
+              </div>
+            </div>
+
+            <!-- Progress Bar Indicator -->
+            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+              <div id="perf-score-progress-bar" class="h-2.5 bg-blue-600 rounded-full transition-all duration-300" style="width: 80%;"></div>
+            </div>
+
+            <!-- 4 Weighted Sliders -->
+            <div class="space-y-4">
+              
+              <!-- 1. Kecepatan & Ketepatan Waktu (25%) -->
+              <div class="space-y-1.5 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-semibold text-slate-800">1. Kecepatan &amp; Ketepatan Waktu <span class="text-blue-600 font-bold">(25%)</span></span>
+                  <input type="number" id="num-speed" min="0" max="100" value="80" class="w-14 px-2 py-0.5 text-center font-bold text-slate-900 rounded border border-slate-200 bg-white">
+                </div>
+                <input type="range" id="slider-speed" min="0" max="100" value="80" class="cursor-pointer">
+              </div>
+
+              <!-- 2. Kualitas Hasil (30%) -->
+              <div class="space-y-1.5 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-semibold text-slate-800">2. Kualitas Hasil <span class="text-blue-600 font-bold">(30%)</span></span>
+                  <input type="number" id="num-quality" min="0" max="100" value="80" class="w-14 px-2 py-0.5 text-center font-bold text-slate-900 rounded border border-slate-200 bg-white">
+                </div>
+                <input type="range" id="slider-quality" min="0" max="100" value="80" class="cursor-pointer">
+              </div>
+
+              <!-- 3. Inisiatif & Problem Solving (25%) -->
+              <div class="space-y-1.5 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-semibold text-slate-800">3. Inisiatif &amp; Problem Solving <span class="text-blue-600 font-bold">(25%)</span></span>
+                  <input type="number" id="num-initiative" min="0" max="100" value="80" class="w-14 px-2 py-0.5 text-center font-bold text-slate-900 rounded border border-slate-200 bg-white">
+                </div>
+                <input type="range" id="slider-initiative" min="0" max="100" value="80" class="cursor-pointer">
+              </div>
+
+              <!-- 4. Responsibility (20%) -->
+              <div class="space-y-1.5 p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-semibold text-slate-800">4. Responsibility <span class="text-blue-600 font-bold">(20%)</span></span>
+                  <input type="number" id="num-responsibility" min="0" max="100" value="80" class="w-14 px-2 py-0.5 text-center font-bold text-slate-900 rounded border border-slate-200 bg-white">
+                </div>
+                <input type="range" id="slider-responsibility" min="0" max="100" value="80" class="cursor-pointer">
+              </div>
+
+            </div>
+
+            <!-- Multiplier Rule Legend -->
+            <div class="text-[11px] text-slate-500 bg-slate-50 p-3 rounded-xl space-y-1">
+              <span class="font-bold text-slate-700 block">Aturan Multiplier Insentif:</span>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-1">
+                <span>&bull; 90–100: <strong>100%</strong> (Excellent)</span>
+                <span>&bull; 80–89.9: <strong>90%</strong> (Very Good)</span>
+                <span>&bull; 70–79.9: <strong>75%</strong> (Good)</span>
+                <span>&bull; 60–69.9: <strong>50%</strong> (Improvement)</span>
+                <span>&bull; &lt; 60: <strong>0%</strong> (Unsatisfactory)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4: OUTSTANDING CONTRIBUTION BONUS -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 spino-card-shadow space-y-4">
+            <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+              <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">4</div>
+              <div>
+                <h2 class="font-bold text-slate-900 text-base">Outstanding Contribution Bonus</h2>
+                <p class="text-xs text-slate-500">Bonus terpisah di luar requirement utama (Maksimal Rp500.000).</p>
+              </div>
+            </div>
+
+            <!-- Checklist of Contributions -->
+            <div id="contributions-checklist-container" class="space-y-2.5">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Cap Warning Box -->
+            <div id="contrib-cap-warning" class="hidden"></div>
+          </div>
+
+          <!-- STEP 5: MILESTONES / PAYMENT SCHEDULE -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 spino-card-shadow space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">5</div>
+                <div>
+                  <h2 class="font-bold text-slate-900 text-base">Milestone &amp; Skema Pembayaran</h2>
+                  <p class="text-xs text-slate-500">Bagi pencairan insentif berdasarkan termin pengerjaan project.</p>
+                </div>
+              </div>
+
+              <!-- Add Milestone Button -->
+              <button type="button" id="btn-add-milestone" class="text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+              </button>
+            </div>
+
+            <!-- Milestone Type Selector -->
+            <div class="flex flex-wrap gap-2 text-xs">
+              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer">
+                <input type="radio" name="milestone-type" value="two" checked class="text-blue-600">
+                <span class="font-semibold text-slate-700">2 Milestone (50% / 50%)</span>
+              </label>
+              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer">
+                <input type="radio" name="milestone-type" value="three" class="text-blue-600">
+                <span class="font-semibold text-slate-700">3 Milestone (30% / 40% / 30%)</span>
+              </label>
+              <label class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer">
+                <input type="radio" name="milestone-type" value="custom" class="text-blue-600">
+                <span class="font-semibold text-slate-700">Custom Milestone</span>
+              </label>
+            </div>
+
+            <!-- Dynamic Milestones List -->
+            <div id="milestones-list-container" class="space-y-3">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Total Milestone Status Banner -->
+            <div id="milestone-total-status">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Live Sticky Summary (5 cols) -->
+        <div class="lg:col-span-5 lg:sticky lg:top-24 space-y-5">
+          
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 spino-card-shadow space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Ringkasan Kalkulasi</span>
+                <h3 id="prev-intern-name" class="font-extrabold text-slate-900 text-lg">Nama Pemagang</h3>
+                <p id="prev-project-name" class="text-xs text-slate-500">Nama Project</p>
+              </div>
+              <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i data-lucide="calculator" class="w-5 h-5"></i>
+              </div>
+            </div>
+
+            <!-- Formula Step-by-Step Breakdown -->
+            <div class="space-y-2.5 text-xs">
+              <div class="flex justify-between items-center text-slate-600">
+                <span>Base Incentive</span>
+                <span id="prev-base-incentive" class="font-semibold text-slate-800">Rp1.000.000</span>
+              </div>
+              
+              <div class="flex justify-between items-center text-slate-600">
+                <span class="flex items-center gap-1">
+                  <span>&times; Performance Multiplier</span>
+                  <span id="prev-perf-tier" class="text-[10px] text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded">Very Good</span>
+                </span>
+                <span id="prev-multiplier-pct" class="font-semibold text-slate-800">90%</span>
+              </div>
+
+              <div class="flex justify-between items-center text-slate-600 pt-2 border-t border-slate-100">
+                <span>= Adjusted Incentive</span>
+                <span id="prev-adjusted-incentive" class="font-semibold text-slate-900">Rp900.000</span>
+              </div>
+
+              <div class="flex justify-between items-center text-slate-600">
+                <span>+ Outstanding Contribution</span>
+                <span id="prev-outstanding-bonus" class="font-semibold text-emerald-600">Rp0</span>
+              </div>
+            </div>
+
+            <!-- Big Final Incentive Highlight Card -->
+            <div class="rounded-2xl p-5 bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-600/20 space-y-1">
+              <span class="text-[11px] font-bold tracking-wider uppercase text-blue-200 block">FINAL INCENTIVE</span>
+              <div id="prev-final-incentive" class="text-3xl font-black tracking-tight text-white">Rp900.000</div>
+              <p class="text-[11px] text-blue-100 pt-1">Nominal bersih insentif yang siap dialokasikan ke termin milestone.</p>
+            </div>
+
+            <!-- Milestones Mini Breakdown -->
+            <div class="space-y-2 pt-2 border-t border-slate-100">
+              <span class="text-xs font-bold text-slate-700 block">Jadwal Pencairan Milestone:</span>
+              <div id="prev-milestones-summary" class="space-y-1">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+
+            <!-- Primary Actions -->
+            <div class="pt-3 border-t border-slate-100 space-y-2">
+              <button type="button" id="btn-save-calculation" class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white py-3 px-4 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                <span id="form-save-btn-text">Simpan Perhitungan</span>
+              </button>
+
+              <button type="button" id="btn-copy-live-summary" class="w-full bg-slate-50 hover:bg-slate-100 text-slate-700 py-2.5 px-4 rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-2 border border-slate-200">
+                <i data-lucide="clipboard-copy" class="w-4 h-4 text-blue-600"></i>
+                <span>Salin Format Teks (Notion / Docs)</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 3: HISTORY & STORED RECORDS                         -->
+    <!-- ======================================================== -->
+    <section id="view-history" class="hidden space-y-6">
+      
+      <!-- History Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900">Riwayat Perhitungan Insentif</h1>
+          <p class="text-xs text-slate-500 mt-0.5">Semua data perhitungan tersimpan aman di browser Anda.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm shadow-blue-500/20" data-nav="calculator">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Perhitungan Baru
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters, Search & Sorting Bar -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 spino-card-shadow space-y-3">
+        <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+          
+          <!-- Search Input with Clear Button -->
+          <div class="relative w-full md:w-96">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+            <input type="text" id="history-search-input" placeholder="Ketik nama pemagang, project, client..." class="w-full pl-10 pr-9 py-2 text-xs rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all">
+            <button type="button" id="btn-clear-search" class="hidden absolute right-2.5 top-2.5 p-0.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors" title="Hapus pencarian">
+              <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Filter & Sort Controls -->
+          <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end">
+            <!-- Filter by Tier -->
+            <div class="flex items-center gap-1 text-xs">
+              <span class="text-slate-500 font-medium hidden sm:inline">Performa:</span>
+              <select id="history-filter-tier" class="px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:border-blue-500 outline-none cursor-pointer">
+                <option value="all">Semua Kategori</option>
+                <option value="excellent">Excellent (90 - 100)</option>
+                <option value="very-good">Very Good (80 - 89.9)</option>
+                <option value="good">Good (70 - 79.9)</option>
+                <option value="needs-improvement">Needs Improvement (60 - 69.9)</option>
+                <option value="unsatisfactory">Unsatisfactory (&lt; 60)</option>
+              </select>
+            </div>
+
+            <!-- Sort by -->
+            <div class="flex items-center gap-1 text-xs">
+              <span class="text-slate-500 font-medium hidden sm:inline">Urutan:</span>
+              <select id="history-sort-by" class="px-3 py-2 text-xs rounded-xl border border-slate-200 bg-white focus:border-blue-500 outline-none cursor-pointer">
+                <option value="newest">Terbaru (Tanggal Dibuat)</option>
+                <option value="oldest">Terlama</option>
+                <option value="name-asc">Nama Pemagang (A &rarr; Z)</option>
+                <option value="name-desc">Nama Pemagang (Z &rarr; A)</option>
+                <option value="incentive-high">Insentif Tertinggi</option>
+                <option value="incentive-low">Insentif Terendah</option>
+                <option value="score-high">Skor Tertinggi</option>
+                <option value="score-low">Skor Terendah</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Filter Status Bar & Counter -->
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+          <div id="history-count-text">
+            Menampilkan <strong id="history-count-filtered" class="text-slate-800">0</strong> dari <strong id="history-count-total" class="text-slate-800">0</strong> data
+          </div>
+          <button type="button" id="btn-reset-all-filters" class="hidden text-blue-600 hover:text-blue-700 font-semibold text-xs flex items-center gap-1">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Filter
+          </button>
+        </div>
+
+      </div>
+
+      <!-- History Content Container (Contains Desktop Table & Mobile Cards) -->
+      <div id="history-content-container" class="space-y-4">
+        <!-- Desktop Table Wrapper -->
+        <div id="history-table-wrapper" class="hidden md:block bg-white rounded-2xl border border-slate-200 overflow-hidden spino-card-shadow">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider font-semibold border-b border-slate-200">
+                <tr>
+                  <th class="px-4 py-3.5">Pemagang &amp; Client</th>
+                  <th class="px-4 py-3.5">Project</th>
+                  <th class="px-4 py-3.5 text-right">Nilai Project</th>
+                  <th class="px-4 py-3.5 text-center">Skor Performa</th>
+                  <th class="px-4 py-3.5 text-right">Final Incentive</th>
+                  <th class="px-4 py-3.5">Tanggal</th>
+                  <th class="px-4 py-3.5 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body" class="divide-y divide-slate-100">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Mobile List Wrapper -->
+        <div id="history-mobile-list" class="md:hidden space-y-4">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- History Empty State -->
+      <div id="history-empty-state" class="hidden bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 text-center max-w-md mx-auto space-y-4 spino-card-shadow">
+        <div class="w-14 h-14 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto">
+          <i data-lucide="search-x" class="w-7 h-7"></i>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-slate-900 text-base">Tidak Ada Data Ditemukan</h3>
+          <p class="text-xs text-slate-500 max-w-xs mx-auto">
+            Tidak ada perhitungan yang cocok dengan kata kunci atau filter yang Anda pilih.
+          </p>
+        </div>
+        <div>
+          <button type="button" id="btn-empty-reset-filter" class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold rounded-xl transition-colors border border-blue-200 shadow-sm">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            <span>Reset Pencarian &amp; Filter</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 no-print text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <img src="assets/spinotek-logo.png" alt="Spinotek" class="h-5 object-contain">
+        <span>&bull; PT Spinotek Inovasi Digital &copy; 2026</span>
+      </div>
+      <p class="text-[11px] text-slate-400">Internship Project Incentive Calculator &bull; Browser Local Data Storage</p>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- MODALS & POPUPS                                          -->
+  <!-- ======================================================== -->
+
+  <!-- Delete Confirmation Modal -->
+  <div id="modal-delete-confirm" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 max-w-sm w-full shadow-2xl space-y-4">
+      <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
+        <i data-lucide="trash-2" class="w-6 h-6"></i>
+      </div>
+      <div class="text-center space-y-1">
+        <h3 class="font-bold text-slate-900 text-base">Hapus Perhitungan?</h3>
+        <p class="text-xs text-slate-500">
+          Perhitungan untuk <strong id="delete-modal-target-name" class="text-slate-800"></strong> akan dihapus secara permanen dari browser ini.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button type="button" id="btn-cancel-delete" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
+          Batal
+        </button>
+        <button type="button" id="btn-confirm-delete" class="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition-colors shadow-sm shadow-rose-600/20">
+          Ya, Hapus
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Calculation Modal -->
+  <div id="modal-detail" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl border border-slate-200 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 id="detail-intern-name" class="text-lg font-black text-slate-900">Nama Pemagang</h2>
+            <p id="detail-project-name" class="text-xs text-slate-500">Nama Project</p>
+          </div>
+        </div>
+        <button type="button" id="btn-close-detail" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-5 flex-1">
+        
+        <!-- Meta Info Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 rounded-xl">
+            <span class="text-slate-400 block">Client</span>
+            <span id="detail-client-name" class="font-bold text-slate-800">-</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl">
+            <span class="text-slate-400 block">Nilai Project</span>
+            <span id="detail-project-val" class="font-bold text-slate-800">Rp0</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl">
+            <span class="text-slate-400 block">Kompleksitas</span>
+            <span id="detail-complexity" class="font-bold text-slate-800">MEDIUM</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl">
+            <span class="text-slate-400 block">Durasi</span>
+            <span id="detail-dates" class="font-bold text-slate-800">-</span>
+          </div>
+        </div>
+
+        <!-- Performance Breakdown -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-slate-700">Evaluasi Performa Pemagang:</span>
+            <span id="detail-perf-score" class="font-bold text-blue-600">0.0 / 100</span>
+          </div>
+          <div id="detail-perf-breakdown">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Outstanding Contributions -->
+        <div class="space-y-2">
+          <span class="font-bold text-slate-700 text-xs block">Outstanding Contributions:</span>
+          <div id="detail-contrib-list" class="p-3 bg-slate-50 rounded-xl space-y-1">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Calculation Math Summary -->
+        <div class="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-slate-600">Base Incentive:</span>
+            <span id="detail-base-incentive" class="font-semibold text-slate-800">Rp0</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600">&times; Performance Multiplier:</span>
+            <span id="detail-multiplier" class="font-semibold text-slate-800">100%</span>
+          </div>
+          <div class="flex justify-between border-t border-blue-200 pt-1">
+            <span class="text-slate-600">= Performance Adjusted:</span>
+            <span id="detail-adjusted-incentive" class="font-semibold text-slate-800">Rp0</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600">+ Outstanding Contribution Bonus:</span>
+            <span id="detail-outstanding-bonus" class="font-semibold text-emerald-700">Rp0</span>
+          </div>
+          <div class="flex justify-between items-center pt-2 border-t-2 border-blue-600 text-sm font-black text-blue-900">
+            <span>FINAL INCENTIVE:</span>
+            <span id="detail-final-incentive" class="text-base text-blue-700">Rp0</span>
+          </div>
+        </div>
+
+        <!-- Milestones Schedule -->
+        <div class="space-y-2">
+          <span class="font-bold text-slate-700 text-xs block">Jadwal Pencairan Milestone:</span>
+          <div id="detail-milestones-list" class="space-y-2">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-6 border-t border-slate-100 bg-slate-50 flex flex-wrap items-center justify-between gap-3 sticky bottom-0">
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="btn-modal-copy" class="px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold transition-colors flex items-center gap-1.5 border border-blue-200 shadow-sm">
+            <i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> Salin Teks (Docs/Notion)
+          </button>
+          <button type="button" id="btn-modal-print" class="px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Dokumen
+          </button>
+          <button type="button" id="btn-modal-edit" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Dedicated Print Template Container -->
+  <div id="print-document"></div>
+
+  <!-- Application Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
