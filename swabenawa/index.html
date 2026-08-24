@@ -135,6 +135,25 @@
             animation: steam 3s ease-in-out infinite;
         }
 
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-float-slow {
+            animation: float-slow 8s ease-in-out infinite;
+        }
+
+        @keyframes steam-rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.2; }
+            50% { transform: translateY(-30px) scale(1.1); opacity: 0.4; }
+            100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
+        }
+
+        .animate-steam-rise {
+            animation: steam-rise 6s ease-in-out infinite;
+        }
+
         /* Boat Floating Animation Variations */
         @keyframes boat-bobbing {
             0%, 100% { transform: translateX(-100px) translateY(10px) rotate(15deg); }
@@ -1418,11 +1437,96 @@
                 'full': { price: '375', unit: 'rb', label: 'SESI SEHARIAN (FULL DAY)', desc: 'Solusi lengkap untuk diskusi strategis mendalam tanpa batasan waktu sepanjang hari.', icon: '🗓️' }
             }
         }">
+
+            <!-- Steam & Aroma Parallax -->
+            <div class="absolute inset-0 pointer-events-none opacity-30">
+                <div class="absolute bottom-0 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-[80px] animate-steam-rise"></div>
+                <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-gold-500/5 rounded-full blur-[100px] animate-steam-rise" style="animation-delay: 2s"></div>
+            </div>
+
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="grid lg:grid-cols-2 gap-16 items-center">
-                    <div class="relative group perspective-1000" data-aos="fade-right">
-                        <div class="relative aspect-square rounded-[3rem] border-8 border-navy-800 bg-navy-900 shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden">
-                            <img src="./images/place/meeting-room.jpg" alt="Meeting Room" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-110">
+                    <!-- LEFT: The Roaster Window (Visual) -->
+                    <div class="relative group perspective-1000" data-aos="fade-right" x-data="{ tilt: { x: 0, y: 0 } }"
+                        @mousemove="
+                            const r = $el.getBoundingClientRect();
+                            tilt.x = (($event.clientY - r.top) / r.height - 0.5) * 5;
+                            tilt.y = (($event.clientX - r.left) / r.width - 0.5) * -5;
+                        "
+                        @mouseleave="tilt = {x:0, y:0}">
+
+                        <!-- Circular/Rounded Portal Frame -->
+                        <div class="relative aspect-square rounded-[3rem] border-8 border-navy-800 bg-navy-900 shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden transition-transform duration-100 ease-out"
+                            :style="`transform: rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`">
+
+                            <!-- Room Image -->
+                            <img src="./images/place/meeting-room.jpg" alt="Meeting Room"
+                                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-110">
+
+                            <!-- Steam Overlay (Condensation) -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+
+                            <!-- Floating HUD (Hidden on hover to focus on list) -->
+                            <div class="absolute bottom-10 left-10 right-10 flex justify-between items-end group-hover:opacity-0 transition-opacity duration-500">
+                                <div>
+                                    <div class="text-gold-500 text-xs font-mono mb-1 tracking-widest">STABILITY</div>
+                                    <div class="text-2xl font-bold text-white">99.9%</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sky-400 text-xs font-mono mb-1 tracking-widest">FOCUS LVL</div>
+                                    <div class="text-2xl font-bold text-white">MAX</div>
+                                </div>
+                            </div>
+
+                            <!-- Facility List Overlay (Revealed on hover) -->
+                            <div class="absolute inset-x-0 bottom-0 top-0 bg-navy-950/80 backdrop-blur-md translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out z-20 flex flex-col justify-center px-10">
+                                <div class="space-y-6">
+                                    <div class="border-l-2 border-gold-500 pl-4">
+                                        <h4 class="text-white font-black text-xl uppercase tracking-wider mb-1">Fasilitas Lengkap</h4>
+                                        <p class="text-white/50 text-xs">LED TV 4K, High Speed WiFi, Whiteboard, Full AC, & Keamanan CCTV</p>
+                                    </div>
+
+                                    <div class="border-l-2 border-sky-400 pl-4">
+                                        <h4 class="text-white font-black text-xl uppercase tracking-wider mb-1">Kapasitas Fleksibel</h4>
+                                        <p class="text-white/50 text-xs">Nyaman untuk 10 pax (Hingga maksimal 20 pax)</p>
+                                    </div>
+
+                                    <div class="border-l-2 border-emerald-400 pl-4">
+                                        <h4 class="text-white font-black text-xl uppercase tracking-wider mb-1">Audio System</h4>
+                                        <p class="text-white/50 text-xs">Speaker & Mikrofon berkualitas untuk presentasi jernih</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-8 pt-8 border-t border-white/10 flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                                    <span class="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Ready for Production</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Decorative Bubbles -->
+                        <div class="absolute -right-6 top-10 z-20 hover:z-30 transition-all">
+                            <div class="group/bubble relative">
+                                <div class="w-16 h-16 rounded-full bg-navy-800/90 backdrop-blur border border-white/10 flex items-center justify-center text-2xl shadow-xl animate-float cursor-pointer hover:bg-gold-500 hover:text-navy-950 transition-colors">
+                                    📺
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -left-6 bottom-20 z-20 hover:z-30 transition-all">
+                            <div class="group/bubble relative">
+                                <div class="w-16 h-16 rounded-full bg-navy-800/90 backdrop-blur border border-white/10 flex items-center justify-center text-2xl shadow-xl animate-float-slow cursor-pointer hover:bg-sky-500 hover:text-white transition-colors">
+                                    ❄️
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-10 -top-4 z-20 hover:z-30 transition-all">
+                            <div class="group/bubble relative">
+                                <div class="w-12 h-12 rounded-full bg-navy-800/90 backdrop-blur border border-white/10 flex items-center justify-center text-xl shadow-xl animate-float cursor-pointer hover:bg-emerald-500 hover:text-white transition-colors"
+                                    style="animation-delay: 1.5s;">
+                                    📶
+                                </div>
+                            </div>
                         </div>
                     </div>
 
