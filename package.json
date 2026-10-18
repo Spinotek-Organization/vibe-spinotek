@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "html-to-image": "^1.11.13",
-    "interactjs": "^1.10.27"
+    "interactjs": "^1.10.27",
+    "three": "^0.186.1"
   }
 }
