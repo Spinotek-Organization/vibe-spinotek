@@ -1,6 +1,6 @@
 {
-  "name": "Spinocraft 3D - Creative Sandbox",
-  "short_name": "Spinocraft",
+  "name": "Minecraft Java Edition 1.20.4 - Spinocraft Sandbox",
+  "short_name": "Minecraft Java",
   "description": "Game Minecraft 3D kreatif & interaktif di browser | Spinotek Labs",
   "start_url": "./index.html",
   "scope": "./",

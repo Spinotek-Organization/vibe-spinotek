@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Spinocraft 3D | Modern Metropolis & Creative Sandbox</title>
+  <title>Minecraft Java Edition 1.20.4 | Spinocraft Creative Sandbox</title>
   
   <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="./manifest.json" />
@@ -76,7 +76,31 @@
       top: 9px; left: 0; width: 20px; height: 2px;
     }
 
-    /* Minecraft UI Bevels */
+    /* Minecraft UI Bevels & Java Edition Aesthetics */
+    .mc-title-shadow {
+      font-family: 'Press Start 2P', monospace;
+      color: #dfdfdf;
+      text-shadow: 4px 4px 0px #3f3f3f, 6px 6px 0px #000000;
+      letter-spacing: 2px;
+    }
+    .mc-subtitle-shadow {
+      font-family: 'Press Start 2P', monospace;
+      color: #ffaa00;
+      text-shadow: 2px 2px 0px #3f2a00;
+      letter-spacing: 3px;
+    }
+    @keyframes javaSplash {
+      0%, 100% { transform: scale(1) rotate(-16deg); }
+      50% { transform: scale(1.1) rotate(-16deg); }
+    }
+    .mc-splash {
+      animation: javaSplash 1.2s infinite ease-in-out;
+      color: #ffff55;
+      text-shadow: 2px 2px 0px #3f3f00;
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+    }
+
     .mc-box {
       background: #8b8b8b;
       border: 3px solid;
@@ -85,17 +109,18 @@
     }
 
     .mc-slot {
-      background: #8b8b8b;
+      background: rgba(45, 45, 45, 0.78);
       border: 2px solid;
       border-color: #373737 #ffffff #ffffff #373737;
-      box-shadow: inset 2px 2px 0px #222222;
+      box-shadow: inset 2px 2px 0px #1a1a1a;
       position: relative;
     }
 
     .mc-slot.active {
-      outline: 3px solid #ffeb3b;
-      outline-offset: -1px;
-      box-shadow: 0 0 12px rgba(255, 235, 59, 0.8), inset 2px 2px 0px #222222;
+      outline: 3px solid #ffffff;
+      outline-offset: 1px;
+      box-shadow: 0 0 0 2px #000000, inset 0 0 0 2px #ffffff;
+      z-index: 10;
     }
 
     .mc-btn {
@@ -105,7 +130,9 @@
       box-shadow: inset -2px -2px 0px #424242, inset 2px 2px 0px #a1a1a1;
       color: #ffffff;
       text-shadow: 1px 1px 0px #000000;
-      transition: all 0.1s ease;
+      transition: all 0.08s ease;
+      touch-action: manipulation;
+      cursor: pointer;
     }
     .mc-btn:hover {
       background: #858585;
@@ -115,6 +142,37 @@
       border-color: #2b2b2b #ffffff #ffffff #2b2b2b;
       box-shadow: inset 2px 2px 0px #222222;
       transform: translateY(1px);
+    }
+
+    /* Java Edition F3 Debug Overlay */
+    #f3-debug-screen {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 45;
+      font-family: 'VT323', monospace;
+      font-size: 15px;
+      line-height: 1.25;
+      color: #ffffff;
+      padding: 52px 14px 12px 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+    #f3-debug-screen.hidden {
+      display: none !important;
+    }
+    #controls-hint.hidden {
+      display: none !important;
+    }
+    #mobile-controls.hidden {
+      display: none !important;
+    }
+    .f3-line {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 1px 6px;
+      border-radius: 2px;
+      width: fit-content;
+      text-shadow: 1px 1px 0px #000000;
     }
 
     /* Glass Panels */
@@ -229,97 +287,83 @@
   <!-- Crosshair -->
   <div id="crosshair"></div>
 
-  <!-- HUD: Top Left (Coordinates, Biome, FPS, Time) -->
-  <div class="absolute top-3 left-3 z-30 flex flex-col gap-1.5 pointer-events-none max-w-[85vw] sm:max-w-xs">
-    <div class="glass-hud rounded-xl px-3 py-2 flex flex-col gap-1 text-xs text-slate-200">
-      <div class="flex items-center gap-1.5 justify-between">
-        <div class="flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-pixel text-[9px] text-emerald-400 tracking-wider">SPINOCRAFT 3D</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <span class="text-[9px] px-1 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold" id="map-scale-badge">MAP: 96x96</span>
-          <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono" id="mode-badge">CREATIVE</span>
-        </div>
-      </div>
-      <div class="font-mono text-slate-300 text-[10px] sm:text-[11px] space-y-0.5">
-        <div class="flex justify-between">
-          <span>XYZ: <strong id="pos-display" class="text-amber-300">0.0 / 8.0 / 8.0</strong></span>
-          <span class="text-slate-400 text-[10px] hidden sm:inline"><strong id="fps-display" class="text-white">60</strong> FPS</span>
-        </div>
-        <div class="flex justify-between text-slate-400">
-          <span>Lokasi: <strong id="biome-display" class="text-cyan-300">City Center</strong></span>
-          <span id="facing-display" class="text-cyan-300 text-[10px] hidden sm:inline">Utara (-Z)</span>
-        </div>
-        <div class="truncate text-slate-300">
-          Blok: <strong id="active-block-name" class="text-yellow-300">Grass Block</strong>
-        </div>
-      </div>
-      <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-white/10 pointer-events-auto">
-        <span>Terbang: <strong id="fly-status" class="text-emerald-400 font-bold">AKTIF [F]</strong></span>
-        <button id="btn-toggle-throw-mode" title="Klik untuk beralih mode lempar: Floating (Minecraft) vs Tembak Pasang Balok [T]" class="flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-mono text-[9px] border border-amber-500/40 cursor-pointer transition">
-          <span>🎯 Mode:</span>
-          <strong id="throw-mode-label" class="text-amber-200 underline">DROP (MINECRAFT)</strong>
-        </button>
-      </div>
+  <!-- Minecraft Java Edition: Iconic F3 Debug Screen Overlay -->
+  <div id="f3-debug-screen" class="hidden">
+    <!-- Left Debug Column -->
+    <div class="flex flex-col gap-0.5 max-w-[68vw]">
+      <span class="f3-line">Minecraft Java Edition 1.20.4 (1.20.4/vanilla creative)</span>
+      <span class="f3-line"><strong id="f3-fps" class="text-white">60</strong> fps T: 120 vsync</span>
+      <span class="f3-line">C: 36/36 (s) D: 8, pC: 0, pT: 36</span>
+      <span class="f3-line">XYZ: <strong id="f3-xyz" class="text-amber-300">0.500 / 6.000 / 8.500</strong></span>
+      <span class="f3-line">Block: <span id="f3-block">0 6 8</span> [0 6 8]</span>
+      <span class="f3-line">Chunk: <span id="f3-chunk">0 6 8 in world (96x96)</span></span>
+      <span class="f3-line">Facing: <strong id="f3-facing" class="text-cyan-300">north</strong> (Towards negative Z) (<span id="f3-yaw">0.0</span> / <span id="f3-pitch">0.0</span>)</span>
+      <span class="f3-line">Biome: <strong id="f3-biome" class="text-emerald-400">minecraft:modern_metropolis</strong></span>
+      <span class="f3-line">Light: <span id="f3-light">15 (15 sky, 0 block)</span></span>
+      <span class="f3-line">Targeted Block: <strong id="f3-target" class="text-yellow-300">minecraft:asphalt_road</strong></span>
+      <span class="f3-line">Throw Mode: <strong id="f3-throw-mode" class="text-amber-300">DROP (Minecraft Entity)</strong></span>
+    </div>
+
+    <!-- Right Debug Column -->
+    <div class="flex flex-col items-end gap-0.5 text-right hidden sm:flex">
+      <span class="f3-line">Java: 21.0.2 64bit</span>
+      <span class="f3-line">Mem: <span id="f3-mem">42% 860MB / 2048MB</span></span>
+      <span class="f3-line">Allocated: 55% 1120MB</span>
+      <span class="f3-line">CPU: Apple Silicon / WebGL 2.0</span>
+      <span class="f3-line">Display: <span id="f3-res">1920x1080</span> (Three.js WebGLRenderer)</span>
+      <span class="f3-line">World Map: 96x96 Chunks</span>
+      <span class="f3-line">Fly Mode: <strong id="f3-fly" class="text-emerald-400">ENABLED</strong></span>
     </div>
   </div>
 
-  <!-- HUD: Top Right (Quick Settings, Day/Night, Presets, PWA Install, Fullscreen) -->
-  <div class="absolute top-3 right-3 z-30 flex items-center gap-1.5">
-    
-    <!-- PWA Install Button -->
-    <button id="btn-pwa-install" title="Install Spinocraft sebagai Aplikasi (PWA)" class="hidden glass-hud px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:brightness-110 text-white text-[11px] font-pixel font-bold flex items-center gap-1.5 shadow-lg active:scale-95 transition">
-      <span>📲</span> <span class="hidden sm:inline">INSTALL</span>
+  <!-- HUD: Top Left (Compact Java Edition Header) -->
+  <div id="top-left-hud" class="absolute top-2.5 left-2.5 z-[60] flex items-center gap-1.5 pointer-events-auto">
+    <button id="btn-toggle-f3" title="Minecraft Java F3 Debug Screen (Tekan F3)" class="mc-btn font-pixel text-[10px] sm:text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-md">
+      <span>📋 F3</span>
+    </button>
+    <div class="hidden sm:block px-2 py-1 rounded-lg bg-black/75 border border-white/20 text-[9px] font-pixel text-yellow-300 shadow">
+      JAVA 1.20.4
+    </div>
+  </div>
+
+  <!-- HUD: Top Right (Compact Fast-Action Buttons, Non-Overlapping & Mobile-Optimized) -->
+  <div id="top-right-hud" class="absolute top-2.5 right-2.5 z-[60] flex items-center gap-1 sm:gap-1.5 pointer-events-auto">
+    <!-- Quick Device Controls Switcher (HP / PC mode toggle) -->
+    <button id="btn-toggle-input-mode" title="Ganti Mode Kontrol: HP (Sentuh) / PC (Keyboard & Mouse)" class="mc-btn w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-sm shadow-md">
+      <span id="input-mode-icon">📱</span>
     </button>
 
-    <!-- Fullscreen & Horizontal Lock Toggle -->
-    <button id="btn-fullscreen" title="Mode Layar Penuh (Horizontal)" class="glass-hud p-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/15 active:scale-95 transition shadow-lg text-xs">
+    <!-- Day / Night Cycle Button -->
+    <button id="btn-quick-time" title="Ganti Waktu Siang/Malam" class="mc-btn w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-sm shadow-md">
+      <span id="quick-time-icon">☀️</span>
+    </button>
+
+    <!-- Throw Mode Toggle (Minecraft Drop vs Impact Place) -->
+    <button id="btn-quick-throw-mode" title="Mode Lempar: Standar Minecraft (Drop) vs Tembak Pasang [T]" class="mc-btn px-2 h-9 sm:h-10 rounded-lg flex items-center gap-1 font-mono text-[10px] text-amber-300 shadow-md">
+      <span>🎯</span>
+      <span id="quick-throw-label" class="hidden md:inline font-bold">DROP</span>
+    </button>
+
+    <!-- Fullscreen Toggle -->
+    <button id="btn-fullscreen" title="Layar Penuh Horizontal" class="mc-btn w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-sm shadow-md">
       ⛶
     </button>
 
-    <!-- Day / Night Mode Button -->
-    <div class="glass-hud rounded-xl p-1 flex items-center gap-0.5 shadow-lg">
-      <button id="btn-time-day" title="Siang Terang" class="p-1.5 rounded-lg hover:bg-white/10 active:scale-95 text-yellow-400 text-xs transition">
-        ☀️
-      </button>
-      <button id="btn-time-sunset" title="Senja Keemasan" class="p-1.5 rounded-lg hover:bg-white/10 active:scale-95 text-amber-500 text-xs transition">
-        🌅
-      </button>
-      <button id="btn-time-night" title="Malam Berbintang" class="p-1.5 rounded-lg hover:bg-white/10 active:scale-95 text-indigo-300 text-xs transition">
-        🌙
-      </button>
-      <button id="btn-toggle-timeflow" title="Siklus Waktu Otomatis" class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-white/5 hover:bg-white/10 text-slate-300 transition">
-        <span id="timeflow-text" class="text-emerald-400">AUTO</span>
-      </button>
-    </div>
-
-    <!-- World Presets Dropdown -->
-    <div class="glass-hud rounded-xl p-1 hidden md:flex items-center shadow-lg">
-      <select id="preset-select" class="bg-transparent text-xs text-slate-200 outline-none px-2 py-1 font-mono cursor-pointer">
-        <option value="modern_city" class="bg-slate-900 text-white">Modern Metropolis (96x96)</option>
-        <option value="wilderness" class="bg-slate-900 text-white">Vast Wilderness (96x96)</option>
-        <option value="flat" class="bg-slate-900 text-white">Mega Superflat (96x96)</option>
-        <option value="skyblock" class="bg-slate-900 text-white">Vast Sky Islands (96x96)</option>
-      </select>
-    </div>
-
-    <!-- Quick Save & Menu -->
-    <button id="btn-save-world" title="Simpan Dunia ke Browser" class="glass-hud p-2 rounded-xl text-emerald-400 hover:text-white hover:bg-emerald-600/50 active:scale-95 transition text-xs">
-      💾
+    <!-- Game Menu / Pause Button -->
+    <button id="btn-menu-open" title="Menu Game / Pengaturan (ESC)" class="mc-btn px-2.5 h-9 sm:h-10 rounded-lg flex items-center gap-1 font-pixel text-[10px] text-white shadow-md">
+      ⚙️ <span class="hidden sm:inline">MENU</span>
     </button>
-    <button id="btn-menu-open" title="Buka Menu Pengaturan" class="glass-hud p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/15 text-xs transition">
-      ⚙️
+
+    <!-- PWA Install Button (hidden if not available) -->
+    <button id="btn-pwa-install" title="Install Spinocraft PWA" class="hidden mc-btn px-2 h-9 sm:h-10 rounded-lg flex items-center gap-1 font-pixel text-[10px] text-emerald-300 shadow-md">
+      📲
     </button>
-    <a href="../" title="Kembali ke Spinotek Labs" class="glass-hud p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/15 text-xs transition">
-      🏠
-    </a>
   </div>
 
   <!-- HUD: Bottom Hotbar -->
   <div id="hotbar-container" class="flex flex-col items-center gap-1.5 max-w-[94vw]">
-    <!-- Active block tooltip -->
-    <div id="active-item-tooltip" class="font-pixel text-[9px] sm:text-[10px] text-yellow-300 bg-black/85 px-2.5 py-1 rounded-md border border-yellow-500/40 shadow-xl backdrop-blur-sm">
+    <!-- Active block tooltip (Minecraft Java Style Floating Name) -->
+    <div id="active-item-tooltip" class="font-pixel text-[9px] sm:text-[10px] text-yellow-300 bg-black/85 px-3 py-1 rounded-md border border-yellow-500/40 shadow-xl backdrop-blur-sm transition-opacity duration-300">
       Grass Block
     </div>
 
@@ -335,20 +379,27 @@
     </div>
   </div>
 
-  <!-- Bottom Left: Keyboard Hints Legend (Desktop only) -->
-  <div id="controls-hint" class="absolute bottom-4 left-4 z-20 hidden lg:flex flex-col gap-0.5 text-[10px] text-slate-400/90 glass-hud px-3 py-2 rounded-xl border border-white/10 font-mono pointer-events-none">
-    <div class="text-[9px] text-slate-300 font-bold mb-0.5 uppercase tracking-wider">Kontrol PC:</div>
+  <!-- Bottom Left: Keyboard Hints Legend (Desktop only, hidden on mobile) -->
+  <div id="controls-hint" class="absolute bottom-4 left-4 z-30 hidden lg:flex flex-col gap-0.5 text-[10px] text-slate-300 bg-black/80 px-3 py-2 rounded-xl border border-white/15 font-mono pointer-events-none select-none">
+    <div class="text-[9px] text-yellow-300 font-bold mb-0.5 uppercase tracking-wider flex items-center justify-between gap-3">
+      <span>Kontrol Java Edition:</span>
+      <span class="text-[8px] text-slate-400 font-normal">[H / F1]</span>
+    </div>
     <div><span class="text-yellow-400 font-bold">W, A, S, D</span> : Bergerak</div>
-    <div><span class="text-yellow-400 font-bold">Spasi / Shift</span> : Naik / Turun</div>
+    <div><span class="text-yellow-400 font-bold">Spasi / Shift</span> : Lompat & Naik / Turun</div>
     <div><span class="text-yellow-400 font-bold">F</span> : Mode Terbang On/Off</div>
-    <div><span class="text-yellow-400 font-bold">Klik Kiri</span> : Tambang Balok</div>
+    <div><span class="text-yellow-400 font-bold">Klik Kiri</span> : Tambang / Hancurkan Balok</div>
     <div><span class="text-yellow-400 font-bold">Klik Kanan</span> : Pasang Balok</div>
-    <div><span class="text-yellow-400 font-bold">Q</span> : <strong>Lempar Balok (Throw)</strong></div>
+    <div><span class="text-yellow-400 font-bold">Q</span> : <strong>Lempar Balok (Drop Item)</strong></div>
+    <div><span class="text-yellow-400 font-bold">T</span> : Toggle Mode Lempar</div>
+    <div><span class="text-yellow-400 font-bold">E</span> : Creative Inventory</div>
+    <div><span class="text-yellow-400 font-bold">F3</span> : Debug Screen (Info Lengkap)</div>
+    <div><span class="text-yellow-400 font-bold">F1</span> : Toggle Tampilan HUD</div>
     <div><span class="text-yellow-400 font-bold">1 - 9 / Scroll</span> : Pilih Hotbar</div>
   </div>
 
-  <!-- Mobile Touch On-Screen Controls -->
-  <div id="mobile-controls" class="absolute inset-0 pointer-events-none z-30">
+  <!-- Mobile Touch On-Screen Controls (Hidden by default on PC, enabled on Touch Screens) -->
+  <div id="mobile-controls" class="absolute inset-0 pointer-events-none z-30 hidden">
     <!-- Left Virtual Joystick Zone (Movement) -->
     <div id="touch-joystick-zone" class="absolute bottom-6 left-6 w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-slate-900/60 border-2 border-white/25 backdrop-blur-md pointer-events-auto flex items-center justify-center touch-btn shadow-2xl">
       <div id="touch-joystick-thumb" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-yellow-400/80 border-2 border-white shadow-xl pointer-events-none transition-transform duration-75"></div>
@@ -389,7 +440,7 @@
   </div>
 
   <!-- Landscape Mode Suggestion Overlay -->
-  <div id="rotate-prompt" class="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/92 px-6 text-center transition-all duration-300 hidden">
+  <div id="rotate-prompt" class="absolute inset-0 z-[70] flex items-center justify-center bg-slate-950/92 px-6 text-center transition-all duration-300 hidden">
     <div class="max-w-sm w-full p-6 glass-hud rounded-3xl border border-white/20 flex flex-col items-center gap-4 shadow-2xl">
       <div class="text-5xl animate-bounce">📱 ➔ 🔄</div>
       <h2 class="font-pixel text-sm text-yellow-400">PUTAR KE HORIZONTAL</h2>
@@ -407,39 +458,43 @@
     </div>
   </div>
 
-  <!-- Start Screen / Click to Play Overlay -->
-  <div id="start-screen" class="absolute inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300 overflow-y-auto p-4">
-    <div id="start-screen-card" class="max-w-md w-full my-auto p-6 sm:p-8 glass-hud rounded-3xl border border-white/20 text-center shadow-2xl flex flex-col items-center gap-4">
+  <!-- Start Screen / Click to Play Overlay (Authentic Minecraft Java Edition Style) -->
+  <div id="start-screen" class="absolute inset-0 z-[70] flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300 overflow-y-auto p-4">
+    <div id="start-screen-card" class="max-w-md w-full my-auto p-6 sm:p-8 bg-slate-900/90 rounded-3xl border-2 border-white/20 text-center shadow-2xl flex flex-col items-center gap-5">
       
-      <!-- Minecraft Style Logo -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="text-4xl">🏙️</div>
-        <h1 class="font-pixel text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 drop-shadow-md">
-          SPINOCRAFT
+      <!-- Authentic Minecraft Java Title & Bouncing Yellow Splash -->
+      <div class="relative flex flex-col items-center my-2 select-none">
+        <h1 class="font-pixel text-2xl sm:text-3xl text-slate-200 tracking-wider font-extrabold mc-title-shadow">
+          MINECRAFT
         </h1>
-        <p class="text-xs text-slate-300 font-mono tracking-wide mt-0.5">Modern Metropolis 3D • Voxel Sandbox</p>
+        <div class="font-pixel text-xs sm:text-sm text-amber-400 tracking-widest -mt-0.5 font-bold drop-shadow">
+          JAVA EDITION
+        </div>
+        <div id="splash-text" class="absolute -right-6 -bottom-3.5 mc-splash font-pixel text-[11px] sm:text-xs rotate-[-16deg] drop-shadow-md select-none pointer-events-none whitespace-nowrap">
+          Spinocraft Java Edition!
+        </div>
       </div>
 
-      <!-- Quick Feature List -->
-      <div id="start-feature-list" class="w-full bg-white/5 rounded-2xl p-3.5 text-left font-mono text-[11px] sm:text-xs text-slate-300 space-y-1.5 border border-white/10">
+      <!-- Quick Feature Badges -->
+      <div id="start-feature-list" class="w-full bg-black/50 rounded-2xl p-3.5 text-left font-mono text-[11px] text-slate-300 space-y-1.5 border border-white/10">
         <div class="flex items-center gap-2">
-          <span class="text-cyan-400 font-bold">✓</span> <strong>Map Modern Metropolis</strong>: Gedung Kaca, Jalan Raya, Plaza
+          <span class="text-yellow-400 font-bold">⛏️</span> <strong>Fitur Lengkap Java</strong>: F3 Debug Screen, Hotbar Java, Swing Arm
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-amber-400 font-bold">✓</span> <strong>Fitur Lempar Balok [Q]</strong>: Fisika 3D lempar & ambil
+          <span class="text-cyan-400 font-bold">🏙️</span> <strong>Modern Metropolis</strong>: 96x96 Voxel City & Sky Islands
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> <strong>PWA Ready</strong>: Install & Mainkan Offline di HP
+          <span class="text-amber-400 font-bold">🎯</span> <strong>Lempar Balok [Q / T]</strong>: Floating Drop & Impact Build
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-indigo-400 font-bold">✓</span> <strong>Mobile Responsive</strong>: Mode Horizontal Landscape
+          <span class="text-emerald-400 font-bold">📱</span> <strong>Mobile Responsive</strong>: Mode Horizontal & Virtual Joystick
         </div>
       </div>
 
       <!-- Action Buttons -->
       <div class="flex flex-col gap-2.5 w-full">
         <button id="btn-start-game" class="w-full py-3.5 px-6 mc-btn rounded-xl font-pixel text-xs sm:text-sm text-yellow-300 hover:text-white flex items-center justify-center gap-2 shadow-2xl active:scale-98">
-          ▶ <span>MASUK KE KOTA MODERN</span>
+          ▶ <span>SINGLEPLAYER / MULAI MAIN</span>
         </button>
 
         <button id="btn-start-pwa-install" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600/80 to-teal-600/80 hover:brightness-110 text-white font-mono text-xs flex items-center justify-center gap-2 transition active:scale-98 border border-emerald-400/30">
@@ -448,13 +503,13 @@
       </div>
 
       <p class="text-[10px] text-slate-400 font-mono leading-tight">
-        Desktop: WASD, Space, Shift, Q (Lempar). HP: Virtual Joystick & Tombol Aksi di Layar.
+        Desktop: WASD, Space, Shift, Q (Lempar), F3 (Debug), E (Tas). HP: Layar Sentuh.
       </p>
     </div>
   </div>
 
   <!-- Full Creative Inventory Modal -->
-  <div id="inventory-modal" class="absolute inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm hidden p-3">
+  <div id="inventory-modal" class="absolute inset-0 z-[70] flex items-center justify-center bg-black/75 backdrop-blur-sm hidden p-3">
     <div class="max-w-2xl w-full glass-hud rounded-3xl border border-white/20 p-4 sm:p-6 flex flex-col gap-3.5 shadow-2xl max-h-[92vh]">
       <!-- Header -->
       <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
@@ -501,7 +556,7 @@
   </div>
 
   <!-- Pause & Settings Modal -->
-  <div id="pause-modal" class="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4 overflow-y-auto">
+  <div id="pause-modal" class="absolute inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4 overflow-y-auto">
     <div class="max-w-md w-full my-auto glass-hud rounded-3xl border border-white/20 p-5 sm:p-6 flex flex-col gap-4 shadow-2xl">
       <div class="text-center">
         <h2 class="font-pixel text-sm sm:text-base text-yellow-300">GAME PAUSED</h2>
@@ -2097,6 +2152,8 @@
         this.particles = new ParticleSystem(this.scene);
         this.thrownItems = [];
         this.throwMode = 'drop'; // 'drop' (Minecraft item floating/pickup) or 'place' (impact building)
+        this.isF3Active = false; // Minecraft Java Edition F3 Debug Overlay
+        this.isHUDVisible = true; // Minecraft Java Edition F1 Toggle HUD
 
         this.ambientLight = new THREE.AmbientLight(0xffffff, 0.52);
         this.scene.add(this.ambientLight);
@@ -2141,6 +2198,9 @@
         this.keys = {};
         this.isPointerLocked = false;
         this.sensitivity = 1.0;
+        this.manualInputMode = null; // null = auto detect, 'touch' = mobile, 'pc' = keyboard/mouse
+        this.isF3Active = false;
+        this.isHUDVisible = true;
         // Default modern hotbar: Asphalt, Marble, White Concrete, Glass, Neon Cyan, Modern Wood, TNT, Glowstone, Grass
         this.hotbarSlots = [33, 36, 29, 8, 37, 40, 18, 19, 1];
         this.activeSlotIndex = 0;
@@ -2251,8 +2311,10 @@
 
         const activeBlock = BLOCKS[this.hotbarSlots[this.activeSlotIndex]];
         if (activeBlock) {
-          document.getElementById('active-item-tooltip').textContent = activeBlock.name;
-          document.getElementById('active-block-name').textContent = activeBlock.name;
+          const tooltip = document.getElementById('active-item-tooltip');
+          if (tooltip) tooltip.textContent = activeBlock.name;
+          const abName = document.getElementById('active-block-name');
+          if (abName) abName.textContent = activeBlock.name;
         }
 
         this.renderInventoryHotbarPreview();
@@ -2268,8 +2330,10 @@
 
         const activeBlock = BLOCKS[this.hotbarSlots[this.activeSlotIndex]];
         if (activeBlock) {
-          document.getElementById('active-item-tooltip').textContent = activeBlock.name;
-          document.getElementById('active-block-name').textContent = activeBlock.name;
+          const tooltip = document.getElementById('active-item-tooltip');
+          if (tooltip) tooltip.textContent = activeBlock.name;
+          const abName = document.getElementById('active-block-name');
+          if (abName) abName.textContent = activeBlock.name;
         }
         this.renderHand(0);
       }
@@ -2407,33 +2471,33 @@
           this.dismissedRotatePrompt = true;
         });
 
-        document.getElementById('btn-fullscreen').addEventListener('click', () => {
-          if (!document.fullscreenElement) {
-            this.requestFullscreenLandscape();
-          } else {
-            if (document.exitFullscreen) document.exitFullscreen();
-          }
-        });
-
-        // Start Game
+        // Start Game Logic (Unified & Reliable)
         const startScreen = document.getElementById('start-screen');
         const btnStart = document.getElementById('btn-start-game');
         let gameHasStarted = false;
 
-        btnStart.addEventListener('click', () => {
-          audio.init();
+        const doStartGame = (e) => {
+          if (gameHasStarted) return;
+          if (e) e.stopPropagation();
           gameHasStarted = true;
+          audio.init();
+          audio.playClick();
           startScreen.classList.add('opacity-0', 'pointer-events-none');
-          setTimeout(() => startScreen.classList.add('hidden'), 300);
+          setTimeout(() => startScreen.classList.add('hidden'), 250);
 
-          if (window.innerWidth < 1024) {
+          if (window.innerWidth >= 1024) {
+            try {
+              this.canvas.requestPointerLock();
+            } catch (err) {}
+          } else {
             this.requestFullscreenLandscape();
           }
+        };
 
-          try {
-            this.canvas.requestPointerLock();
-          } catch (e) {}
-        });
+        if (btnStart) {
+          btnStart.addEventListener('click', doStartGame);
+          btnStart.addEventListener('touchend', doStartGame);
+        }
 
         this.canvas.addEventListener('click', () => {
           if (gameHasStarted && !this.isPointerLocked &&
@@ -2466,11 +2530,35 @@
           this.player.rot.x = Math.max(-Math.PI / 2 + 0.02, Math.min(Math.PI / 2 - 0.02, this.player.rot.x));
         });
 
-        // Keyboard Controls
+        // Keyboard Controls (Minecraft Java Edition Standards)
         window.addEventListener('keydown', (e) => {
+          if (!gameHasStarted && (e.code === 'Enter' || e.code === 'Space')) {
+            doStartGame();
+            return;
+          }
           this.keys[e.code] = true;
 
-          // NEW: Key 'Q' throws active block!
+          // Java Edition F3 Debug Screen Toggle
+          if (e.code === 'F3') {
+            e.preventDefault();
+            this.toggleF3Debug();
+            return;
+          }
+
+          // Java Edition F1 Hide HUD Toggle
+          if (e.code === 'F1') {
+            e.preventDefault();
+            this.toggleHUD();
+            return;
+          }
+
+          // Toggle PC Help Controls Legend
+          if (e.code === 'KeyH') {
+            this.toggleControlsHint();
+            return;
+          }
+
+          // Java Edition Key 'Q' throws active block!
           if (e.code === 'KeyQ') {
             const isSuper = e.ctrlKey || e.shiftKey;
             this.throwCurrentBlock(isSuper ? 2.0 : 1.0);
@@ -2479,9 +2567,7 @@
           if (e.code === 'KeyF' && (this.isPointerLocked || window.innerWidth < 1024)) {
             this.player.isFlying = !this.player.isFlying;
             this.player.vel.set(0, 0, 0);
-            document.getElementById('fly-status').textContent = this.player.isFlying ? 'AKTIF [F]' : 'NONAKTIF [F]';
-            document.getElementById('fly-status').className = this.player.isFlying ? 'text-emerald-400 font-bold' : 'text-slate-400 font-bold';
-            this.showToast(this.player.isFlying ? 'Fly Mode Aktif' : 'Walk Mode Aktif', '🪽');
+            this.showToast(this.player.isFlying ? 'Fly Mode: AKTIF' : 'Fly Mode: NONAKTIF', '🪽');
           }
 
           if (e.code === 'KeyE') {
@@ -2537,55 +2623,94 @@
 
         this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
-        // Header controls
-        const btnThrowMode = document.getElementById('btn-toggle-throw-mode');
-        if (btnThrowMode) {
-          btnThrowMode.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.toggleThrowMode();
+        /* ================= ULTRA-RESPONSIVE FAST TAP BINDING (0ms Mobile Delay) ================= */
+        const bindHeaderBtn = (id, handler) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          let handledTime = 0;
+          const run = (e) => {
+            const now = Date.now();
+            if (now - handledTime < 260) return; // Prevent double trigger
+            handledTime = now;
+            if (e) e.stopPropagation();
+            audio.init();
+            audio.playClick();
+            handler(e);
+          };
+          el.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+              run(e);
+            }
           });
-        }
+          el.addEventListener('click', run);
+        };
 
-        document.getElementById('btn-time-day').addEventListener('click', () => this.setTimePreset(0.25));
-        document.getElementById('btn-time-sunset').addEventListener('click', () => this.setTimePreset(0.5));
-        document.getElementById('btn-time-night').addEventListener('click', () => this.setTimePreset(0.75));
+        // Header Action Controls (Fully functional on HP and Desktop)
+        bindHeaderBtn('btn-toggle-f3', () => this.toggleF3Debug());
 
-        document.getElementById('btn-toggle-timeflow').addEventListener('click', () => {
-          this.isAutoTime = !this.isAutoTime;
-          document.getElementById('timeflow-text').textContent = this.isAutoTime ? 'AUTO' : 'PAUSE';
-          document.getElementById('timeflow-text').className = this.isAutoTime ? 'text-emerald-400' : 'text-rose-400';
-          this.showToast(this.isAutoTime ? 'Waktu: Otomatis' : 'Waktu: Dijeda');
+        bindHeaderBtn('btn-toggle-input-mode', () => this.toggleInputMode());
+
+        bindHeaderBtn('btn-quick-time', () => {
+          const icon = document.getElementById('quick-time-icon');
+          if (this.skyTime < 0.35) {
+            this.setTimePreset(0.5);
+            if (icon) icon.textContent = '🌅';
+            this.showToast('Waktu: Senja', '🌅');
+          } else if (this.skyTime < 0.65) {
+            this.setTimePreset(0.75);
+            if (icon) icon.textContent = '🌙';
+            this.showToast('Waktu: Malam', '🌙');
+          } else {
+            this.setTimePreset(0.25);
+            if (icon) icon.textContent = '☀️';
+            this.showToast('Waktu: Siang', '☀️');
+          }
+        });
+
+        bindHeaderBtn('btn-quick-throw-mode', () => this.toggleThrowMode());
+
+        bindHeaderBtn('btn-fullscreen', () => this.toggleFullscreen());
+
+        bindHeaderBtn('btn-menu-open', () => {
+          try { document.exitPointerLock(); } catch (err) {}
+          document.getElementById('pause-modal')?.classList.remove('hidden');
+        });
+
+        bindHeaderBtn('btn-resume-game', () => {
+          document.getElementById('pause-modal')?.classList.add('hidden');
+          if (window.innerWidth >= 1024) {
+            try { this.canvas.requestPointerLock(); } catch (err) {}
+          }
+        });
+
+        bindHeaderBtn('btn-open-inventory', () => {
+          try { document.exitPointerLock(); } catch (err) {}
+          document.getElementById('inventory-modal')?.classList.remove('hidden');
+        });
+
+        bindHeaderBtn('btn-close-inventory', () => {
+          document.getElementById('inventory-modal')?.classList.add('hidden');
+          if (window.innerWidth >= 1024) {
+            try { this.canvas.requestPointerLock(); } catch (err) {}
+          }
         });
 
         const handlePresetChange = (preset) => {
           this.initWorld(preset);
-          document.getElementById('preset-select').value = preset;
-          document.getElementById('modal-preset-select').value = preset;
+          const s1 = document.getElementById('preset-select');
+          const s2 = document.getElementById('modal-preset-select');
+          if (s1) s1.value = preset;
+          if (s2) s2.value = preset;
           this.showToast(`Dunia diubah ke ${preset}`);
         };
 
-        document.getElementById('preset-select').addEventListener('change', (e) => handlePresetChange(e.target.value));
-        document.getElementById('modal-preset-select').addEventListener('change', (e) => handlePresetChange(e.target.value));
+        const ps1 = document.getElementById('preset-select');
+        if (ps1) ps1.addEventListener('change', (e) => handlePresetChange(e.target.value));
+        const ps2 = document.getElementById('modal-preset-select');
+        if (ps2) ps2.addEventListener('change', (e) => handlePresetChange(e.target.value));
 
-        document.getElementById('btn-save-world').addEventListener('click', () => this.saveWorld());
-        document.getElementById('btn-menu-open').addEventListener('click', () => {
-          document.exitPointerLock();
-          document.getElementById('pause-modal').classList.remove('hidden');
-        });
-        document.getElementById('btn-resume-game').addEventListener('click', () => {
-          document.getElementById('pause-modal').classList.add('hidden');
-          this.canvas.requestPointerLock();
-        });
-
-        // Inventory
-        document.getElementById('btn-open-inventory').addEventListener('click', () => {
-          document.exitPointerLock();
-          document.getElementById('inventory-modal').classList.remove('hidden');
-        });
-        document.getElementById('btn-close-inventory').addEventListener('click', () => {
-          document.getElementById('inventory-modal').classList.add('hidden');
-          this.canvas.requestPointerLock();
-        });
+        const btnSave = document.getElementById('btn-save-world');
+        if (btnSave) bindHeaderBtn('btn-save-world', () => this.saveWorld());
 
         const tabBtns = document.querySelectorAll('.inv-tab-btn');
         tabBtns.forEach(btn => {
@@ -2641,8 +2766,85 @@
         });
       }
 
-      /* ================= TOUCH CONTROLS ================= */
+      /* ================= TOUCH & DEVICE CONTROLS (Intelligent PC vs Mobile) ================= */
+      isTouchDevice() {
+        if (this.manualInputMode === 'touch') return true;
+        if (this.manualInputMode === 'pc') return false;
+        // PC desktop with mouse fine pointer and wide screen: NOT touch mobile
+        const isDesktopPC = window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth >= 1024;
+        if (isDesktopPC) return false;
+        return window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024 || ('ontouchstart' in window);
+      }
+
+      updateDeviceControls() {
+        const mobileControls = document.getElementById('mobile-controls');
+        const pcHint = document.getElementById('controls-hint');
+        const icon = document.getElementById('input-mode-icon');
+        const touch = this.isTouchDevice();
+
+        if (touch) {
+          if (mobileControls) {
+            mobileControls.classList.remove('hidden');
+            mobileControls.style.display = '';
+          }
+          if (pcHint) {
+            pcHint.classList.add('hidden');
+            pcHint.style.display = 'none';
+          }
+          if (icon) icon.textContent = '📱';
+        } else {
+          if (mobileControls) {
+            mobileControls.classList.add('hidden');
+            mobileControls.style.display = 'none';
+          }
+          if (pcHint) {
+            pcHint.classList.remove('hidden');
+            pcHint.style.display = 'flex';
+          }
+          if (icon) icon.textContent = '💻';
+        }
+      }
+
+      toggleInputMode() {
+        const currentTouch = this.isTouchDevice();
+        this.manualInputMode = currentTouch ? 'pc' : 'touch';
+        this.updateDeviceControls();
+        this.showToast(
+          this.manualInputMode === 'pc' ? 'Mode Kontrol: PC (Keyboard & Mouse)' : 'Mode Kontrol: Layar Sentuh (HP)',
+          this.manualInputMode === 'pc' ? '💻' : '📱'
+        );
+      }
+
+      toggleFullscreen() {
+        try {
+          if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            const el = document.documentElement;
+            if (el.requestFullscreen) {
+              el.requestFullscreen().catch(() => {});
+            } else if (el.webkitRequestFullscreen) {
+              el.webkitRequestFullscreen();
+            }
+            if (screen.orientation && screen.orientation.lock) {
+              screen.orientation.lock('landscape').catch(() => {});
+            }
+            this.showToast('Layar Penuh Horizontal', '⛶');
+          } else {
+            if (document.exitFullscreen) {
+              document.exitFullscreen().catch(() => {});
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            }
+            this.showToast('Keluar Layar Penuh', '⛶');
+          }
+        } catch (e) {
+          console.warn('Fullscreen error:', e);
+        }
+      }
+
       setupMobileControls() {
+        this.updateDeviceControls();
+        window.addEventListener('resize', () => this.updateDeviceControls());
+
         const joystickZone = document.getElementById('touch-joystick-zone');
         const joystickThumb = document.getElementById('touch-joystick-thumb');
         let joyActive = false;
@@ -2727,28 +2929,45 @@
           lastTouchLook = null;
         });
 
-        // Touch Action Buttons
-        document.getElementById('btn-touch-fly').addEventListener('click', () => {
+        /* Ultra-Responsive Mobile Touch Action Buttons */
+        const bindActionTap = (id, fn) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          let handledTime = 0;
+          const run = (e) => {
+            if (e) {
+              e.stopPropagation();
+              e.preventDefault();
+            }
+            const now = Date.now();
+            if (now - handledTime < 260) return;
+            handledTime = now;
+            audio.init();
+            fn();
+          };
+          el.addEventListener('pointerdown', run, { passive: false });
+          el.addEventListener('click', run);
+        };
+
+        bindActionTap('btn-touch-fly', () => {
           this.player.isFlying = !this.player.isFlying;
           this.player.vel.set(0, 0, 0);
-          document.getElementById('fly-status').textContent = this.player.isFlying ? 'AKTIF [F]' : 'NONAKTIF [F]';
-          document.getElementById('fly-status').className = this.player.isFlying ? 'text-emerald-400 font-bold' : 'text-slate-400 font-bold';
-          this.showToast(this.player.isFlying ? 'Fly Mode Aktif' : 'Walk Mode Aktif', '🪽');
+          this.showToast(this.player.isFlying ? 'Fly Mode: AKTIF' : 'Fly Mode: NONAKTIF', '🪽');
         });
 
         const bindButtonHold = (btnId, keyName) => {
           const btn = document.getElementById(btnId);
-          btn.addEventListener('touchstart', (e) => {
+          if (!btn) return;
+          btn.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
             e.preventDefault();
             this.keys[keyName] = true;
-          });
-          btn.addEventListener('touchend', () => {
+          }, { passive: false });
+          btn.addEventListener('pointerup', (e) => {
+            e.stopPropagation();
             this.keys[keyName] = false;
           });
-          btn.addEventListener('mousedown', () => {
-            this.keys[keyName] = true;
-          });
-          btn.addEventListener('mouseup', () => {
+          btn.addEventListener('pointercancel', () => {
             this.keys[keyName] = false;
           });
         };
@@ -2756,10 +2975,9 @@
         bindButtonHold('btn-touch-up', 'Space');
         bindButtonHold('btn-touch-down', 'ShiftLeft');
 
-        // NEW: Mobile Touch Throw Button!
-        document.getElementById('btn-touch-throw').addEventListener('click', () => this.throwCurrentBlock());
-        document.getElementById('btn-touch-break').addEventListener('click', () => this.mineBlock());
-        document.getElementById('btn-touch-place').addEventListener('click', () => this.placeBlock());
+        bindActionTap('btn-touch-throw', () => this.throwCurrentBlock());
+        bindActionTap('btn-touch-break', () => this.mineBlock());
+        bindActionTap('btn-touch-place', () => this.placeBlock());
       }
 
       triggerHandSwing() {
@@ -2767,13 +2985,49 @@
         this.swingTime = 0;
       }
 
+      /* ================= JAVA EDITION F3 & HUD TOGGLES ================= */
+      toggleF3Debug() {
+        this.isF3Active = !this.isF3Active;
+        const screen = document.getElementById('f3-debug-screen');
+        if (screen) {
+          if (this.isF3Active) screen.classList.remove('hidden');
+          else screen.classList.add('hidden');
+        }
+        audio.playClick();
+        this.showToast(this.isF3Active ? 'F3 Debug Screen: AKTIF' : 'F3 Debug Screen: NONAKTIF', '📋');
+      }
+
+      toggleHUD() {
+        this.isHUDVisible = !this.isHUDVisible;
+        const targets = ['top-left-hud', 'top-right-hud', 'hotbar-container', 'crosshair', 'controls-hint', 'hand-canvas'];
+        targets.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            if (this.isHUDVisible) el.classList.remove('!hidden');
+            else el.classList.add('!hidden');
+          }
+        });
+        this.showToast(this.isHUDVisible ? 'HUD Ditampilkan [F1]' : 'HUD Disembunyikan [F1]', '👁️');
+      }
+
+      toggleControlsHint() {
+        const hint = document.getElementById('controls-hint');
+        if (hint) {
+          hint.classList.toggle('!hidden');
+        }
+      }
+
       /* ================= THROW BLOCK (Q / TOUCH) ================= */
       toggleThrowMode() {
         this.throwMode = this.throwMode === 'drop' ? 'place' : 'drop';
-        const label = document.getElementById('throw-mode-label');
+        const label = document.getElementById('quick-throw-label');
         if (label) {
-          label.textContent = this.throwMode === 'drop' ? 'DROP (MINECRAFT)' : 'TEMBAK PASANG (IMPACT)';
-          label.className = this.throwMode === 'drop' ? 'text-amber-200 underline' : 'text-emerald-300 underline font-bold';
+          label.textContent = this.throwMode === 'drop' ? 'DROP' : 'PASANG';
+          label.className = this.throwMode === 'drop' ? 'hidden md:inline font-bold text-amber-300' : 'hidden md:inline font-bold text-emerald-300';
+        }
+        const f3Throw = document.getElementById('f3-throw-mode');
+        if (f3Throw) {
+          f3Throw.textContent = this.throwMode === 'drop' ? 'DROP (Minecraft Entity)' : 'TEMBAK PASANG (Impact Block)';
         }
         audio.playClick();
         this.showToast(
@@ -3173,26 +3427,73 @@
         }
       }
 
-      /* ================= HUD & INFO ================= */
+      /* ================= MINECRAFT JAVA EDITION: HUD & F3 DEBUG ================= */
       updateHUDInfo() {
+        if (this.isF3Active) {
+          this.updateF3DebugScreen();
+        }
+      }
+
+      updateF3DebugScreen() {
         const p = this.player.pos;
-        document.getElementById('pos-display').textContent = `${p.x.toFixed(1)} / ${p.y.toFixed(1)} / ${p.z.toFixed(1)}`;
+        const rot = this.player.rot;
+        const fps = this.fpsCounter.fps || 60;
 
-        const deg = THREE.MathUtils.radToDeg(this.player.rot.y) % 360;
+        const fpsEl = document.getElementById('f3-fps');
+        if (fpsEl) fpsEl.textContent = fps;
+
+        const xyzEl = document.getElementById('f3-xyz');
+        if (xyzEl) xyzEl.textContent = `${p.x.toFixed(3)} / ${p.y.toFixed(3)} / ${p.z.toFixed(3)}`;
+
+        const bx = Math.floor(p.x);
+        const by = Math.floor(p.y);
+        const bz = Math.floor(p.z);
+        const bEl = document.getElementById('f3-block');
+        if (bEl) bEl.textContent = `${bx} ${by} ${bz}`;
+
+        const cx = Math.floor(bx / 16);
+        const cz = Math.floor(bz / 16);
+        const cEl = document.getElementById('f3-chunk');
+        if (cEl) cEl.textContent = `${(bx % 16 + 16) % 16} ${(by % 16 + 16) % 16} ${(bz % 16 + 16) % 16} in chunk ${cx} 0 ${cz}`;
+
+        const deg = THREE.MathUtils.radToDeg(rot.y) % 360;
         const normDeg = (deg < 0 ? deg + 360 : deg);
-        let facing = 'Utara (-Z)';
-        if (normDeg >= 45 && normDeg < 135) facing = 'Barat (-X)';
-        else if (normDeg >= 135 && normDeg < 225) facing = 'Selatan (+Z)';
-        else if (normDeg >= 225 && normDeg < 315) facing = 'Timur (+X)';
-        document.getElementById('facing-display').textContent = facing;
+        let facingName = 'north (Towards -Z)';
+        if (normDeg >= 45 && normDeg < 135) facingName = 'west (Towards -X)';
+        else if (normDeg >= 135 && normDeg < 225) facingName = 'south (Towards +Z)';
+        else if (normDeg >= 225 && normDeg < 315) facingName = 'east (Towards +X)';
 
-        let biome = 'Central Boulevard';
-        if (p.x > 10 && p.z > 10) biome = 'Horizon Tower Plaza';
-        else if (p.x < -10 && p.z > 10) biome = 'Cyber Nexus';
-        else if (p.x > 10 && p.z < -10) biome = 'Modern Villa Pool';
-        else if (p.x < -10 && p.z < -10) biome = 'City Park & Pond';
-        else if (Math.abs(p.x) <= 10 && Math.abs(p.z) <= 10) biome = 'Central Grand Plaza';
-        document.getElementById('biome-display').textContent = biome;
+        const fEl = document.getElementById('f3-facing');
+        if (fEl) fEl.textContent = facingName;
+        const yawEl = document.getElementById('f3-yaw');
+        if (yawEl) yawEl.textContent = normDeg.toFixed(1);
+        const pitchEl = document.getElementById('f3-pitch');
+        if (pitchEl) pitchEl.textContent = THREE.MathUtils.radToDeg(rot.x).toFixed(1);
+
+        let biome = 'minecraft:modern_metropolis';
+        const bioEl = document.getElementById('f3-biome');
+        if (bioEl) bioEl.textContent = biome;
+
+        const targetEl = document.getElementById('f3-target');
+        if (targetEl) {
+          if (this.targetedBlock) {
+            const [tx, ty, tz] = this.targetedBlock.pos;
+            const bId = this.world.getBlock(tx, ty, tz);
+            const b = BLOCKS[bId];
+            targetEl.textContent = b ? `minecraft:${b.name.toLowerCase().replace(/[\s'-]+/g, '_')} (#${bId})` : 'none';
+          } else {
+            targetEl.textContent = 'none';
+          }
+        }
+
+        const tmEl = document.getElementById('f3-throw-mode');
+        if (tmEl) tmEl.textContent = this.throwMode === 'drop' ? 'DROP (Minecraft Entity)' : 'TEMBAK PASANG (Impact Block)';
+
+        const flyEl = document.getElementById('f3-fly');
+        if (flyEl) flyEl.textContent = this.player.isFlying ? 'ENABLED' : 'DISABLED';
+
+        const resEl = document.getElementById('f3-res');
+        if (resEl) resEl.textContent = `${window.innerWidth}x${window.innerHeight}`;
       }
 
       saveWorld() {
@@ -3289,12 +3590,30 @@
           this.fpsCounter.fps = Math.round((this.fpsCounter.frames * 1000) / (now - this.fpsCounter.lastTime));
           this.fpsCounter.frames = 0;
           this.fpsCounter.lastTime = now;
-          document.getElementById('fps-display').textContent = this.fpsCounter.fps;
+          const fpsBadge = document.getElementById('fps-display');
+          if (fpsBadge) fpsBadge.textContent = this.fpsCounter.fps;
         }
       }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      const JAVA_SPLASHES = [
+        "Spinocraft Java Edition!",
+        "Press F3 for Debug Screen!",
+        "100% Pure Voxels!",
+        "Singleplayer Creative!",
+        "Java 21 Powered!",
+        "Throw blocks with Q!",
+        "T to switch Throw Mode!",
+        "Custom Voxel Shaders!",
+        "TNT Goes BOOM!",
+        "Now with Mobile Touch!"
+      ];
+      const splashEl = document.getElementById('splash-text');
+      if (splashEl) {
+        splashEl.textContent = JAVA_SPLASHES[Math.floor(Math.random() * JAVA_SPLASHES.length)];
+      }
+
       window.game = new MinecraftGame();
     });
   </script>
