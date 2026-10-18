@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Spinocraft 3D | Creative Sandbox & World Builder</title>
+  <title>Spinocraft 3D | Modern Metropolis & Creative Sandbox</title>
   
   <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="./manifest.json" />
@@ -119,7 +119,7 @@
 
     /* Glass Panels */
     .glass-hud {
-      background: rgba(15, 23, 42, 0.78);
+      background: rgba(15, 23, 42, 0.82);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.15);
@@ -129,7 +129,7 @@
     /* Hotbar Container */
     #hotbar-container {
       position: absolute;
-      bottom: max(12px, env(safe-area-inset-bottom));
+      bottom: max(10px, env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%);
       z-index: 40;
@@ -152,16 +152,10 @@
       position: absolute;
       bottom: 0;
       right: 0;
-      width: clamp(180px, 28vw, 320px);
-      height: clamp(180px, 28vw, 320px);
+      width: clamp(170px, 26vw, 320px);
+      height: clamp(170px, 26vw, 320px);
       pointer-events: none;
       z-index: 35;
-    }
-
-    /* Landscape Mode Prompt Styling */
-    #rotate-prompt {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
     }
 
     /* Mobile Button Haptic Feedback Class */
@@ -177,46 +171,46 @@
     /* Landscape Phone Specific Ergonomic Tuning */
     @media (max-height: 480px) {
       #hotbar-container {
-        bottom: 4px;
-        transform: translateX(-50%) scale(0.85);
+        bottom: 3px;
+        transform: translateX(-50%) scale(0.82);
         transform-origin: bottom center;
       }
       #touch-joystick-zone {
-        bottom: 10px !important;
-        left: 10px !important;
-        width: 105px !important;
-        height: 105px !important;
+        bottom: 8px !important;
+        left: 8px !important;
+        width: 100px !important;
+        height: 100px !important;
       }
       #touch-joystick-thumb {
-        width: 40px !important;
-        height: 40px !important;
+        width: 38px !important;
+        height: 38px !important;
       }
       #mobile-action-group {
-        bottom: 10px !important;
-        right: 10px !important;
-        gap: 6px !important;
+        bottom: 8px !important;
+        right: 8px !important;
+        gap: 5px !important;
       }
-      #btn-touch-break, #btn-touch-place {
-        width: 50px !important;
-        height: 50px !important;
-        border-radius: 12px !important;
-      }
-      #btn-touch-fly, #btn-touch-up, #btn-touch-down {
-        width: 36px !important;
-        height: 36px !important;
+      #btn-touch-throw, #btn-touch-break, #btn-touch-place {
+        width: 44px !important;
+        height: 44px !important;
         border-radius: 10px !important;
       }
+      #btn-touch-fly, #btn-touch-up, #btn-touch-down {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
+      }
       #hand-canvas {
-        width: 130px !important;
-        height: 130px !important;
+        width: 120px !important;
+        height: 120px !important;
         right: 0px !important;
         bottom: 0px !important;
         opacity: 0.85 !important;
       }
       #start-screen-card {
-        padding: 16px !important;
-        gap: 12px !important;
-        max-height: 94vh !important;
+        padding: 14px !important;
+        gap: 10px !important;
+        max-height: 95vh !important;
       }
       #start-feature-list {
         display: none !important;
@@ -250,20 +244,23 @@
       </div>
       <div class="font-mono text-slate-300 text-[10px] sm:text-[11px] space-y-0.5">
         <div class="flex justify-between">
-          <span>XYZ: <strong id="pos-display" class="text-amber-300">0.0 / 14.0 / 0.0</strong></span>
+          <span>XYZ: <strong id="pos-display" class="text-amber-300">0.0 / 8.0 / 8.0</strong></span>
           <span class="text-slate-400 text-[10px] hidden sm:inline"><strong id="fps-display" class="text-white">60</strong> FPS</span>
         </div>
         <div class="flex justify-between text-slate-400">
-          <span>Biome: <strong id="biome-display" class="text-emerald-300">Plains</strong></span>
+          <span>Lokasi: <strong id="biome-display" class="text-cyan-300">City Center</strong></span>
           <span id="facing-display" class="text-cyan-300 text-[10px] hidden sm:inline">Utara (-Z)</span>
         </div>
         <div class="truncate text-slate-300">
           Blok: <strong id="active-block-name" class="text-yellow-300">Grass Block</strong>
         </div>
       </div>
-      <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-white/10">
+      <div class="flex items-center justify-between text-[9px] text-slate-400 pt-1 border-t border-white/10 pointer-events-auto">
         <span>Terbang: <strong id="fly-status" class="text-emerald-400 font-bold">AKTIF [F]</strong></span>
-        <span class="text-cyan-300 font-mono" id="chunks-info">36 Chunks</span>
+        <button id="btn-toggle-throw-mode" title="Klik untuk beralih mode lempar: Floating (Minecraft) vs Tembak Pasang Balok [T]" class="flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-mono text-[9px] border border-amber-500/40 cursor-pointer transition">
+          <span>🎯 Mode:</span>
+          <strong id="throw-mode-label" class="text-amber-200 underline">DROP (MINECRAFT)</strong>
+        </button>
       </div>
     </div>
   </div>
@@ -271,7 +268,7 @@
   <!-- HUD: Top Right (Quick Settings, Day/Night, Presets, PWA Install, Fullscreen) -->
   <div class="absolute top-3 right-3 z-30 flex items-center gap-1.5">
     
-    <!-- PWA Install Button (Dynamic) -->
+    <!-- PWA Install Button -->
     <button id="btn-pwa-install" title="Install Spinocraft sebagai Aplikasi (PWA)" class="hidden glass-hud px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:brightness-110 text-white text-[11px] font-pixel font-bold flex items-center gap-1.5 shadow-lg active:scale-95 transition">
       <span>📲</span> <span class="hidden sm:inline">INSTALL</span>
     </button>
@@ -297,9 +294,10 @@
       </button>
     </div>
 
-    <!-- World Presets Dropdown (Hidden on ultra-small screens, in menu) -->
+    <!-- World Presets Dropdown -->
     <div class="glass-hud rounded-xl p-1 hidden md:flex items-center shadow-lg">
       <select id="preset-select" class="bg-transparent text-xs text-slate-200 outline-none px-2 py-1 font-mono cursor-pointer">
+        <option value="modern_city" class="bg-slate-900 text-white">Modern Metropolis (96x96)</option>
         <option value="wilderness" class="bg-slate-900 text-white">Vast Wilderness (96x96)</option>
         <option value="flat" class="bg-slate-900 text-white">Mega Superflat (96x96)</option>
         <option value="skyblock" class="bg-slate-900 text-white">Vast Sky Islands (96x96)</option>
@@ -344,11 +342,12 @@
     <div><span class="text-yellow-400 font-bold">Spasi / Shift</span> : Naik / Turun</div>
     <div><span class="text-yellow-400 font-bold">F</span> : Mode Terbang On/Off</div>
     <div><span class="text-yellow-400 font-bold">Klik Kiri</span> : Tambang Balok</div>
-    <div><span class="text-yellow-400 font-bold">Klik Kanan</span> : Pasang / Ledakkan TNT</div>
-    <div><span class="text-yellow-400 font-bold">1 - 9 / Scroll</span> : Hotbar</div>
+    <div><span class="text-yellow-400 font-bold">Klik Kanan</span> : Pasang Balok</div>
+    <div><span class="text-yellow-400 font-bold">Q</span> : <strong>Lempar Balok (Throw)</strong></div>
+    <div><span class="text-yellow-400 font-bold">1 - 9 / Scroll</span> : Pilih Hotbar</div>
   </div>
 
-  <!-- Mobile Touch On-Screen Controls (Optimized for Horizontal / Landscape) -->
+  <!-- Mobile Touch On-Screen Controls -->
   <div id="mobile-controls" class="absolute inset-0 pointer-events-none z-30">
     <!-- Left Virtual Joystick Zone (Movement) -->
     <div id="touch-joystick-zone" class="absolute bottom-6 left-6 w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-slate-900/60 border-2 border-white/25 backdrop-blur-md pointer-events-auto flex items-center justify-center touch-btn shadow-2xl">
@@ -371,21 +370,25 @@
         </button>
       </div>
 
-      <!-- Bottom Row: Primary Interaction (Mine & Place) -->
-      <div class="flex gap-2 sm:gap-2.5">
-        <button id="btn-touch-break" title="Tambang Balok" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-rose-600/85 border-2 border-rose-300 text-white font-bold flex flex-col items-center justify-center shadow-2xl touch-btn">
-          <span class="text-base sm:text-lg">⛏️</span>
-          <span class="text-[8px] sm:text-[9px] font-pixel mt-0.5">MINE</span>
+      <!-- Bottom Row: Primary Interaction (Throw, Mine, Place) -->
+      <div class="flex gap-1.5 sm:gap-2">
+        <button id="btn-touch-throw" title="Lempar Balok (Q)" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-600/85 border-2 border-amber-300 text-white font-bold flex flex-col items-center justify-center shadow-2xl touch-btn">
+          <span class="text-sm sm:text-base">🎯</span>
+          <span class="text-[7px] sm:text-[8px] font-pixel mt-0.5">THROW</span>
         </button>
-        <button id="btn-touch-place" title="Pasang Balok" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-600/85 border-2 border-emerald-300 text-white font-bold flex flex-col items-center justify-center shadow-2xl touch-btn">
-          <span class="text-base sm:text-lg">🧱</span>
-          <span class="text-[8px] sm:text-[9px] font-pixel mt-0.5">PLACE</span>
+        <button id="btn-touch-break" title="Tambang Balok" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-rose-600/85 border-2 border-rose-300 text-white font-bold flex flex-col items-center justify-center shadow-2xl touch-btn">
+          <span class="text-sm sm:text-base">⛏️</span>
+          <span class="text-[7px] sm:text-[8px] font-pixel mt-0.5">MINE</span>
+        </button>
+        <button id="btn-touch-place" title="Pasang Balok" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-600/85 border-2 border-emerald-300 text-white font-bold flex flex-col items-center justify-center shadow-2xl touch-btn">
+          <span class="text-sm sm:text-base">🧱</span>
+          <span class="text-[7px] sm:text-[8px] font-pixel mt-0.5">PLACE</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Landscape Mode Suggestion Overlay (Auto shown on mobile portrait) -->
+  <!-- Landscape Mode Suggestion Overlay -->
   <div id="rotate-prompt" class="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/92 px-6 text-center transition-all duration-300 hidden">
     <div class="max-w-sm w-full p-6 glass-hud rounded-3xl border border-white/20 flex flex-col items-center gap-4 shadow-2xl">
       <div class="text-5xl animate-bounce">📱 ➔ 🔄</div>
@@ -406,37 +409,37 @@
 
   <!-- Start Screen / Click to Play Overlay -->
   <div id="start-screen" class="absolute inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md transition-opacity duration-300 overflow-y-auto p-4">
-    <div id="start-screen-card" class="max-w-md w-full my-auto p-6 sm:p-8 glass-hud rounded-3xl border border-white/20 text-center shadow-2xl flex flex-col items-center gap-5">
+    <div id="start-screen-card" class="max-w-md w-full my-auto p-6 sm:p-8 glass-hud rounded-3xl border border-white/20 text-center shadow-2xl flex flex-col items-center gap-4">
       
       <!-- Minecraft Style Logo -->
       <div class="flex flex-col items-center gap-1">
-        <div class="text-4xl">⛏️</div>
-        <h1 class="font-pixel text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-yellow-300 to-amber-500 drop-shadow-md">
+        <div class="text-4xl">🏙️</div>
+        <h1 class="font-pixel text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 drop-shadow-md">
           SPINOCRAFT
         </h1>
-        <p class="text-xs text-slate-300 font-mono tracking-wide mt-0.5">3D Voxel Sandbox • PWA Edition</p>
+        <p class="text-xs text-slate-300 font-mono tracking-wide mt-0.5">Modern Metropolis 3D • Voxel Sandbox</p>
       </div>
 
       <!-- Quick Feature List -->
       <div id="start-feature-list" class="w-full bg-white/5 rounded-2xl p-3.5 text-left font-mono text-[11px] sm:text-xs text-slate-300 space-y-1.5 border border-white/10">
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> <strong>MAP Lebih Luas: 96x96</strong> (9,216 Voxel Columns)
+          <span class="text-cyan-400 font-bold">✓</span> <strong>Map Modern Metropolis</strong>: Gedung Kaca, Jalan Raya, Plaza
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> <strong>Chunk Caching Engine</strong>: 60 FPS tanpa jeda
+          <span class="text-amber-400 font-bold">✓</span> <strong>Fitur Lempar Balok [Q]</strong>: Fisika 3D lempar & ambil
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> <strong>PWA Ready</strong>: Install & Mainkan Offline
+          <span class="text-emerald-400 font-bold">✓</span> <strong>PWA Ready</strong>: Install & Mainkan Offline di HP
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> <strong>Mobile Responsive</strong>: Kontrol Horizontal HP
+          <span class="text-indigo-400 font-bold">✓</span> <strong>Mobile Responsive</strong>: Mode Horizontal Landscape
         </div>
       </div>
 
       <!-- Action Buttons -->
       <div class="flex flex-col gap-2.5 w-full">
         <button id="btn-start-game" class="w-full py-3.5 px-6 mc-btn rounded-xl font-pixel text-xs sm:text-sm text-yellow-300 hover:text-white flex items-center justify-center gap-2 shadow-2xl active:scale-98">
-          ▶ <span>MASUK KE DUNIA</span>
+          ▶ <span>MASUK KE KOTA MODERN</span>
         </button>
 
         <button id="btn-start-pwa-install" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600/80 to-teal-600/80 hover:brightness-110 text-white font-mono text-xs flex items-center justify-center gap-2 transition active:scale-98 border border-emerald-400/30">
@@ -445,12 +448,12 @@
       </div>
 
       <p class="text-[10px] text-slate-400 font-mono leading-tight">
-        Desktop: Klik layar untuk Pointer Lock. HP/Tablet: Gunakan Virtual Joystick & Tombol Aksi di Layar.
+        Desktop: WASD, Space, Shift, Q (Lempar). HP: Virtual Joystick & Tombol Aksi di Layar.
       </p>
     </div>
   </div>
 
-  <!-- Full Creative Inventory Modal (Triggered by 'E' or Backpack Button) -->
+  <!-- Full Creative Inventory Modal -->
   <div id="inventory-modal" class="absolute inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm hidden p-3">
     <div class="max-w-2xl w-full glass-hud rounded-3xl border border-white/20 p-4 sm:p-6 flex flex-col gap-3.5 shadow-2xl max-h-[92vh]">
       <!-- Header -->
@@ -468,6 +471,7 @@
       <div class="flex flex-col sm:flex-row gap-2 justify-between">
         <div id="inv-tabs" class="flex flex-wrap gap-1 text-[11px] sm:text-xs">
           <button data-cat="all" class="px-2.5 py-1.5 rounded-lg bg-emerald-500 text-white font-semibold transition active:scale-95 inv-tab-btn">Semua</button>
+          <button data-cat="modern" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition active:scale-95 inv-tab-btn">Modern</button>
           <button data-cat="building" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition active:scale-95 inv-tab-btn">Bangunan</button>
           <button data-cat="nature" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition active:scale-95 inv-tab-btn">Alam</button>
           <button data-cat="ores" class="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 transition active:scale-95 inv-tab-btn">Mineral</button>
@@ -511,14 +515,15 @@
 
         <div class="bg-white/5 rounded-2xl p-3.5 flex flex-col gap-2.5 border border-white/10 font-mono text-xs text-slate-300">
           <div class="font-bold text-white uppercase text-[11px] border-b border-white/10 pb-1 flex items-center justify-between">
-            <span>Pengaturan Dunia & Kontrol</span>
+            <span>Pilihan Tipe Dunia & Kontrol</span>
             <span class="text-emerald-400 text-[10px]">96x96 WORLD</span>
           </div>
 
           <!-- World Preset Selection -->
           <div class="flex flex-col gap-1">
-            <span class="text-slate-400">Pilihan Tipe Dunia (Preset):</span>
+            <span class="text-slate-400">Pilihan Tipe Dunia:</span>
             <select id="modal-preset-select" class="w-full bg-slate-900 border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white outline-none">
+              <option value="modern_city">Modern Metropolis (96x96: Gedung Kaca, Jalan Raya, Villa Mewah, Plaza)</option>
               <option value="wilderness">Vast Wilderness (96x96: Bukit, Hutan, Gunung, Danau)</option>
               <option value="flat">Mega Superflat (96x96: Dunia Datar Hijau Luas)</option>
               <option value="skyblock">Vast Sky Islands (96x96: Kepulauan Melayang)</option>
@@ -595,7 +600,6 @@
       });
     }
 
-    // PWA Install Prompt Capture
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -703,10 +707,19 @@
       concrete_white: [3, 2],
       concrete_red: [4, 2],
       concrete_blue: [5, 2],
-      concrete_yellow: [6, 2]
+      concrete_yellow: [6, 2],
+      // Modern Architecture Slots
+      asphalt: [7, 2],
+      road_line: [8, 2],
+      road_crosswalk: [9, 2],
+      marble: [10, 2],
+      neon_cyan: [11, 2],
+      neon_magenta: [12, 2],
+      dark_metal: [13, 2],
+      modern_wood: [14, 2]
     };
 
-    // Draw all textures
+    // Draw Classic Textures
     drawTexture(...ATLAS_SLOTS.grass_top, (x, y) => {
       const n = pseudoNoise(x, y, 10);
       return [Math.floor(70 + n * 25), Math.floor(135 + n * 45), Math.floor(35 + n * 20)];
@@ -882,6 +895,81 @@
     drawTexture(...ATLAS_SLOTS.concrete_blue, () => [45, 95, 215]);
     drawTexture(...ATLAS_SLOTS.concrete_yellow, () => [245, 210, 45]);
 
+    // Draw Modern City Textures
+    // 33. Asphalt Road
+    drawTexture(...ATLAS_SLOTS.asphalt, (x, y) => {
+      const n = pseudoNoise(x, y, 350);
+      const v = Math.floor(40 + n * 12);
+      return [v, v, v + 2];
+    });
+
+    // 34. Road Line Marking (Yellow Center Line on Asphalt)
+    drawTexture(...ATLAS_SLOTS.road_line, (x, y) => {
+      const isLine = x >= 6 && x <= 9;
+      if (isLine) {
+        const n = pseudoNoise(x, y, 360);
+        return [Math.floor(245 + n * 10), Math.floor(215 + n * 15), 35];
+      }
+      const n = pseudoNoise(x, y, 350);
+      const v = Math.floor(40 + n * 12);
+      return [v, v, v + 2];
+    });
+
+    // 35. Road Crosswalk (Zebra Stripes)
+    drawTexture(...ATLAS_SLOTS.road_crosswalk, (x, y) => {
+      const isStripe = (x % 4 < 2);
+      if (isStripe) {
+        return [235, 235, 240];
+      }
+      const n = pseudoNoise(x, y, 350);
+      const v = Math.floor(40 + n * 12);
+      return [v, v, v + 2];
+    });
+
+    // 36. Polished Marble
+    drawTexture(...ATLAS_SLOTS.marble, (x, y) => {
+      const isVein = Math.abs(x - y * 0.8) < 1.2 || Math.abs(x + y * 0.6 - 10) < 1.0;
+      if (isVein) return [215, 218, 225];
+      const n = pseudoNoise(x, y, 370);
+      const v = Math.floor(242 + n * 13);
+      return [v, v, Math.min(255, v + 2)];
+    });
+
+    // 37. Neon Cyan Light
+    drawTexture(...ATLAS_SLOTS.neon_cyan, (x, y) => {
+      const isBorder = x === 0 || x === 15 || y === 0 || y === 15;
+      if (isBorder) return [20, 180, 220];
+      const n = pseudoNoise(x, y, 380);
+      return [Math.floor(40 + n * 20), Math.floor(230 + n * 25), 255];
+    });
+
+    // 38. Neon Pink Light
+    drawTexture(...ATLAS_SLOTS.neon_magenta, (x, y) => {
+      const isBorder = x === 0 || x === 15 || y === 0 || y === 15;
+      if (isBorder) return [200, 20, 140];
+      const n = pseudoNoise(x, y, 390);
+      return [255, Math.floor(45 + n * 20), Math.floor(190 + n * 30)];
+    });
+
+    // 39. Dark Metal Panel
+    drawTexture(...ATLAS_SLOTS.dark_metal, (x, y) => {
+      const isSeam = x === 0 || x === 15 || y === 0 || y === 15;
+      if (isSeam) return [30, 32, 38];
+      const isRivet = (x === 2 || x === 13) && (y === 2 || y === 13);
+      if (isRivet) return [100, 105, 115];
+      const n = pseudoNoise(x, y, 400);
+      const v = Math.floor(58 + n * 15);
+      return [v, Math.floor(v * 1.05), Math.floor(v * 1.15)];
+    });
+
+    // 40. Modern Teak Wood
+    drawTexture(...ATLAS_SLOTS.modern_wood, (x, y) => {
+      const isSlat = y % 4 === 0;
+      if (isSlat) return [110, 65, 35];
+      const n = pseudoNoise(x, y, 410);
+      return [Math.floor(190 + n * 20), Math.floor(125 + n * 18), Math.floor(75 + n * 12)];
+    });
+
     const atlasTexture = new THREE.CanvasTexture(atlasCanvas);
     atlasTexture.magFilter = THREE.NearestFilter;
     atlasTexture.minFilter = THREE.NearestMipmapNearestFilter;
@@ -907,7 +995,7 @@
       5: { id: 5, name: 'Oak Planks', cat: 'building', sound: 'wood', iconSlot: 'oak_planks', faces: { all: 'oak_planks' } },
       6: { id: 6, name: 'Oak Log', cat: 'nature', sound: 'wood', iconSlot: 'oak_log_side', faces: { top: 'oak_log_top', bottom: 'oak_log_top', side: 'oak_log_side' } },
       7: { id: 7, name: 'Oak Leaves', cat: 'nature', sound: 'grass', transparent: true, iconSlot: 'oak_leaves', faces: { all: 'oak_leaves' } },
-      8: { id: 8, name: 'Glass', cat: 'special', sound: 'glass', transparent: true, iconSlot: 'glass', faces: { all: 'glass' } },
+      8: { id: 8, name: 'Glass', cat: 'modern', sound: 'glass', transparent: true, iconSlot: 'glass', faces: { all: 'glass' } },
       9: { id: 9, name: 'Bricks', cat: 'building', sound: 'stone', iconSlot: 'brick', faces: { all: 'brick' } },
       10: { id: 10, name: 'Sand', cat: 'nature', sound: 'sand', iconSlot: 'sand', faces: { all: 'sand' } },
       11: { id: 11, name: 'Diamond Ore', cat: 'ores', sound: 'stone', iconSlot: 'diamond_ore', faces: { all: 'diamond_ore' } },
@@ -916,7 +1004,7 @@
       14: { id: 14, name: 'Coal Ore', cat: 'ores', sound: 'stone', iconSlot: 'coal_ore', faces: { all: 'coal_ore' } },
       15: { id: 15, name: 'Emerald Ore', cat: 'ores', sound: 'stone', iconSlot: 'emerald_ore', faces: { all: 'emerald_ore' } },
       16: { id: 16, name: 'Redstone Ore', cat: 'ores', sound: 'stone', iconSlot: 'redstone_ore', faces: { all: 'redstone_ore' } },
-      17: { id: 17, name: 'Obsidian', cat: 'building', sound: 'stone', iconSlot: 'obsidian', faces: { all: 'obsidian' } },
+      17: { id: 17, name: 'Obsidian', cat: 'modern', sound: 'stone', iconSlot: 'obsidian', faces: { all: 'obsidian' } },
       18: { id: 18, name: 'TNT Explosive', cat: 'special', sound: 'grass', isTNT: true, iconSlot: 'tnt_side', faces: { top: 'tnt_top', bottom: 'tnt_bottom', side: 'tnt_side' } },
       19: { id: 19, name: 'Glowstone', cat: 'special', sound: 'glass', light: true, iconSlot: 'glowstone', faces: { all: 'glowstone' } },
       20: { id: 20, name: 'Bookshelf', cat: 'building', sound: 'wood', iconSlot: 'bookshelf_side', faces: { top: 'oak_planks', bottom: 'oak_planks', side: 'bookshelf_side' } },
@@ -928,10 +1016,19 @@
       26: { id: 26, name: "Jack-o'-Lantern", cat: 'special', sound: 'wood', light: true, iconSlot: 'jack_face', faces: { top: 'jack_side', bottom: 'jack_side', side: 'jack_side', front: 'jack_face' } },
       27: { id: 27, name: 'Melon Block', cat: 'nature', sound: 'wood', iconSlot: 'melon_side', faces: { top: 'melon_top', bottom: 'melon_top', side: 'melon_side' } },
       28: { id: 28, name: 'Snow Block', cat: 'nature', sound: 'grass', iconSlot: 'snow', faces: { all: 'snow' } },
-      29: { id: 29, name: 'White Concrete', cat: 'building', sound: 'stone', iconSlot: 'concrete_white', faces: { all: 'concrete_white' } },
-      30: { id: 30, name: 'Red Concrete', cat: 'building', sound: 'stone', iconSlot: 'concrete_red', faces: { all: 'concrete_red' } },
-      31: { id: 31, name: 'Blue Concrete', cat: 'building', sound: 'stone', iconSlot: 'concrete_blue', faces: { all: 'concrete_blue' } },
-      32: { id: 32, name: 'Yellow Concrete', cat: 'building', sound: 'stone', iconSlot: 'concrete_yellow', faces: { all: 'concrete_yellow' } }
+      29: { id: 29, name: 'White Concrete', cat: 'modern', sound: 'stone', iconSlot: 'concrete_white', faces: { all: 'concrete_white' } },
+      30: { id: 30, name: 'Red Concrete', cat: 'modern', sound: 'stone', iconSlot: 'concrete_red', faces: { all: 'concrete_red' } },
+      31: { id: 31, name: 'Blue Concrete', cat: 'modern', sound: 'stone', iconSlot: 'concrete_blue', faces: { all: 'concrete_blue' } },
+      32: { id: 32, name: 'Yellow Concrete', cat: 'modern', sound: 'stone', iconSlot: 'concrete_yellow', faces: { all: 'concrete_yellow' } },
+      // Modern Metropolis Additions
+      33: { id: 33, name: 'Asphalt Road', cat: 'modern', sound: 'stone', iconSlot: 'asphalt', faces: { all: 'asphalt' } },
+      34: { id: 34, name: 'Road Line Marking', cat: 'modern', sound: 'stone', iconSlot: 'road_line', faces: { all: 'road_line' } },
+      35: { id: 35, name: 'Crosswalk', cat: 'modern', sound: 'stone', iconSlot: 'road_crosswalk', faces: { all: 'road_crosswalk' } },
+      36: { id: 36, name: 'Polished Marble', cat: 'modern', sound: 'stone', iconSlot: 'marble', faces: { all: 'marble' } },
+      37: { id: 37, name: 'Neon Cyan Light', cat: 'modern', sound: 'glass', light: true, iconSlot: 'neon_cyan', faces: { all: 'neon_cyan' } },
+      38: { id: 38, name: 'Neon Pink Light', cat: 'modern', sound: 'glass', light: true, iconSlot: 'neon_magenta', faces: { all: 'neon_magenta' } },
+      39: { id: 39, name: 'Dark Metal Panel', cat: 'modern', sound: 'stone', iconSlot: 'dark_metal', faces: { all: 'dark_metal' } },
+      40: { id: 40, name: 'Modern Teak Wood', cat: 'modern', sound: 'wood', iconSlot: 'modern_wood', faces: { all: 'modern_wood' } }
     };
 
     /* =========================================================================
@@ -1039,6 +1136,31 @@
         this.init();
         this.playTone(600, 'sine', 0.03, 0.2);
       }
+      // NEW: Item Throw, Bounce & Pickup Sounds
+      playThrow() {
+        this.init();
+        this.playNoise(0.1, 1400, 'lowpass', 0.6);
+        this.playTone(280, 'triangle', 0.08, 0.35);
+      }
+      playBounce() {
+        this.init();
+        this.playNoise(0.04, 750, 'lowpass', 0.3);
+      }
+      playPickup() {
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1250, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1800, this.ctx.currentTime + 0.11);
+        gain.gain.setValueAtTime(this.volume * 0.45, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.11);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.11);
+      }
     }
 
     const audio = new AudioController();
@@ -1047,8 +1169,8 @@
        4. EXPANSIVE 96x96 CHUNK-BASED VOXEL WORLD ENGINE
        ========================================================================= */
     const CHUNK_SIZE = 16;
-    const CHUNKS_X = 6; // 6 chunks * 16 = 96 blocks
-    const CHUNKS_Z = 6; // 6 chunks * 16 = 96 blocks
+    const CHUNKS_X = 6;
+    const CHUNKS_Z = 6;
     const WORLD_SIZE_X = CHUNKS_X * CHUNK_SIZE; // 96
     const WORLD_SIZE_Z = CHUNKS_Z * CHUNK_SIZE; // 96
     const HALF_X = Math.floor(WORLD_SIZE_X / 2); // 48
@@ -1081,9 +1203,9 @@
     class VoxelWorld {
       constructor() {
         this.blocks = new Map();
-        this.chunks = new Map(); // key: "cx,cz" => Chunk
+        this.chunks = new Map();
         this.dirtyChunks = new Set();
-        this.allMeshes = []; // cached list of meshes for raycasting
+        this.allMeshes = [];
 
         this.materialOpaque = new THREE.MeshLambertMaterial({
           map: atlasTexture,
@@ -1099,7 +1221,6 @@
           side: THREE.DoubleSide
         });
 
-        // Initialize 6x6 = 36 chunks
         for (let cx = 0; cx < CHUNKS_X; cx++) {
           for (let cz = 0; cz < CHUNKS_Z; cz++) {
             const chunk = new Chunk(cx, cz);
@@ -1127,7 +1248,6 @@
           this.blocks.set(key, id);
         }
 
-        // Mark containing chunk dirty
         const [cx, cz] = this.getChunkCoords(x, z);
         const chunk = this.chunks.get(`${cx},${cz}`);
         if (chunk) {
@@ -1135,7 +1255,6 @@
           this.dirtyChunks.add(chunk);
         }
 
-        // Check if on boundary of neighbor chunks
         const relX = (x + HALF_X) % CHUNK_SIZE;
         const relZ = (z + HALF_Z) % CHUNK_SIZE;
         if (relX === 0) this.markChunkDirty(cx - 1, cz);
@@ -1156,8 +1275,8 @@
         return this.blocks.get(this.getKey(x, y, z)) || 0;
       }
 
-      // Generate 96x96 Terrain with multiple biomes
-      generate(preset = 'wilderness') {
+      // Main Terrain Generator
+      generate(preset = 'modern_city') {
         this.blocks.clear();
         this.dirtyChunks.clear();
         this.chunks.forEach(c => {
@@ -1165,28 +1284,30 @@
           this.dirtyChunks.add(c);
         });
 
+        if (preset === 'modern_city') {
+          this.generateModernCity();
+          return;
+        }
+
         if (preset === 'flat') {
           for (let x = -HALF_X; x < HALF_X; x++) {
             for (let z = -HALF_Z; z < HALF_Z; z++) {
-              this.setBlock(x, 0, z, 22); // bedrock
-              this.setBlock(x, 1, z, 2);  // dirt
-              this.setBlock(x, 2, z, 2);  // dirt
-              this.setBlock(x, 3, z, 1);  // grass
+              this.setBlock(x, 0, z, 22);
+              this.setBlock(x, 1, z, 2);
+              this.setBlock(x, 2, z, 2);
+              this.setBlock(x, 3, z, 1);
             }
           }
           return;
         }
 
         if (preset === 'skyblock') {
-          // Grand Archipelago of Floating Sky Islands
           const islands = [
             { cx: 0, cy: 15, cz: 0, r: 11, tree: true },
             { cx: 28, cy: 19, cz: -22, r: 9, tree: true },
             { cx: -26, cy: 18, cz: 24, r: 10, tree: true },
             { cx: -30, cy: 22, cz: -28, r: 8, tree: false },
-            { cx: 32, cy: 17, cz: 26, r: 9, tree: true },
-            { cx: 0, cy: 24, cz: -36, r: 7, tree: false },
-            { cx: 0, cy: 23, cz: 36, r: 8, tree: false }
+            { cx: 32, cy: 17, cz: 26, r: 9, tree: true }
           ];
 
           islands.forEach(({ cx, cy, cz, r, tree }) => {
@@ -1196,13 +1317,9 @@
                 if (dist2d <= r) {
                   const depth = Math.floor((r - dist2d) * 1.1);
                   const topY = cy + Math.floor(Math.sin(x * 0.3) * 1.5);
-                  this.setBlock(cx + x, topY, cz + z, 1); // grass
-                  for (let d = 1; d <= 2; d++) {
-                    this.setBlock(cx + x, topY - d, cz + z, 2); // dirt
-                  }
-                  for (let d = 3; d <= depth + 4; d++) {
-                    this.setBlock(cx + x, topY - d, cz + z, 3); // stone
-                  }
+                  this.setBlock(cx + x, topY, cz + z, 1);
+                  for (let d = 1; d <= 2; d++) this.setBlock(cx + x, topY - d, cz + z, 2);
+                  for (let d = 3; d <= depth + 4; d++) this.setBlock(cx + x, topY - d, cz + z, 3);
                 }
               }
             }
@@ -1211,80 +1328,323 @@
           return;
         }
 
-        // Vast Multi-Biome Wilderness (96x96)
+        // Vast Wilderness
         for (let x = -HALF_X; x < HALF_X; x++) {
           for (let z = -HALF_Z; z < HALF_Z; z++) {
-            this.setBlock(x, 0, z, 22); // bedrock
-
-            // 1. Continental Elevation Waves
+            this.setBlock(x, 0, z, 22);
             const wave1 = Math.sin(x * 0.05) * Math.cos(z * 0.05) * 8;
             const wave2 = Math.sin(x * 0.12 + 1.2) * Math.sin(z * 0.12 + 0.8) * 4;
-            const wave3 = Math.cos(x * 0.22) * Math.sin(z * 0.22) * 1.5;
-
-            // 2. High Mountain Ridge on the North-East (+X, -Z)
             const mountainNoise = Math.max(0, (x - z) * 0.14 - 1.5);
             const peakHeight = Math.floor(mountainNoise * mountainNoise * 0.7);
 
-            let elevation = Math.floor(9 + wave1 + wave2 + wave3 + peakHeight);
+            let elevation = Math.floor(9 + wave1 + wave2 + peakHeight);
             elevation = Math.max(1, Math.min(WORLD_HEIGHT - 3, elevation));
 
             const waterLevel = 5;
-
-            // Danau / Danau Pasir Rendah
             if (elevation <= waterLevel) {
-              for (let y = 1; y <= elevation; y++) {
-                this.setBlock(x, y, z, 10); // sand bottom
-              }
-              for (let y = elevation + 1; y <= waterLevel; y++) {
-                this.setBlock(x, y, z, 23); // water
-              }
+              for (let y = 1; y <= elevation; y++) this.setBlock(x, y, z, 10);
+              for (let y = elevation + 1; y <= waterLevel; y++) this.setBlock(x, y, z, 23);
               continue;
             }
 
-            // Mountain Peaks (Snow & Ice tops)
             const isHighPeak = elevation >= 22;
-
-            // Underground Layers & Ores
             for (let y = 1; y < elevation - 2; y++) {
               const oreRand = pseudoNoise(x, y + z * 10, 42);
-              if (y <= 5 && oreRand > 0.94) {
-                this.setBlock(x, y, z, 11); // diamond
-              } else if (y <= 8 && oreRand > 0.90) {
-                this.setBlock(x, y, z, 12); // gold
-              } else if (y <= 12 && oreRand > 0.86) {
-                this.setBlock(x, y, z, 15); // emerald
-              } else if (oreRand > 0.80) {
-                this.setBlock(x, y, z, 13); // iron
-              } else if (oreRand > 0.72) {
-                this.setBlock(x, y, z, 14); // coal
-              } else {
-                this.setBlock(x, y, z, 3);  // stone
-              }
+              if (y <= 5 && oreRand > 0.94) this.setBlock(x, y, z, 11);
+              else if (y <= 8 && oreRand > 0.90) this.setBlock(x, y, z, 12);
+              else if (oreRand > 0.78) this.setBlock(x, y, z, 13);
+              else this.setBlock(x, y, z, 3);
             }
-
-            // Sub-surface dirt
             for (let y = Math.max(1, elevation - 2); y < elevation; y++) {
               this.setBlock(x, y, z, isHighPeak ? 3 : 2);
             }
+            this.setBlock(x, elevation, z, isHighPeak ? 28 : (elevation === waterLevel + 1 ? 10 : 1));
 
-            // Top surface block
-            if (isHighPeak) {
-              this.setBlock(x, elevation, z, 28); // Snow block on high mountain peaks
-            } else if (elevation === waterLevel + 1) {
-              this.setBlock(x, elevation, z, 10); // Sand beach around water
-            } else {
-              this.setBlock(x, elevation, z, 1);  // Lush Grass
-            }
-
-            // Trees & Nature Flora
             if (!isHighPeak && elevation > waterLevel + 1 && Math.abs(x) < HALF_X - 3 && Math.abs(z) < HALF_Z - 3) {
-              const plantNoise = pseudoNoise(x, z, 88);
-              if (plantNoise > 0.955) {
-                this.generateTree(x, elevation + 1, z);
-              } else if (plantNoise > 0.942) {
-                this.setBlock(x, elevation + 1, z, 26); // Jack-o'-Lantern
-              } else if (plantNoise > 0.932) {
-                this.setBlock(x, elevation + 1, z, 27); // Melon
+              if (pseudoNoise(x, z, 88) > 0.96) this.generateTree(x, elevation + 1, z);
+            }
+          }
+        }
+      }
+
+      /* ================= MODERN METROPOLIS GENERATION ================= */
+      generateModernCity() {
+        // Base ground
+        for (let x = -HALF_X; x < HALF_X; x++) {
+          for (let z = -HALF_Z; z < HALF_Z; z++) {
+            this.setBlock(x, 0, z, 22); // bedrock
+            this.setBlock(x, 1, z, 2);  // dirt
+            this.setBlock(x, 2, z, 2);  // dirt
+            this.setBlock(x, 3, z, 1);  // manicured green grass
+          }
+        }
+
+        // 1. Dual-Lane Boulevard (North-South: X from -3 to 3)
+        for (let z = -HALF_Z; z < HALF_Z; z++) {
+          for (let x = -3; x <= 3; x++) {
+            if (x === 0) {
+              const isDash = Math.abs(z % 4) < 2;
+              this.setBlock(x, 3, z, isDash ? 34 : 33); // road line or asphalt
+            } else {
+              this.setBlock(x, 3, z, 33); // asphalt
+            }
+          }
+          // Sidewalks on both sides
+          this.setBlock(-4, 3, z, 36); // marble
+          this.setBlock(-5, 3, z, 36);
+          this.setBlock(4, 3, z, 36);
+          this.setBlock(5, 3, z, 36);
+
+          // Modern Street Lamps every 12 blocks
+          if (Math.abs(z % 12) === 0 && Math.abs(z) > 10) {
+            this.buildStreetLight(-5, 4, z);
+            this.buildStreetLight(5, 4, z);
+          }
+        }
+
+        // 2. Dual-Lane Boulevard (East-West: Z from -3 to 3)
+        for (let x = -HALF_X; x < HALF_X; x++) {
+          for (let z = -3; z <= 3; z++) {
+            if (z === 0) {
+              const isDash = Math.abs(x % 4) < 2;
+              this.setBlock(x, 3, z, isDash ? 34 : 33);
+            } else {
+              this.setBlock(x, 3, z, 33);
+            }
+          }
+          this.setBlock(x, 3, -4, 36);
+          this.setBlock(x, 3, -5, 36);
+          this.setBlock(x, 3, 4, 36);
+          this.setBlock(x, 3, 5, 36);
+
+          if (Math.abs(x % 12) === 0 && Math.abs(x) > 10) {
+            this.buildStreetLight(x, 4, -5);
+            this.buildStreetLight(x, 4, 5);
+          }
+        }
+
+        // Crosswalks around central intersection
+        for (let i = -3; i <= 3; i++) {
+          this.setBlock(i, 3, 9, 35);
+          this.setBlock(i, 3, -9, 35);
+          this.setBlock(9, 3, i, 35);
+          this.setBlock(-9, 3, i, 35);
+        }
+
+        // 3. Central City Plaza & Modern Fountain
+        this.buildCentralPlaza();
+
+        // 4. Skyscraper 1: "The Horizon Tower" (White Concrete & Glass)
+        this.buildSkyscraper1(14, 3, 14, 12, 25, 12);
+
+        // 5. Skyscraper 2: "Cyber Nexus" (Dark Metal & Neon Cyan)
+        this.buildSkyscraper2(-26, 3, 14, 12, 22, 12);
+
+        // 6. Modern Luxury Villa with Swimming Pool & Sun Deck
+        this.buildModernVilla(12, 3, -34);
+
+        // 7. Modern Landscaped City Park & Reflecting Pond
+        this.buildModernPark(-34, 3, -34);
+
+        // 8. Distant Modern Townhouses
+        this.buildTownhouse(-26, 3, -12);
+        this.buildTownhouse(14, 3, -12);
+      }
+
+      buildStreetLight(x, y, z) {
+        // 3 blocks metal post
+        this.setBlock(x, y, z, 39);
+        this.setBlock(x, y + 1, z, 39);
+        this.setBlock(x, y + 2, z, 39);
+        // Overhanging arm
+        const armX = x > 0 ? x - 1 : x + 1;
+        this.setBlock(armX, y + 2, z, 39);
+        // Hanging glowing lamp
+        this.setBlock(armX, y + 1, z, 37); // neon cyan lamp
+      }
+
+      buildCentralPlaza() {
+        // Marble Plaza area
+        for (let x = -8; x <= 8; x++) {
+          for (let z = -8; z <= 8; z++) {
+            if (Math.abs(x) <= 3 || Math.abs(z) <= 3) continue; // road intersection
+            this.setBlock(x, 3, z, 36); // marble
+          }
+        }
+        // Plaza Corner Sculptures / Mini-Fountains
+        const corners = [[-7, -7], [7, -7], [-7, 7], [7, 7]];
+        corners.forEach(([cx, cz]) => {
+          this.setBlock(cx, 4, cz, 36);
+          this.setBlock(cx, 5, cz, 37); // glowing neon core
+          this.setBlock(cx, 6, cz, 23); // water spout
+        });
+      }
+
+      buildSkyscraper1(bx, by, bz, w, h, d) {
+        for (let y = by; y < by + h; y++) {
+          const isFloorDivider = (y - by) % 4 === 0;
+          for (let x = bx; x < bx + w; x++) {
+            for (let z = bz; z < bz + d; z++) {
+              const isCorner = (x === bx || x === bx + w - 1) && (z === bz || z === bz + d - 1);
+              const isWall = x === bx || x === bx + w - 1 || z === bz || z === bz + d - 1;
+              if (isWall) {
+                if (isCorner || isFloorDivider) {
+                  this.setBlock(x, y, z, 29); // white concrete
+                } else {
+                  this.setBlock(x, y, z, 8); // glass curtain wall
+                }
+              } else if (isFloorDivider) {
+                this.setBlock(x, y, z, 36); // marble floor
+                // Center ceiling light
+                if (x === bx + Math.floor(w / 2) && z === bz + Math.floor(d / 2)) {
+                  this.setBlock(x, y, z, 19); // glowstone
+                }
+              }
+            }
+          }
+        }
+        // Rooftop observation terrace & antenna
+        const topY = by + h;
+        for (let x = bx; x < bx + w; x++) {
+          for (let z = bz; z < bz + d; z++) {
+            const isEdge = x === bx || x === bx + w - 1 || z === bz || z === bz + d - 1;
+            if (isEdge) this.setBlock(x, topY, z, 8); // glass railing
+            else this.setBlock(x, topY - 1, z, 39); // dark metal roof
+          }
+        }
+        // Center Antenna Spire with Red Beacon
+        const ax = bx + Math.floor(w / 2);
+        const az = bz + Math.floor(d / 2);
+        for (let i = 0; i < 5; i++) this.setBlock(ax, topY + i, az, 39);
+        this.setBlock(ax, topY + 5, az, 38); // neon magenta beacon
+      }
+
+      buildSkyscraper2(bx, by, bz, w, h, d) {
+        for (let y = by; y < by + h; y++) {
+          const isFloorDivider = (y - by) % 5 === 0;
+          for (let x = bx; x < bx + w; x++) {
+            for (let z = bz; z < bz + d; z++) {
+              const isCorner = (x === bx || x === bx + w - 1) && (z === bz || z === bz + d - 1);
+              const isWall = x === bx || x === bx + w - 1 || z === bz || z === bz + d - 1;
+              const isNeonStrip = (x === bx + 3 || x === bx + w - 4) && (z === bz || z === bz + d - 1);
+
+              if (isWall) {
+                if (isNeonStrip) {
+                  this.setBlock(x, y, z, 37); // vertical glowing neon cyan stripe
+                } else if (isCorner || isFloorDivider) {
+                  this.setBlock(x, y, z, 39); // dark metal
+                } else {
+                  this.setBlock(x, y, z, 8); // glass
+                }
+              } else if (isFloorDivider) {
+                this.setBlock(x, y, z, 17); // obsidian floor
+              }
+            }
+          }
+        }
+        // Rooftop Helipad with Yellow 'H'
+        const topY = by + h;
+        for (let x = bx; x < bx + w; x++) {
+          for (let z = bz; z < bz + d; z++) {
+            this.setBlock(x, topY - 1, z, 33); // asphalt helipad
+          }
+        }
+        // Helipad Yellow 'H' Marking
+        const cx = bx + Math.floor(w / 2);
+        const cz = bz + Math.floor(d / 2);
+        for (let i = -2; i <= 2; i++) {
+          this.setBlock(cx - 2, topY - 1, cz + i, 32); // yellow concrete
+          this.setBlock(cx + 2, topY - 1, cz + i, 32);
+        }
+        this.setBlock(cx - 1, topY - 1, cz, 32);
+        this.setBlock(cx, topY - 1, cz, 32);
+        this.setBlock(cx + 1, topY - 1, cz, 32);
+      }
+
+      buildModernVilla(bx, by, bz) {
+        // Luxury 2-Story Minimalist Villa (18x16)
+        const w = 18, d = 14;
+        for (let y = by; y < by + 7; y++) {
+          const isSecondFloor = y >= by + 4;
+          for (let x = bx; x < bx + w; x++) {
+            for (let z = bz; z < bz + d; z++) {
+              const isWall = x === bx || x === bx + w - 1 || z === bz || z === bz + d - 1;
+              if (y === by) {
+                this.setBlock(x, y, z, 40); // modern teak wood floor
+              } else if (y === by + 3) {
+                this.setBlock(x, y, z, 36); // marble mid-floor
+              } else if (y === by + 6) {
+                this.setBlock(x, y, z, 29); // white concrete flat roof
+              } else if (isWall) {
+                if (x === bx || z === bz) {
+                  this.setBlock(x, y, z, 29); // white concrete structural walls
+                } else {
+                  this.setBlock(x, y, z, 8);  // floor-to-ceiling glass
+                }
+              }
+            }
+          }
+        }
+
+        // Outdoor Luxury Swimming Pool (10x6)
+        const px = bx + 2, pz = bz + d + 2;
+        const pw = 12, pd = 6;
+        for (let x = px - 1; x <= px + pw; x++) {
+          for (let z = pz - 1; z <= pz + pd; z++) {
+            const isRim = x === px - 1 || x === px + pw || z === pz - 1 || z === pz + pd;
+            if (isRim) {
+              this.setBlock(x, by, z, 36); // white marble pool rim
+            } else {
+              this.setBlock(x, by - 1, z, 37); // underwater cyan lights
+              this.setBlock(x, by, z, 23);     // sparkling water
+            }
+          }
+        }
+        // Sun Lounger Deck (Wood)
+        for (let x = px - 1; x <= px + pw; x++) {
+          this.setBlock(x, by, pz + pd + 1, 40);
+          this.setBlock(x, by, pz + pd + 2, 40);
+        }
+      }
+
+      buildModernPark(bx, by, bz) {
+        // Modern landscaped plaza with reflecting pond
+        for (let x = bx; x < bx + 18; x++) {
+          for (let z = bz; z < bz + 18; z++) {
+            const isPond = x >= bx + 4 && x <= bx + 13 && z >= bz + 4 && z <= bz + 13;
+            if (isPond) {
+              const isEdge = x === bx + 4 || x === bx + 13 || z === bz + 4 || z === bz + 13;
+              if (isEdge) {
+                this.setBlock(x, by, z, 36); // marble edge
+              } else {
+                this.setBlock(x, by, z, 23); // water
+                if (x === bx + 8 && z === bz + 8) this.setBlock(x, by - 1, z, 37); // center light
+              }
+            } else {
+              const isPathway = (x - bx === z - bz) || (x - bx === 17 - (z - bz));
+              if (isPathway) {
+                this.setBlock(x, by, z, 36); // marble walking path
+              }
+            }
+          }
+        }
+        // Sculpted modern trees
+        this.generateTree(bx + 2, by + 1, bz + 2);
+        this.generateTree(bx + 15, by + 1, bz + 2);
+        this.generateTree(bx + 2, by + 1, bz + 15);
+        this.generateTree(bx + 15, by + 1, bz + 15);
+      }
+
+      buildTownhouse(bx, by, bz) {
+        for (let y = by; y < by + 5; y++) {
+          for (let x = bx; x < bx + 8; x++) {
+            for (let z = bz; z < bz + 8; z++) {
+              const isWall = x === bx || x === bx + 7 || z === bz || z === bz + 7;
+              if (y === by) this.setBlock(x, y, z, 40);
+              else if (y === by + 4) this.setBlock(x, y, z, 29);
+              else if (isWall) {
+                if ((x === bx + 3 || x === bx + 4) && (z === bz + 7)) this.setBlock(x, y, z, 8); // window
+                else this.setBlock(x, y, z, 9); // modern brick
               }
             }
           }
@@ -1292,38 +1652,29 @@
       }
 
       generateTree(baseX, baseY, baseZ) {
-        const height = 4 + Math.floor(pseudoNoise(baseX, baseZ, 55) * 3);
-        for (let y = 0; y < height; y++) {
-          this.setBlock(baseX, baseY + y, baseZ, 6); // oak log
-        }
+        const height = 4;
+        for (let y = 0; y < height; y++) this.setBlock(baseX, baseY + y, baseZ, 6);
         const leafYStart = baseY + height - 2;
         for (let ly = leafYStart; ly <= baseY + height + 1; ly++) {
           const r = ly === baseY + height + 1 ? 1 : 2;
           for (let lx = -r; lx <= r; lx++) {
             for (let lz = -r; lz <= r; lz++) {
-              if (Math.abs(lx) === r && Math.abs(lz) === r && (ly === baseY + height + 1 || Math.random() > 0.4)) continue;
-              const px = baseX + lx;
-              const py = ly;
-              const pz = baseZ + lz;
-              if (this.getBlock(px, py, pz) === 0) {
-                this.setBlock(px, py, pz, 7); // leaves
-              }
+              if (Math.abs(lx) === r && Math.abs(lz) === r) continue;
+              const px = baseX + lx, py = ly, pz = baseZ + lz;
+              if (this.getBlock(px, py, pz) === 0) this.setBlock(px, py, pz, 7);
             }
           }
         }
       }
 
-      // Rebuild only the chunks that have been modified or need updating
       rebuildDirtyChunks(scene) {
         if (this.dirtyChunks.size === 0) return;
-
         this.dirtyChunks.forEach(chunk => {
           this.buildChunkMesh(chunk, scene);
           chunk.isDirty = false;
         });
         this.dirtyChunks.clear();
 
-        // Update cached mesh list for fast raycasting
         this.allMeshes = [];
         this.chunks.forEach(chunk => {
           if (chunk.meshOpaque) this.allMeshes.push(chunk.meshOpaque);
@@ -1335,13 +1686,8 @@
         if (chunk.meshOpaque) scene.remove(chunk.meshOpaque);
         if (chunk.meshTransparent) scene.remove(chunk.meshTransparent);
 
-        const opPos = [];
-        const opNorm = [];
-        const opUV = [];
-
-        const trPos = [];
-        const trNorm = [];
-        const trUV = [];
+        const opPos = [], opNorm = [], opUV = [];
+        const trPos = [], trNorm = [], trUV = [];
 
         for (let x = chunk.minX; x <= chunk.maxX; x++) {
           for (let z = chunk.minZ; z <= chunk.maxZ; z++) {
@@ -1440,7 +1786,231 @@
     }
 
     /* =========================================================================
-       5. PARTICLE EXPLOSION SYSTEM
+       5. THROWN ITEM SYSTEM (Realistic 3D Ballistic Toss & Pickup Physics)
+       ========================================================================= */
+    function createVoxelBoxGeometry(blockId, size = 0.35) {
+      const geo = new THREE.BoxGeometry(size, size, size);
+      const block = BLOCKS[blockId] || BLOCKS[1];
+      const uvAttr = geo.attributes.uv;
+
+      // Face order in Three.js BoxGeometry:
+      // Face 0: +X (Right), Face 1: -X (Left), Face 2: +Y (Top), Face 3: -Y (Bottom), Face 4: +Z (Front), Face 5: -Z (Back)
+      const faceSlotNames = [
+        block.faces.all || block.faces.side || 'stone',                      // +X
+        block.faces.all || block.faces.side || 'stone',                      // -X
+        block.faces.all || block.faces.top || 'grass_top',                   // +Y (Top)
+        block.faces.all || block.faces.bottom || 'dirt',                     // -Y (Bottom)
+        block.faces.all || block.faces.front || block.faces.side || 'stone', // +Z (Front)
+        block.faces.all || block.faces.side || 'stone'                       // -Z (Back)
+      ];
+
+      for (let f = 0; f < 6; f++) {
+        const slotName = faceSlotNames[f] || 'stone';
+        const slot = ATLAS_SLOTS[slotName] || ATLAS_SLOTS.stone;
+        const { u0, v0, u1, v1 } = getTileUV(slot);
+
+        const vIdx = f * 4;
+        uvAttr.setXY(vIdx + 0, u0, v1);
+        uvAttr.setXY(vIdx + 1, u1, v1);
+        uvAttr.setXY(vIdx + 2, u0, v0);
+        uvAttr.setXY(vIdx + 3, u1, v0);
+      }
+      uvAttr.needsUpdate = true;
+      return geo;
+    }
+
+    class ThrownItem {
+      constructor(scene, blockId, startPos, direction, power = 1.0, throwMode = 'drop') {
+        this.scene = scene;
+        this.blockId = blockId;
+        this.throwMode = throwMode; // 'drop' (Minecraft item floating/pickup) or 'place' (impact building)
+        this.pos = startPos.clone();
+        
+        const speed = 14 * power;
+        this.vel = direction.clone().multiplyScalar(speed);
+        this.vel.y += 3.2; // toss arc
+
+        this.spin = new THREE.Vector3(
+          (Math.random() - 0.5) * 8,
+          (Math.random() - 0.5) * 8,
+          (Math.random() - 0.5) * 8
+        );
+
+        this.age = 0;
+        this.settled = false;
+        this.settledY = 0;
+        this.isTNT = blockId === 18;
+        this.fuseTime = 2.4;
+
+        // Mini 3D Voxel Mesh with exact block texture mapping!
+        const b = BLOCKS[blockId] || BLOCKS[1];
+        const geo = createVoxelBoxGeometry(blockId, 0.38);
+        const mat = new THREE.MeshLambertMaterial({
+          map: atlasTexture,
+          transparent: !!(b && b.transparent),
+          alphaTest: 0.1
+        });
+
+        // Glowing effect for lights like Neon Cyan and Glowstone
+        if (b && b.light) {
+          mat.emissive = new THREE.Color(b.id === 37 ? 0x00ffff : (b.id === 38 ? 0xff00aa : 0xffcc44));
+          mat.emissiveIntensity = 0.6;
+        }
+
+        this.mesh = new THREE.Mesh(geo, mat);
+        this.mesh.castShadow = true;
+        this.mesh.position.copy(this.pos);
+        scene.add(this.mesh);
+      }
+
+      update(dt, world, audio, particles, playerPos, onPickup) {
+        this.age += dt;
+
+        if (this.isTNT) {
+          this.fuseTime -= dt;
+          const flash = Math.sin(this.age * 18) > 0;
+          this.mesh.material.color.setHex(flash ? 0xffffff : 0xff2222);
+          if (this.fuseTime <= 0) {
+            this.explode(world, audio, particles);
+            return false;
+          }
+        }
+
+        if (!this.settled) {
+          this.vel.y -= 22 * dt;
+          this.vel.x *= (1 - 0.5 * dt);
+          this.vel.z *= (1 - 0.5 * dt);
+
+          this.mesh.rotation.x += this.spin.x * dt;
+          this.mesh.rotation.y += this.spin.y * dt;
+          this.mesh.rotation.z += this.spin.z * dt;
+
+          this.pos.x += this.vel.x * dt;
+          if (this.checkCollision(this.pos.x, this.pos.y, this.pos.z, world)) {
+            if (this.throwMode === 'place' && !this.isTNT) {
+              return this.placeIntoWorld(world, audio, particles);
+            }
+            this.pos.x -= this.vel.x * dt;
+            this.vel.x *= -0.5;
+          }
+
+          this.pos.z += this.vel.z * dt;
+          if (this.checkCollision(this.pos.x, this.pos.y, this.pos.z, world)) {
+            if (this.throwMode === 'place' && !this.isTNT) {
+              return this.placeIntoWorld(world, audio, particles);
+            }
+            this.pos.z -= this.vel.z * dt;
+            this.vel.z *= -0.5;
+          }
+
+          this.pos.y += this.vel.y * dt;
+          if (this.checkCollision(this.pos.x, this.pos.y, this.pos.z, world)) {
+            if (this.throwMode === 'place' && !this.isTNT) {
+              return this.placeIntoWorld(world, audio, particles);
+            }
+            this.pos.y -= this.vel.y * dt;
+            if (this.vel.y < -1.5) audio.playBounce();
+            this.vel.y *= -0.4;
+            this.vel.x *= 0.6;
+            this.vel.z *= 0.6;
+
+            if (Math.abs(this.vel.y) < 0.4 && Math.hypot(this.vel.x, this.vel.z) < 0.4) {
+              this.settled = true;
+              this.vel.set(0, 0, 0);
+              this.settledY = Math.floor(this.pos.y) + 0.35;
+            }
+          }
+
+          this.mesh.position.copy(this.pos);
+        } else {
+          // Settled floating animation: gentle bob & smooth spin
+          this.mesh.rotation.y += 1.8 * dt;
+          this.mesh.position.y = this.settledY + Math.sin(this.age * 3.5) * 0.06;
+
+          // Pickup detection (after 0.8s)
+          if (this.age > 0.8 && !this.isTNT) {
+            const dist = this.pos.distanceTo(playerPos);
+            if (dist < 1.6) {
+              this.pos.lerp(playerPos, 8 * dt);
+              this.mesh.position.copy(this.pos);
+
+              if (dist < 0.5) {
+                audio.playPickup();
+                onPickup(this.blockId);
+                this.destroy();
+                return false;
+              }
+            }
+          }
+        }
+
+        if (this.age > 120) {
+          this.destroy();
+          return false;
+        }
+
+        return true;
+      }
+
+      placeIntoWorld(world, audio, particles) {
+        let bx = Math.floor(this.pos.x);
+        let by = Math.floor(this.pos.y);
+        let bz = Math.floor(this.pos.z);
+        if (world.getBlock(bx, by, bz) !== 0) {
+          by = by + 1;
+        }
+        world.setBlock(bx, by, bz, this.blockId);
+        world.rebuildDirtyChunks(this.scene);
+
+        const b = BLOCKS[this.blockId];
+        audio.playPlace(b ? b.sound : 'stone');
+        particles.spawnDebris(bx, by, bz, 0xffffff, 8);
+        this.destroy();
+        return false;
+      }
+
+      checkCollision(x, y, z, world) {
+        const bx = Math.floor(x);
+        const by = Math.floor(y - 0.1);
+        const bz = Math.floor(z);
+        const blockId = world.getBlock(bx, by, bz);
+        if (blockId !== 0) {
+          const b = BLOCKS[blockId];
+          if (b && !b.isFluid) return true;
+        }
+        return false;
+      }
+
+      explode(world, audio, particles) {
+        audio.playExplosion();
+        const [ex, ey, ez] = [Math.floor(this.pos.x), Math.floor(this.pos.y), Math.floor(this.pos.z)];
+        particles.spawnTNTExplosion(ex, ey, ez);
+
+        const radius = 3;
+        for (let dx = -radius; dx <= radius; dx++) {
+          for (let dy = -radius; dy <= radius; dy++) {
+            for (let dz = -radius; dz <= radius; dz++) {
+              if (Math.hypot(dx, dy, dz) <= radius + Math.random() * 0.7) {
+                const bx = ex + dx, by = ey + dy, bz = ez + dz;
+                const bId = world.getBlock(bx, by, bz);
+                if (bId !== 0 && bId !== 22) world.setBlock(bx, by, bz, 0);
+              }
+            }
+          }
+        }
+        world.rebuildDirtyChunks(this.scene);
+        this.destroy();
+      }
+
+      destroy() {
+        this.scene.remove(this.mesh);
+        this.mesh.geometry.dispose();
+        this.mesh.material.dispose();
+      }
+    }
+
+    /* =========================================================================
+       6. PARTICLE EXPLOSION SYSTEM
        ========================================================================= */
     class ParticleSystem {
       constructor(scene) {
@@ -1506,7 +2076,7 @@
     }
 
     /* =========================================================================
-       6. GAME CONTROLLER
+       7. MAIN GAME CONTROLLER
        ========================================================================= */
     class MinecraftGame {
       constructor() {
@@ -1514,7 +2084,6 @@
         this.handCanvas = document.getElementById('hand-canvas');
         this.handCtx = this.handCanvas.getContext('2d');
 
-        // Three.js Scene & Renderer
         this.scene = new THREE.Scene();
         this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, powerPreference: 'high-performance' });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1522,18 +2091,17 @@
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        // Camera with Extended Far Plane (400 blocks for vast map)
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 400);
 
-        // Voxel World & Particles
         this.world = new VoxelWorld();
         this.particles = new ParticleSystem(this.scene);
+        this.thrownItems = [];
+        this.throwMode = 'drop'; // 'drop' (Minecraft item floating/pickup) or 'place' (impact building)
 
-        // Ambient & Directional Lighting
-        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.52);
         this.scene.add(this.ambientLight);
 
-        this.dirLight = new THREE.DirectionalLight(0xfff6dd, 1.25);
+        this.dirLight = new THREE.DirectionalLight(0xfff6dd, 1.3);
         this.dirLight.castShadow = true;
         this.dirLight.shadow.mapSize.width = 1024;
         this.dirLight.shadow.mapSize.height = 1024;
@@ -1546,22 +2114,19 @@
         this.dirLight.shadow.camera.bottom = -d;
         this.scene.add(this.dirLight);
 
-        // Exponential Fog (tuned for vast landscape)
-        this.fog = new THREE.FogExp2(0x87ceeb, 0.010); // density 0.010 allows seeing ~100 blocks
+        this.fog = new THREE.FogExp2(0x87ceeb, 0.010);
         this.scene.fog = this.fog;
         this.skyTime = 0.25;
         this.isAutoTime = true;
 
         this.createSunMoon();
 
-        // Selection Box
         this.selectionBox = new THREE.BoxHelper(new THREE.Mesh(new THREE.BoxGeometry(1.004, 1.004, 1.004)), 0x000000);
         this.selectionBox.visible = false;
         this.scene.add(this.selectionBox);
 
-        // Player State
         this.player = {
-          pos: new THREE.Vector3(0, 18, 0),
+          pos: new THREE.Vector3(0, 8, 8),
           vel: new THREE.Vector3(),
           rot: new THREE.Euler(0, 0, 0, 'YXZ'),
           onGround: false,
@@ -1576,7 +2141,8 @@
         this.keys = {};
         this.isPointerLocked = false;
         this.sensitivity = 1.0;
-        this.hotbarSlots = [1, 2, 3, 4, 5, 6, 7, 8, 18];
+        // Default modern hotbar: Asphalt, Marble, White Concrete, Glass, Neon Cyan, Modern Wood, TNT, Glowstone, Grass
+        this.hotbarSlots = [33, 36, 29, 8, 37, 40, 18, 19, 1];
         this.activeSlotIndex = 0;
         this.targetedBlock = null;
 
@@ -1588,8 +2154,8 @@
         this.raycaster = new THREE.Raycaster();
         this.raycaster.far = 6.5;
 
-        // Init World & Events
-        this.initWorld('wilderness');
+        // Default to Modern Metropolis!
+        this.initWorld('modern_city');
         this.initUI();
         this.bindEvents();
         this.checkOrientation();
@@ -1601,30 +2167,35 @@
       }
 
       createSunMoon() {
-        const sunGeo = new THREE.PlaneGeometry(12, 12);
+        const sunGeo = new THREE.PlaneGeometry(14, 14);
         const sunMat = new THREE.MeshBasicMaterial({ color: 0xfff3a8, side: THREE.DoubleSide });
         this.sunMesh = new THREE.Mesh(sunGeo, sunMat);
         this.scene.add(this.sunMesh);
 
-        const moonGeo = new THREE.PlaneGeometry(9, 9);
+        const moonGeo = new THREE.PlaneGeometry(10, 10);
         const moonMat = new THREE.MeshBasicMaterial({ color: 0xe6e6fa, side: THREE.DoubleSide });
         this.moonMesh = new THREE.Mesh(moonGeo, moonMat);
         this.scene.add(this.moonMesh);
       }
 
-      initWorld(preset = 'wilderness') {
+      initWorld(preset = 'modern_city') {
         this.world.generate(preset);
         this.world.rebuildDirtyChunks(this.scene);
 
-        // Find spawn height at center (0, 0)
-        let spawnY = 16;
-        for (let y = WORLD_HEIGHT; y >= 0; y--) {
-          if (this.world.getBlock(0, y, 0) !== 0) {
-            spawnY = y + 2.5;
-            break;
+        // Set spawn position
+        if (preset === 'modern_city') {
+          this.player.pos.set(0.5, 6, 8.5);
+          this.player.rot.set(0, 0, 0); // facing North towards skyscrapers & fountain
+        } else {
+          let spawnY = 16;
+          for (let y = WORLD_HEIGHT; y >= 0; y--) {
+            if (this.world.getBlock(0, y, 0) !== 0) {
+              spawnY = y + 2.5;
+              break;
+            }
           }
+          this.player.pos.set(0.5, spawnY, 0.5);
         }
-        this.player.pos.set(0.5, spawnY, 0.5);
       }
 
       initUI() {
@@ -1666,10 +2237,14 @@
           slotEl.appendChild(canvasIcon);
           slotEl.appendChild(numSpan);
 
-          slotEl.addEventListener('click', () => {
+          const selectThisSlot = (e) => {
+            if (e) e.stopPropagation();
             this.setActiveSlot(idx);
             audio.playClick();
-          });
+          };
+
+          slotEl.addEventListener('click', selectThisSlot);
+          slotEl.addEventListener('pointerdown', selectThisSlot);
 
           container.appendChild(slotEl);
         });
@@ -1693,8 +2268,7 @@
 
         const activeBlock = BLOCKS[this.hotbarSlots[this.activeSlotIndex]];
         if (activeBlock) {
-          const tip = document.getElementById('active-item-tooltip');
-          tip.textContent = activeBlock.name;
+          document.getElementById('active-item-tooltip').textContent = activeBlock.name;
           document.getElementById('active-block-name').textContent = activeBlock.name;
         }
         this.renderHand(0);
@@ -1732,6 +2306,7 @@
           itemEl.addEventListener('click', () => {
             this.hotbarSlots[this.activeSlotIndex] = block.id;
             this.renderHotbar();
+            this.renderHand(0);
             audio.playClick();
             this.showToast(`Equipped: ${block.name}`);
           });
@@ -1771,7 +2346,7 @@
         });
       }
 
-      showToast(msg, icon = '⛏️') {
+      showToast(msg, icon = '✨') {
         const toast = document.getElementById('toast');
         document.getElementById('toast-msg').textContent = msg;
         document.getElementById('toast-icon').textContent = icon;
@@ -1785,7 +2360,6 @@
         }, 2200);
       }
 
-      /* ================= MOBILE / HORIZONTAL ORIENTATION ================= */
       checkOrientation() {
         const isPortrait = window.innerHeight > window.innerWidth && window.innerWidth < 800;
         const prompt = document.getElementById('rotate-prompt');
@@ -1807,12 +2381,9 @@
           if (screen.orientation && screen.orientation.lock) {
             screen.orientation.lock('landscape').catch(() => {});
           }
-        } catch (e) {
-          console.log('Orientation lock not supported:', e);
-        }
+        } catch (e) {}
       }
 
-      /* ================= EVENT BINDINGS ================= */
       bindEvents() {
         window.addEventListener('resize', () => {
           this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -1855,7 +2426,6 @@
           startScreen.classList.add('opacity-0', 'pointer-events-none');
           setTimeout(() => startScreen.classList.add('hidden'), 300);
 
-          // On mobile, also request fullscreen landscape
           if (window.innerWidth < 1024) {
             this.requestFullscreenLandscape();
           }
@@ -1900,6 +2470,12 @@
         window.addEventListener('keydown', (e) => {
           this.keys[e.code] = true;
 
+          // NEW: Key 'Q' throws active block!
+          if (e.code === 'KeyQ') {
+            const isSuper = e.ctrlKey || e.shiftKey;
+            this.throwCurrentBlock(isSuper ? 2.0 : 1.0);
+          }
+
           if (e.code === 'KeyF' && (this.isPointerLocked || window.innerWidth < 1024)) {
             this.player.isFlying = !this.player.isFlying;
             this.player.vel.set(0, 0, 0);
@@ -1919,8 +2495,15 @@
             }
           }
 
-          if (e.code.startsWith('Digit')) {
-            const num = parseInt(e.code.replace('Digit', ''));
+          // Toggle Throw Mode with 'T'
+          if (e.code === 'KeyT') {
+            this.toggleThrowMode();
+          }
+
+          // Support top-row Digits, Numpad, and e.key ('1' to '9')
+          const digitMatch = e.code.match(/^(?:Digit|Numpad)([1-9])$/) || (e.key >= '1' && e.key <= '9' ? [null, e.key] : null);
+          if (digitMatch) {
+            const num = parseInt(digitMatch[1], 10);
             if (num >= 1 && num <= 9) {
               this.setActiveSlot(num - 1);
               audio.playClick();
@@ -1955,6 +2538,14 @@
         this.canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
         // Header controls
+        const btnThrowMode = document.getElementById('btn-toggle-throw-mode');
+        if (btnThrowMode) {
+          btnThrowMode.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleThrowMode();
+          });
+        }
+
         document.getElementById('btn-time-day').addEventListener('click', () => this.setTimePreset(0.25));
         document.getElementById('btn-time-sunset').addEventListener('click', () => this.setTimePreset(0.5));
         document.getElementById('btn-time-night').addEventListener('click', () => this.setTimePreset(0.75));
@@ -1970,7 +2561,7 @@
           this.initWorld(preset);
           document.getElementById('preset-select').value = preset;
           document.getElementById('modal-preset-select').value = preset;
-          this.showToast(`Dunia 96x96 diubah ke ${preset}`);
+          this.showToast(`Dunia diubah ke ${preset}`);
         };
 
         document.getElementById('preset-select').addEventListener('change', (e) => handlePresetChange(e.target.value));
@@ -2045,12 +2636,12 @@
           if (confirm('Reset dunia ke kondisi awal?')) {
             const preset = document.getElementById('preset-select').value;
             this.initWorld(preset);
-            this.showToast('Dunia 96x96 telah di-reset!');
+            this.showToast('Dunia telah di-reset!');
           }
         });
       }
 
-      /* ================= TOUCH CONTROLS (OPTIMIZED FOR HORIZONTAL MOBILE) ================= */
+      /* ================= TOUCH CONTROLS ================= */
       setupMobileControls() {
         const joystickZone = document.getElementById('touch-joystick-zone');
         const joystickThumb = document.getElementById('touch-joystick-thumb');
@@ -2105,7 +2696,7 @@
 
         window.addEventListener('touchend', handleEnd);
 
-        // Touch Look Area on the screen right half
+        // Touch Look Area
         let lastTouchLook = null;
         this.canvas.addEventListener('touchstart', (e) => {
           audio.init();
@@ -2165,6 +2756,8 @@
         bindButtonHold('btn-touch-up', 'Space');
         bindButtonHold('btn-touch-down', 'ShiftLeft');
 
+        // NEW: Mobile Touch Throw Button!
+        document.getElementById('btn-touch-throw').addEventListener('click', () => this.throwCurrentBlock());
         document.getElementById('btn-touch-break').addEventListener('click', () => this.mineBlock());
         document.getElementById('btn-touch-place').addEventListener('click', () => this.placeBlock());
       }
@@ -2172,6 +2765,43 @@
       triggerHandSwing() {
         this.isSwinging = true;
         this.swingTime = 0;
+      }
+
+      /* ================= THROW BLOCK (Q / TOUCH) ================= */
+      toggleThrowMode() {
+        this.throwMode = this.throwMode === 'drop' ? 'place' : 'drop';
+        const label = document.getElementById('throw-mode-label');
+        if (label) {
+          label.textContent = this.throwMode === 'drop' ? 'DROP (MINECRAFT)' : 'TEMBAK PASANG (IMPACT)';
+          label.className = this.throwMode === 'drop' ? 'text-amber-200 underline' : 'text-emerald-300 underline font-bold';
+        }
+        audio.playClick();
+        this.showToast(
+          this.throwMode === 'drop'
+            ? 'Mode: Mengambang & Berputar (Standar Minecraft)'
+            : 'Mode: Tembak Pasang Balok (Impact)',
+          '🎯'
+        );
+      }
+
+      throwCurrentBlock(power = 1.0) {
+        const selectedId = this.hotbarSlots[this.activeSlotIndex];
+        const block = BLOCKS[selectedId];
+        if (!block) return;
+
+        this.triggerHandSwing();
+        audio.playThrow();
+
+        const dir = new THREE.Vector3();
+        this.camera.getWorldDirection(dir);
+
+        const startPos = this.player.pos.clone().addScaledVector(dir, 0.75);
+        startPos.y -= 0.2;
+
+        const thrown = new ThrownItem(this.scene, selectedId, startPos, dir, power, this.throwMode);
+        this.thrownItems.push(thrown);
+
+        this.showToast(`Melempar: ${block.name}`, '🎯');
       }
 
       /* ================= BLOCK INTERACTIONS ================= */
@@ -2291,9 +2921,7 @@
               for (let dy = -radius; dy <= radius; dy++) {
                 for (let dz = -radius; dz <= radius; dz++) {
                   if (Math.hypot(dx, dy, dz) <= radius + Math.random() * 0.8) {
-                    const bx = tnt.x + dx;
-                    const by = tnt.y + dy;
-                    const bz = tnt.z + dz;
+                    const bx = tnt.x + dx, by = tnt.y + dy, bz = tnt.z + dz;
                     const bId = this.world.getBlock(bx, by, bz);
                     if (bId !== 0 && bId !== 22) {
                       this.world.setBlock(bx, by, bz, 0);
@@ -2330,13 +2958,11 @@
         this.handCtx.translate(220, 240 + walkBob);
         this.handCtx.rotate((swingAngle - 20) * (Math.PI / 180));
 
-        // Arm
         this.handCtx.fillStyle = '#b88157';
         this.handCtx.fillRect(-24, 0, 48, 140);
         this.handCtx.fillStyle = '#0284c7';
         this.handCtx.fillRect(-26, 40, 52, 100);
 
-        // Held Block
         const selectedId = this.hotbarSlots[this.activeSlotIndex];
         const block = BLOCKS[selectedId];
         if (block) {
@@ -2490,12 +3116,11 @@
           this.player.onGround = false;
         }
 
-        // Void protection
         if (p.y < -15) {
-          p.set(0.5, 20, 0.5);
+          p.set(0.5, 10, 8.5);
           v.set(0, 0, 0);
           this.player.isFlying = true;
-          this.showToast('Kembali ke Spawn!', '✨');
+          this.showToast('Kembali ke Pusat Kota!', '✨');
         }
       }
 
@@ -2561,39 +3186,40 @@
         else if (normDeg >= 225 && normDeg < 315) facing = 'Timur (+X)';
         document.getElementById('facing-display').textContent = facing;
 
-        // Biome estimation based on coordinates
-        let biome = 'Plains';
-        if (p.y > 21) biome = 'Snowy Peaks';
-        else if (p.y <= 6) biome = 'Lake Shore';
-        else if (p.x > 15 && p.z > 15) biome = 'Oak Forest';
+        let biome = 'Central Boulevard';
+        if (p.x > 10 && p.z > 10) biome = 'Horizon Tower Plaza';
+        else if (p.x < -10 && p.z > 10) biome = 'Cyber Nexus';
+        else if (p.x > 10 && p.z < -10) biome = 'Modern Villa Pool';
+        else if (p.x < -10 && p.z < -10) biome = 'City Park & Pond';
+        else if (Math.abs(p.x) <= 10 && Math.abs(p.z) <= 10) biome = 'Central Grand Plaza';
         document.getElementById('biome-display').textContent = biome;
       }
 
       saveWorld() {
         const data = {
-          version: '2.0',
+          version: '3.0',
           timestamp: Date.now(),
           preset: document.getElementById('preset-select').value,
           blocks: Array.from(this.world.blocks.entries())
         };
-        localStorage.setItem('spinocraft_world_save_v2', JSON.stringify(data));
-        this.showToast('Dunia 96x96 tersimpan di browser!', '💾');
+        localStorage.setItem('spinocraft_world_save_v3', JSON.stringify(data));
+        this.showToast('Dunia modern berhasil disimpan!', '💾');
       }
 
       exportWorld() {
         const data = {
-          version: '2.0',
-          generator: 'Spinocraft 3D (96x96)',
+          version: '3.0',
+          generator: 'Spinocraft 3D Modern City',
           blocks: Array.from(this.world.blocks.entries())
         };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `spinocraft-build-96x96-${Date.now()}.json`;
+        a.download = `spinocraft-modern-${Date.now()}.json`;
         a.click();
         URL.revokeObjectURL(url);
-        this.showToast('File JSON dunia 96x96 diekspor!', '📤');
+        this.showToast('File JSON dunia modern diekspor!', '📤');
       }
 
       importWorld(e) {
@@ -2637,11 +3263,22 @@
         this.updatePlayer(dt);
         this.updateRaycast();
 
+        // Update Thrown Items Physics & Pickup
+        for (let i = this.thrownItems.length - 1; i >= 0; i--) {
+          const item = this.thrownItems[i];
+          const alive = item.update(dt, this.world, audio, this.particles, this.player.pos, (pickedId) => {
+            const b = BLOCKS[pickedId];
+            this.showToast(`+1 ${b ? b.name : 'Blok'} Diambil!`, '✨');
+          });
+          if (!alive) {
+            this.thrownItems.splice(i, 1);
+          }
+        }
+
         this.particles.update(dt);
         this.updateTNTs(dt);
         this.renderHand(dt);
 
-        // Rebuild any dirty chunk mesh
         this.world.rebuildDirtyChunks(this.scene);
 
         this.renderer.render(this.scene, this.camera);
