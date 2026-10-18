@@ -302,6 +302,7 @@
       <span class="f3-line">Light: <span id="f3-light">15 (15 sky, 0 block)</span></span>
       <span class="f3-line">Targeted Block: <strong id="f3-target" class="text-yellow-300">minecraft:asphalt_road</strong></span>
       <span class="f3-line">Throw Mode: <strong id="f3-throw-mode" class="text-amber-300">DROP (Minecraft Entity)</strong></span>
+      <span class="f3-line">Perspective: <strong id="f3-cam" class="text-emerald-300">Third-Person (Back) [F5]</strong></span>
     </div>
 
     <!-- Right Debug Column -->
@@ -331,6 +332,11 @@
     <!-- Quick Device Controls Switcher (HP / PC mode toggle) -->
     <button id="btn-toggle-input-mode" title="Ganti Mode Kontrol: HP (Sentuh) / PC (Keyboard & Mouse)" class="mc-btn w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-sm shadow-md">
       <span id="input-mode-icon">📱</span>
+    </button>
+
+    <!-- Camera Perspective Switcher (F5) -->
+    <button id="btn-toggle-camera" title="Ganti Perspektif Kamera [F5] (Orang Ketiga / POV Karakter)" class="mc-btn w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-sm shadow-md">
+      <span id="camera-icon">📷</span>
     </button>
 
     <!-- Day / Night Cycle Button -->
@@ -394,6 +400,7 @@
     <div><span class="text-yellow-400 font-bold">T</span> : Toggle Mode Lempar</div>
     <div><span class="text-yellow-400 font-bold">E</span> : Creative Inventory</div>
     <div><span class="text-yellow-400 font-bold">F3</span> : Debug Screen (Info Lengkap)</div>
+    <div><span class="text-yellow-400 font-bold">F5</span> : Ganti Kamera (Orang Ke-3 / POV)</div>
     <div><span class="text-yellow-400 font-bold">F1</span> : Toggle Tampilan HUD</div>
     <div><span class="text-yellow-400 font-bold">1 - 9 / Scroll</span> : Pilih Hotbar</div>
   </div>
@@ -2201,6 +2208,8 @@
         this.manualInputMode = null; // null = auto detect, 'touch' = mobile, 'pc' = keyboard/mouse
         this.isF3Active = false;
         this.isHUDVisible = true;
+        this.cameraMode = 'third_back'; // Default: Third-Person Behind (Steve visible!), 'third_front', or 'first'
+        this.walkPhase = 0;
         // Default modern hotbar: Asphalt, Marble, White Concrete, Glass, Neon Cyan, Modern Wood, TNT, Glowstone, Grass
         this.hotbarSlots = [33, 36, 29, 8, 37, 40, 18, 19, 1];
         this.activeSlotIndex = 0;
@@ -2216,6 +2225,8 @@
 
         // Default to Modern Metropolis!
         this.initWorld('modern_city');
+        this.buildPlayerModel();
+        this.updateHeldItemMesh();
         this.initUI();
         this.bindEvents();
         this.checkOrientation();
@@ -2336,6 +2347,7 @@
           if (abName) abName.textContent = activeBlock.name;
         }
         this.renderHand(0);
+        this.updateHeldItemMesh();
       }
 
       renderInventoryCatalog(category = 'all', searchQuery = '') {
@@ -2552,6 +2564,13 @@
             return;
           }
 
+          // Java Edition F5 Camera Perspective Toggle
+          if (e.code === 'F5') {
+            e.preventDefault();
+            this.toggleCameraPerspective();
+            return;
+          }
+
           // Toggle PC Help Controls Legend
           if (e.code === 'KeyH') {
             this.toggleControlsHint();
@@ -2647,6 +2666,8 @@
 
         // Header Action Controls (Fully functional on HP and Desktop)
         bindHeaderBtn('btn-toggle-f3', () => this.toggleF3Debug());
+
+        bindHeaderBtn('btn-toggle-camera', () => this.toggleCameraPerspective());
 
         bindHeaderBtn('btn-toggle-input-mode', () => this.toggleInputMode());
 
@@ -3339,8 +3360,7 @@
           }
         }
 
-        this.camera.position.copy(this.player.pos);
-        this.camera.rotation.copy(this.player.rot);
+        this.updateCameraAndCharacter(dt);
       }
 
       moveWithCollision(dt) {
@@ -3400,9 +3420,391 @@
         return false;
       }
 
+      /* ================= MINECRAFT 3D PLAYER CHARACTER & CAMERA PERSPECTIVES (F5) ================= */
+      buildPlayerModel() {
+        if (this.playerMesh) {
+          this.scene.remove(this.playerMesh);
+        }
+
+        this.playerMesh = new THREE.Group();
+
+        // Helper to generate crisp Minecraft-style 16x16 pixel textures
+        const makePixelTexture = (drawFn) => {
+          const cvs = document.createElement('canvas');
+          cvs.width = 16;
+          cvs.height = 16;
+          const ctx = cvs.getContext('2d');
+          drawFn(ctx);
+          const tex = new THREE.CanvasTexture(cvs);
+          tex.magFilter = THREE.NearestFilter;
+          tex.minFilter = THREE.NearestFilter;
+          tex.generateMipmaps = false;
+          return tex;
+        };
+
+        // 1. Steve Face (+Z)
+        const texFace = makePixelTexture(ctx => {
+          ctx.fillStyle = '#bd7956';
+          ctx.fillRect(0, 0, 16, 16);
+          ctx.fillStyle = '#2b1b10';
+          ctx.fillRect(0, 0, 16, 4);
+          ctx.fillRect(0, 4, 2, 2);
+          ctx.fillRect(14, 4, 2, 2);
+          ctx.fillStyle = '#3a2517';
+          ctx.fillRect(2, 0, 4, 2);
+          ctx.fillRect(10, 0, 4, 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(2, 7, 4, 2);
+          ctx.fillRect(10, 7, 4, 2);
+          ctx.fillStyle = '#2948b8';
+          ctx.fillRect(4, 7, 2, 2);
+          ctx.fillRect(10, 7, 2, 2);
+          ctx.fillStyle = '#ab6b49';
+          ctx.fillRect(6, 8, 4, 2);
+          ctx.fillStyle = '#4a2d18';
+          ctx.fillRect(4, 11, 8, 4);
+          ctx.fillStyle = '#783c27';
+          ctx.fillRect(6, 11, 4, 1);
+        });
+
+        // 2. Hair Top/Back
+        const texHair = makePixelTexture(ctx => {
+          ctx.fillStyle = '#2b1b10';
+          ctx.fillRect(0, 0, 16, 16);
+          ctx.fillStyle = '#3a2517';
+          ctx.fillRect(2, 2, 6, 6);
+          ctx.fillRect(10, 8, 4, 5);
+          ctx.fillStyle = '#20130a';
+          ctx.fillRect(8, 2, 5, 4);
+          ctx.fillRect(2, 10, 5, 4);
+        });
+
+        // 3. Head Sides
+        const texHeadSide = makePixelTexture(ctx => {
+          ctx.fillStyle = '#2b1b10';
+          ctx.fillRect(0, 0, 16, 8);
+          ctx.fillStyle = '#bd7956';
+          ctx.fillRect(0, 8, 16, 8);
+          ctx.fillStyle = '#2b1b10';
+          ctx.fillRect(0, 8, 3, 4);
+          ctx.fillStyle = '#ab6b49';
+          ctx.fillRect(5, 10, 4, 3);
+        });
+
+        // 4. Skin
+        const texSkin = makePixelTexture(ctx => {
+          ctx.fillStyle = '#bd7956';
+          ctx.fillRect(0, 0, 16, 16);
+          ctx.fillStyle = '#b06f4d';
+          ctx.fillRect(2, 2, 4, 4);
+          ctx.fillRect(10, 8, 4, 4);
+        });
+
+        // 5. Torso Front
+        const texTorsoFront = makePixelTexture(ctx => {
+          ctx.fillStyle = '#00a8a8';
+          ctx.fillRect(0, 0, 16, 16);
+          ctx.fillStyle = '#bd7956';
+          ctx.fillRect(6, 0, 4, 4);
+          ctx.fillRect(7, 4, 2, 2);
+          ctx.fillStyle = '#008b8b';
+          ctx.fillRect(0, 14, 16, 2);
+          ctx.fillRect(0, 6, 2, 8);
+          ctx.fillRect(14, 6, 2, 8);
+        });
+
+        // 6. Torso Plain
+        const texTorsoPlain = makePixelTexture(ctx => {
+          ctx.fillStyle = '#00a8a8';
+          ctx.fillRect(0, 0, 16, 16);
+          ctx.fillStyle = '#008b8b';
+          ctx.fillRect(2, 4, 6, 6);
+          ctx.fillRect(0, 14, 16, 2);
+        });
+
+        // 7. Arm
+        const texArm = makePixelTexture(ctx => {
+          ctx.fillStyle = '#00a8a8';
+          ctx.fillRect(0, 0, 16, 5);
+          ctx.fillStyle = '#008b8b';
+          ctx.fillRect(0, 4, 16, 1);
+          ctx.fillStyle = '#bd7956';
+          ctx.fillRect(0, 5, 16, 11);
+          ctx.fillStyle = '#ab6b49';
+          ctx.fillRect(0, 14, 16, 2);
+        });
+
+        // 8. Leg
+        const texLeg = makePixelTexture(ctx => {
+          ctx.fillStyle = '#2b336a';
+          ctx.fillRect(0, 0, 16, 13);
+          ctx.fillStyle = '#222955';
+          ctx.fillRect(0, 0, 16, 2);
+          ctx.fillRect(2, 4, 4, 6);
+          ctx.fillStyle = '#3a3a3a';
+          ctx.fillRect(0, 13, 16, 3);
+          ctx.fillStyle = '#222222';
+          ctx.fillRect(0, 15, 16, 1);
+        });
+
+        const matHead = [
+          new THREE.MeshLambertMaterial({ map: texHeadSide }),
+          new THREE.MeshLambertMaterial({ map: texHeadSide }),
+          new THREE.MeshLambertMaterial({ map: texHair }),
+          new THREE.MeshLambertMaterial({ map: texSkin }),
+          new THREE.MeshLambertMaterial({ map: texFace }),
+          new THREE.MeshLambertMaterial({ map: texHair })
+        ];
+
+        const matTorso = [
+          new THREE.MeshLambertMaterial({ map: texTorsoPlain }),
+          new THREE.MeshLambertMaterial({ map: texTorsoPlain }),
+          new THREE.MeshLambertMaterial({ map: texTorsoPlain }),
+          new THREE.MeshLambertMaterial({ map: texTorsoPlain }),
+          new THREE.MeshLambertMaterial({ map: texTorsoFront }),
+          new THREE.MeshLambertMaterial({ map: texTorsoPlain })
+        ];
+
+        const matArm = new THREE.MeshLambertMaterial({ map: texArm });
+        const matLeg = new THREE.MeshLambertMaterial({ map: texLeg });
+
+        // Head Group (Pivot at neck y = 1.44)
+        this.steveHead = new THREE.Group();
+        this.steveHead.position.set(0, 1.44, 0);
+        const headMesh = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), matHead);
+        headMesh.position.set(0, 0.25, 0);
+        headMesh.castShadow = true;
+        headMesh.receiveShadow = true;
+        this.steveHead.add(headMesh);
+        this.playerMesh.add(this.steveHead);
+
+        // Torso Mesh (0.5 x 0.72 x 0.26)
+        this.steveTorso = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.72, 0.26), matTorso);
+        this.steveTorso.position.set(0, 1.08, 0);
+        this.steveTorso.castShadow = true;
+        this.steveTorso.receiveShadow = true;
+        this.playerMesh.add(this.steveTorso);
+
+        // Left Arm (Pivot at shoulder: -0.37, 1.36, 0)
+        this.steveLeftArm = new THREE.Group();
+        this.steveLeftArm.position.set(-0.37, 1.36, 0);
+        const leftArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.72, 0.24), matArm);
+        leftArmMesh.position.set(0, -0.32, 0);
+        leftArmMesh.castShadow = true;
+        leftArmMesh.receiveShadow = true;
+        this.steveLeftArm.add(leftArmMesh);
+        this.playerMesh.add(this.steveLeftArm);
+
+        // Right Arm (Pivot at shoulder: +0.37, 1.36, 0)
+        this.steveRightArm = new THREE.Group();
+        this.steveRightArm.position.set(0.37, 1.36, 0);
+        const rightArmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.72, 0.24), matArm);
+        rightArmMesh.position.set(0, -0.32, 0);
+        rightArmMesh.castShadow = true;
+        rightArmMesh.receiveShadow = true;
+        this.steveRightArm.add(rightArmMesh);
+
+        // Held Item 3D Mini Voxel in Right Hand
+        const heldMat = new THREE.MeshLambertMaterial({
+          map: atlasTexture,
+          transparent: true,
+          alphaTest: 0.1
+        });
+        this.heldItemMesh = new THREE.Mesh(createVoxelBoxGeometry(1, 0.26), heldMat);
+        this.heldItemMesh.position.set(0, -0.58, 0.20);
+        this.heldItemMesh.rotation.set(0.35, 0.45, 0);
+        this.heldItemMesh.castShadow = true;
+        this.steveRightArm.add(this.heldItemMesh);
+
+        this.playerMesh.add(this.steveRightArm);
+
+        // Left Leg (Pivot at hip: -0.13, 0.72, 0)
+        this.steveLeftLeg = new THREE.Group();
+        this.steveLeftLeg.position.set(-0.13, 0.72, 0);
+        const leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.72, 0.24), matLeg);
+        leftLegMesh.position.set(0, -0.36, 0);
+        leftLegMesh.castShadow = true;
+        leftLegMesh.receiveShadow = true;
+        this.steveLeftLeg.add(leftLegMesh);
+        this.playerMesh.add(this.steveLeftLeg);
+
+        // Right Leg (Pivot at hip: +0.13, 0.72, 0)
+        this.steveRightLeg = new THREE.Group();
+        this.steveRightLeg.position.set(0.13, 0.72, 0);
+        const rightLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.72, 0.24), matLeg);
+        rightLegMesh.position.set(0, -0.36, 0);
+        rightLegMesh.castShadow = true;
+        rightLegMesh.receiveShadow = true;
+        this.steveRightLeg.add(rightLegMesh);
+        this.playerMesh.add(this.steveRightLeg);
+
+        this.scene.add(this.playerMesh);
+      }
+
+      updateHeldItemMesh() {
+        if (!this.heldItemMesh) return;
+        const blockId = this.hotbarSlots[this.activeSlotIndex];
+        if (!blockId || blockId === 0) {
+          this.heldItemMesh.visible = false;
+          return;
+        }
+        this.heldItemMesh.visible = true;
+        if (this.heldItemMesh.geometry) this.heldItemMesh.geometry.dispose();
+        this.heldItemMesh.geometry = createVoxelBoxGeometry(blockId, 0.26);
+      }
+
+      toggleCameraPerspective() {
+        if (this.cameraMode === 'third_back') {
+          this.cameraMode = 'third_front';
+          this.showToast('Kamera: Orang Ketiga (Depan) [F5]', '📷');
+        } else if (this.cameraMode === 'third_front') {
+          this.cameraMode = 'first';
+          this.showToast('Kamera: Orang Pertama (POV) [F5]', '👁️');
+        } else {
+          this.cameraMode = 'third_back';
+          this.showToast('Kamera: Orang Ketiga (Belakang) [F5]', '📷');
+        }
+        const camBtn = document.getElementById('camera-icon');
+        if (camBtn) {
+          if (this.cameraMode === 'third_back') camBtn.textContent = '📷';
+          else if (this.cameraMode === 'third_front') camBtn.textContent = '🤳';
+          else camBtn.textContent = '👁️';
+        }
+        this.updateHUDInfo();
+      }
+
+      updateCameraAndCharacter(dt) {
+        const p = this.player.pos;
+        const rot = this.player.rot;
+
+        // 1. Position & Animate 3D Steve Character
+        if (this.playerMesh) {
+          this.playerMesh.position.set(p.x, p.y - 1.62, p.z);
+          this.playerMesh.rotation.y = rot.y + Math.PI;
+
+          if (this.steveHead) {
+            this.steveHead.rotation.x = -rot.x;
+          }
+
+          const horizSpeed = Math.sqrt(this.player.vel.x * this.player.vel.x + this.player.vel.z * this.player.vel.z);
+          if (horizSpeed > 0.15) {
+            this.walkPhase = (this.walkPhase || 0) + dt * (horizSpeed * 1.15);
+            const swing = Math.sin(this.walkPhase) * 0.65;
+            if (this.steveLeftLeg) this.steveLeftLeg.rotation.x = swing;
+            if (this.steveRightLeg) this.steveRightLeg.rotation.x = -swing;
+            if (this.steveLeftArm) this.steveLeftArm.rotation.x = -swing;
+            if (this.steveRightArm) {
+              if (this.isSwinging) {
+                this.steveRightArm.rotation.x = -Math.sin(this.swingTime) * 1.3 - 0.35;
+                this.steveRightArm.rotation.z = -Math.sin(this.swingTime) * 0.25;
+              } else {
+                this.steveRightArm.rotation.x = swing;
+                this.steveRightArm.rotation.z = 0;
+              }
+            }
+          } else {
+            if (this.steveLeftLeg) this.steveLeftLeg.rotation.x *= 0.82;
+            if (this.steveRightLeg) this.steveRightLeg.rotation.x *= 0.82;
+            if (this.steveLeftArm) this.steveLeftArm.rotation.x *= 0.82;
+            if (this.steveRightArm) {
+              if (this.isSwinging) {
+                this.steveRightArm.rotation.x = -Math.sin(this.swingTime) * 1.3 - 0.35;
+                this.steveRightArm.rotation.z = -Math.sin(this.swingTime) * 0.25;
+              } else {
+                this.steveRightArm.rotation.x *= 0.82;
+                this.steveRightArm.rotation.z = 0;
+              }
+            }
+          }
+        }
+
+        // 2. Camera Positioning
+        const yaw = rot.y;
+        const pitch = rot.x;
+        const lookDir = new THREE.Vector3(
+          -Math.sin(yaw) * Math.cos(pitch),
+          -Math.sin(pitch),
+          -Math.cos(yaw) * Math.cos(pitch)
+        ).normalize();
+
+        const eyePos = p.clone().add(new THREE.Vector3(0, -0.05, 0));
+
+        if (this.cameraMode === 'third_back') {
+          this.playerMesh.visible = true;
+          if (this.handCanvas) this.handCanvas.style.display = 'none';
+
+          const desiredDist = 3.6;
+          const rayBack = lookDir.clone().negate();
+          let camDist = desiredDist;
+          const camFocus = p.clone().add(new THREE.Vector3(0, 0.42, 0));
+
+          // Prevent camera clipping into blocks behind Steve
+          for (let d = 0.4; d <= desiredDist; d += 0.2) {
+            const testP = camFocus.clone().addScaledVector(rayBack, d);
+            const bx = Math.floor(testP.x);
+            const by = Math.floor(testP.y);
+            const bz = Math.floor(testP.z);
+            const id = this.world.getBlock(bx, by, bz);
+            if (id !== 0) {
+              const b = BLOCKS[id];
+              if (b && !b.isFluid) {
+                camDist = Math.max(0.65, d - 0.25);
+                break;
+              }
+            }
+          }
+
+          this.camera.position.copy(camFocus).addScaledVector(rayBack, camDist);
+          this.camera.rotation.copy(rot);
+
+        } else if (this.cameraMode === 'third_front') {
+          this.playerMesh.visible = true;
+          if (this.handCanvas) this.handCanvas.style.display = 'none';
+
+          const desiredDist = 3.2;
+          let camDist = desiredDist;
+          const camFocus = p.clone().add(new THREE.Vector3(0, 0.20, 0));
+
+          for (let d = 0.4; d <= desiredDist; d += 0.2) {
+            const testP = camFocus.clone().addScaledVector(lookDir, d);
+            const bx = Math.floor(testP.x);
+            const by = Math.floor(testP.y);
+            const bz = Math.floor(testP.z);
+            const id = this.world.getBlock(bx, by, bz);
+            if (id !== 0) {
+              const b = BLOCKS[id];
+              if (b && !b.isFluid) {
+                camDist = Math.max(0.65, d - 0.25);
+                break;
+              }
+            }
+          }
+
+          this.camera.position.copy(camFocus).addScaledVector(lookDir, camDist);
+          this.camera.lookAt(p.clone().add(new THREE.Vector3(0, -0.15, 0)));
+
+        } else {
+          // First-person POV
+          this.playerMesh.visible = false;
+          if (this.handCanvas) this.handCanvas.style.display = 'block';
+
+          this.camera.position.copy(p);
+          this.camera.rotation.copy(rot);
+        }
+      }
+
       /* ================= RAYCASTING ================= */
       updateRaycast() {
-        this.raycaster.setFromCamera(new THREE.Vector2(0, 0), this.camera);
+        const yaw = this.player.rot.y;
+        const pitch = this.player.rot.x;
+        const lookDir = new THREE.Vector3(
+          -Math.sin(yaw) * Math.cos(pitch),
+          -Math.sin(pitch),
+          -Math.cos(yaw) * Math.cos(pitch)
+        ).normalize();
+
+        this.raycaster.set(this.player.pos, lookDir);
+        this.raycaster.far = 6.5;
         const intersects = this.raycaster.intersectObjects(this.world.allMeshes);
 
         if (intersects.length > 0 && intersects[0].distance <= 6.5) {
@@ -3494,6 +3896,13 @@
 
         const resEl = document.getElementById('f3-res');
         if (resEl) resEl.textContent = `${window.innerWidth}x${window.innerHeight}`;
+
+        const camEl = document.getElementById('f3-cam');
+        if (camEl) {
+          if (this.cameraMode === 'third_back') camEl.textContent = 'Third-Person (Back) [F5]';
+          else if (this.cameraMode === 'third_front') camEl.textContent = 'Third-Person (Front) [F5]';
+          else camEl.textContent = 'First-Person (POV) [F5]';
+        }
       }
 
       saveWorld() {
